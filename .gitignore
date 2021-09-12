@@ -1,0 +1,12 @@
+node_modules
+coverage
+bower_components
+
+/dashboard
+/extension
+
+/.idea
+
+result.json
+
+.npmrc
