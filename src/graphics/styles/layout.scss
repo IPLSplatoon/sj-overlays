@@ -1,0 +1,15 @@
+.layout {
+    display: flex;
+
+    &.c-horiz {
+        justify-content: center;
+    }
+
+    &.c-vert {
+        align-items: center;
+    }
+}
+
+.w-max {
+    width: 1920px;
+}

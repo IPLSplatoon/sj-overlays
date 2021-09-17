@@ -6,6 +6,7 @@ import * as globby from 'globby';
 import * as path from 'path';
 import webpack from 'webpack';
 import { TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
+import CopyPlugin from 'copy-webpack-plugin';
 
 const isProd = process.env.NODE_ENV === 'production';
 
@@ -30,7 +31,12 @@ function graphicsConfig(): webpack.Configuration {
                             title: entryName,
                             template: `./${entryName}/${entryName}.html`
                         })
-                )
+                ),
+            new CopyPlugin({
+                patterns: [
+                    { from: 'assets', to: 'assets' }
+                ]
+            }),
         ]
     );
 
@@ -86,7 +92,7 @@ function graphicsConfig(): webpack.Configuration {
                     use: {
                         loader: 'babel-loader',
                         options: {
-                            presets: ['@babel/preset-env', '@babel/preset-typescript']
+                            presets: [['@babel/preset-env', { targets: { chrome: '75' } }], '@babel/preset-typescript']
                         }
                     }
                 }

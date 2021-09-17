@@ -1,0 +1,9 @@
+.teams-wrapper {
+    .team-display {
+        width: 1400px;
+        height: 525px;
+        display: grid;
+        grid-template-rows: 1fr;
+        grid-template-columns: 3fr 1fr 3fr;
+    }
+}

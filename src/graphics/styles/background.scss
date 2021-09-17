@@ -1,0 +1,5 @@
+@mixin background($radius: 15px) {
+    background-color: rgba(63, 20, 80, 0.6);
+    backdrop-filter: blur(5px);
+    border-radius: $radius;
+}

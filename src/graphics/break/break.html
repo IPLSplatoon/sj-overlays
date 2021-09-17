@@ -2,9 +2,49 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>break@sj-overlays</title>
 </head>
 <body>
+<div class="content-wrapper">
+    <div class="info-bar-wrapper w-max layout c-horiz">
+        <div class="info-bar">
+            <div class="glow-border glow-blue"></div>
+            <div class="bar-content">
+                <img src="assets/SJ_Eyes-Center.png" class="icon">
+                <div class="text-wrapper">
+                    <div class="info-rows" id="info-rows">
+                        <div class="info-row layout c-horiz c-vert">
+                            <div>Welcome to <span class="logo-font">SuperJump!</span></div>
+                        </div>
+                        <div class="info-row info-row-commentators">
+                            <div class="commentators layout c-vert c-horiz">
+                                <i class="fas fa-microphone-alt" id="info-row-casters-icon"></i>
+                                <fitted-text id="info-row-casters-text" use-inner-html text="Casters" max-width="1300"></fitted-text>
+                            </div>
+                            <div class="commentators layout c-vert c-horiz">
+                                <i class="fab fa-twitter" id="info-row-casters-twitter-icon"></i>
+                                <fitted-text id="info-row-casters-twitter-text" use-inner-html text="Casters" max-width="1300"></fitted-text>
+                            </div>
+                        </div>
+                        <div class="info-row info-row-music layout c-horiz c-vert">
+                            <i class="fa fa-music" id="info-bar-music-icon"></i>
+                            <fitted-text id="info-bar-music" max-width="1000"></fitted-text>
+                        </div>
+                    </div>
+                </div>
+                <img src="assets/SJ_Eyes-Center.png" class="icon">
+            </div>
+        </div>
+    </div>
+    <div class="teams-wrapper">
+        <div class="team-display">
 
+        </div>
+        <div class="prediction-display">
+
+        </div>
+    </div>
+</div>
+<canvas id="background-canvas"></canvas>
 </body>
 </html>

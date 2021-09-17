@@ -23,11 +23,8 @@
             "nodecg/*": [
                 "../../types/*"
             ],
-            "types/*": [
-                "src/types/*"
-            ],
             "schemas": [
-                "src/types/schemas/index"
+                "../ipl-overlay-controls/src/types/schemas/index"
             ]
         }
     }

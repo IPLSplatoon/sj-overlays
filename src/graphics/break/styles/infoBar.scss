@@ -1,0 +1,60 @@
+@import '../../styles/glow';
+@import '../../styles/background';
+@import '../../styles/constants';
+
+.info-bar-wrapper {
+    position: absolute;
+    width: $pageWidth;
+    top: 100px;
+
+    .info-bar {
+        @include background();
+
+        position: relative;
+        width: 1300px;
+        height: 86px;
+
+        .bar-content {
+            $sideContentWidth: 125px;
+
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+
+            display: grid;
+            grid-template-rows: 1fr;
+            grid-template-columns: $sideContentWidth auto $sideContentWidth;
+            align-items: center;
+            justify-items: center;
+
+            font-size: 38px;
+            font-style: italic;
+
+            .text-wrapper {
+                position: relative;
+                width: 100%; height: 100%;
+
+                .info-row {
+                    position: absolute;
+                    width: 100%; height: 100%;
+
+                    svg {
+                        filter: drop-shadow(0 0 3px white);
+                        margin-right: 15px;
+                    }
+
+                    &.info-row-commentators > .commentators {
+                        width: 100%; height: 100%;
+                        position: absolute;
+                    }
+                }
+            }
+
+            .icon {
+                filter: drop-shadow(0 0 3px $blue);
+            }
+        }
+    }
+}

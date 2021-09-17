@@ -1,0 +1,21 @@
+@import './infoBar';
+@import './teams';
+
+@import '../../styles/layout';
+@import '../../styles/fonts';
+
+body {
+    margin: 0;
+    width: 1920px;
+    height: 1080px;
+    overflow: hidden;
+
+    color: white;
+}
+
+.content-wrapper {
+    width: 1920px;
+    height: 1080px;
+    position: absolute;
+    top: 0; left: 0;
+}
