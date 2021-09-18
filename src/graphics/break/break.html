@@ -41,40 +41,42 @@
             <div class="team alpha layout vertical c-horiz">
                 <div class="line top"></div>
                 <div class="line mid"></div>
-                <div class="content glow-border glow-red">
-                    <div class="background"></div>
+                <div class="content glow-border glow-red layout vertical c-vert c-horiz">
                     <div class="team-name layout c-horiz c-vert">
                         <fitted-text id="team-a-name" max-width="450"></fitted-text>
                     </div>
                     <div class="players" id="team-a-players"></div>
                 </div>
+                <div class="background"></div>
             </div>
-            <div class="versus">VS</div>
+            <div class="versus-wrapper layout horiz c-vert">
+                <div class="versus">VS</div>
+            </div>
             <div class="team bravo layout vertical c-horiz">
                 <div class="line top"></div>
                 <div class="line mid"></div>
                 <div class="content glow-border glow-green">
-                    <div class="background"></div>
                     <div class="team-name layout c-horiz c-vert">
                         <fitted-text id="team-b-name" max-width="450"></fitted-text>
                     </div>
                     <div class="players" id="team-b-players"></div>
                 </div>
+                <div class="background"></div>
             </div>
         </div>
         <div class="prediction-display">
             <div class="prediction-wrapper layout vertical c-horiz">
-                <fitted-text id="prediction-title" align="center" text="Who do you think will win this match?" max-width="1200"></fitted-text>
-                <div class="prediction-box glow-border glow-blue">
-                    <div class="background"></div>
+                <fitted-text id="prediction-title" align="center" max-width="1200"></fitted-text>
+                <div class="prediction-box glow-border glow-blue layout horiz c-horiz">
+                    <div class="background" id="prediction-background"></div>
                     <div class="options layout horiz">
                         <div class="option alpha">
-                            <div class="point-count">60,000p</div>
-                            <div class="percentage">60%</div>
+                            <div class="point-count" id="prediction-point-count-a">0p</div>
+                            <div class="percentage" id="prediction-percentage-a">0%</div>
                         </div>
                         <div class="option bravo">
-                            <div class="point-count">40,000p</div>
-                            <div class="percentage">40%</div>
+                            <div class="point-count" id="prediction-point-count-b">0p</div>
+                            <div class="percentage" id="prediction-percentage-b">0%</div>
                         </div>
                     </div>
                 </div>

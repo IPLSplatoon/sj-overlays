@@ -4,6 +4,8 @@ import './scripts/infoBar';
 import './scripts/music';
 import './scripts/casters';
 import './scripts/teams';
+import './scripts/predictions';
+import './scripts/sceneSwitcher';
 
 import { gsap } from 'gsap';
 import PixiPlugin from 'gsap/PixiPlugin';

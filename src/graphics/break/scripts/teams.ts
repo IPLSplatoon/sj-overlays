@@ -17,6 +17,19 @@ const teamTimelines = {
 };
 
 activeRound.on('change', (newValue, oldValue) => {
+    if (!oldValue) {
+        addPlayerElems(newValue.teamA.players, 'a');
+        addPlayerElems(newValue.teamB.players, 'b');
+    } else {
+        doOnDifference(newValue,  oldValue, 'teamA.players', (players: Player[]) => {
+            animatePlayers(players, 'a');
+        });
+
+        doOnDifference(newValue,  oldValue, 'teamB.players', (players: Player[]) => {
+            animatePlayers(players, 'b');
+        });
+    }
+
     doOnDifference(newValue, oldValue, 'teamA.name', (name: string) => {
         textOpacitySwap(name, elementById('team-a-name'));
     });
@@ -24,33 +37,28 @@ activeRound.on('change', (newValue, oldValue) => {
     doOnDifference(newValue, oldValue, 'teamB.name', (name: string) => {
         textOpacitySwap(name, elementById('team-b-name'));
     });
-
-    doOnDifference(newValue,  oldValue, 'teamA.players', (players: Player[]) => {
-        animatePlayers(players, 'a');
-    });
-
-    doOnDifference(newValue,  oldValue, 'teamB.players', (players: Player[]) => {
-        animatePlayers(players, 'b');
-    });
 });
 
 function animatePlayers(players: Player[], team: 'a' | 'b') {
     const timeline = teamTimelines[team];
     timeline.add(gsap.to(`.team-${team}-player`, { duration: 0.35, opacity: 0, onComplete: () => {
-        const playerContainer = elementById(`team-${team}-players`);
-        playerContainer.innerHTML = '';
-
-        players.forEach(player => {
-            const playerElem = document.createElement('fitted-text') as FittedText;
-            playerElem.classList.add(`team-${team}-player`);
-            playerElem.maxWidth = 475;
-            playerElem.text = player.name;
-            playerContainer.appendChild(playerElem);
-            playerElem.style.opacity = '0.0';
-        });
+        addPlayerElems(players, team);
 
         timeline.addLabel('teamsIn');
-        timeline.add(gsap.from(`.team-${team}-player`, { duration: 0.5, x: -350, stagger: 0.05, ease: 'power3.out' }), 'teamsIn');
-        timeline.add(gsap.to(`.team-${team}-player`, { duration: 0.5, opacity: 1, stagger: 0.05 }), 'teamsIn');
+        timeline.add(gsap.to(`.team-${team}-player`, { duration: 0.5, x: 0, opacity: 1, stagger: 0.05 }), 'teamsIn');
     } }));
+}
+
+function addPlayerElems(players: Player[], team: 'a' | 'b') {
+    const playerContainer = elementById(`team-${team}-players`);
+    playerContainer.innerHTML = '';
+
+    players.forEach(player => {
+        const playerElem = document.createElement('fitted-text') as FittedText;
+        playerElem.classList.add(`team-${team}-player`);
+        playerElem.maxWidth = 475;
+        playerElem.text = player.name;
+        playerContainer.appendChild(playerElem);
+        playerElem.style.opacity = '0.0';
+    });
 }
