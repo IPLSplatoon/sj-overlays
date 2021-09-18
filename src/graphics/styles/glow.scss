@@ -1,3 +1,5 @@
+@import './constants';
+
 @mixin glow-border($color, $radius: 15px) {
     width: 100%;
     height: 100%;
@@ -12,10 +14,14 @@
 
 .glow-border {
     &.glow-blue {
-        @include glow-border(#5FBFF9);
+        @include glow-border($blue);
     }
 
     &.glow-red {
-        @include glow-border(#E03E81);
+        @include glow-border($red);
+    }
+
+    &.glow-green {
+        @include glow-border($green);
     }
 }

@@ -1,9 +1,145 @@
+@import '../../styles/background';
+@import '../../styles/constants';
+
+@mixin line-glow($color) {
+    height: 2px;
+    background-color: white;
+    border: 1px solid $color;
+    filter: drop-shadow(0 0 2px $color) drop-shadow(0 0 5px $color);
+}
+
 .teams-wrapper {
+    position: absolute;
+    top: 250px;
+
     .team-display {
         width: 1400px;
         height: 525px;
         display: grid;
         grid-template-rows: 1fr;
-        grid-template-columns: 3fr 1fr 3fr;
+        grid-template-columns: 2fr 1fr 2fr;
+        align-items: center;
+
+        .team {
+            .content {
+                position: relative;
+                height: 470px;
+                width: 500px;
+                overflow: hidden;
+
+                .team-name {
+                    width: 100%;
+                    height: 112px;
+                    overflow: hidden;
+
+                    fitted-text {
+                        font-size: 50px;
+                        font-weight: 700;
+                        font-style: italic;
+                    }
+                }
+
+                .players {
+                    margin: 12px 20px 15px;
+
+                    fitted-text {
+                        font-size: 40px;
+                        font-weight: 300;
+                        margin-bottom: 2px;
+                    }
+                }
+
+                .background {
+                    position: absolute;
+                    width: 100%;
+                    height: 100%;
+                    top: 0;
+                    left: 0;
+                    @include background();
+                }
+            }
+
+            .line {
+                &.top {
+                    width: 375px;
+                    margin-bottom: 45px;
+                }
+
+                &.mid {
+                    position: absolute;
+                    top: 160px;
+                    width: 600px;
+                    z-index: 2;
+                }
+            }
+
+            &.alpha {
+                .line {
+                    @include line-glow($red);
+                }
+            }
+            &.bravo {
+                .line {
+                    @include line-glow($green);
+                }
+            }
+        }
+
+        .versus {
+            font-weight: 800;
+            font-size: 110px;
+            text-align: center;
+            filter: drop-shadow(0 0 3px white);
+        }
+    }
+
+    .prediction-wrapper {
+        margin-top: 50px;
+
+        #prediction-title {
+            margin-bottom: 5px;
+            font-size: 35px;
+            font-style: italic;
+            filter: drop-shadow(0 0 5px $background) drop-shadow(0 0 10px $background);
+        }
+
+        .prediction-box {
+            @include background();
+
+            height: 120px;
+            width: 1300px;
+
+            .background {
+                position: absolute;
+                width: 100%; height: 100%;
+                background: linear-gradient(90deg, $red-a-20 0%, $red-a-20 60%, $green-a-40 60%, $green-a-40 100%);
+            }
+
+            .options {
+                width: 100%;
+                height: 100%;
+                position: absolute;
+
+                .option {
+                    width: 50%;
+                    margin: 6px 20px;
+
+                    &.bravo {
+                        text-align: right;
+                    }
+
+                    .point-count {
+                        font-size: 32px;
+                        font-style: italic;
+                    }
+
+                    .percentage {
+                        font-size: 72px;
+                        font-weight: 800;
+                        line-height: 65px;
+                    }
+                }
+            }
+        }
     }
 }

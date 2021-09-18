@@ -415,6 +415,16 @@ eval("var getNative = __webpack_require__(/*! ./_getNative */ \"../../node_modul
 
 /***/ }),
 
+/***/ "../../node_modules/lodash/_apply.js":
+/*!*******************************************!*\
+  !*** ../../node_modules/lodash/_apply.js ***!
+  \*******************************************/
+/***/ ((module) => {
+
+eval("/**\n * A faster alternative to `Function#apply`, this function invokes `func`\n * with the `this` binding of `thisArg` and the arguments of `args`.\n *\n * @private\n * @param {Function} func The function to invoke.\n * @param {*} thisArg The `this` binding of `func`.\n * @param {Array} args The arguments to invoke `func` with.\n * @returns {*} Returns the result of `func`.\n */\nfunction apply(func, thisArg, args) {\n  switch (args.length) {\n    case 0:\n      return func.call(thisArg);\n\n    case 1:\n      return func.call(thisArg, args[0]);\n\n    case 2:\n      return func.call(thisArg, args[0], args[1]);\n\n    case 3:\n      return func.call(thisArg, args[0], args[1], args[2]);\n  }\n\n  return func.apply(thisArg, args);\n}\n\nmodule.exports = apply;\n\n//# sourceURL=webpack:///../../node_modules/lodash/_apply.js?");
+
+/***/ }),
+
 /***/ "../../node_modules/lodash/_arrayFilter.js":
 /*!*************************************************!*\
   !*** ../../node_modules/lodash/_arrayFilter.js ***!
@@ -485,6 +495,16 @@ eval("var eq = __webpack_require__(/*! ./eq */ \"../../node_modules/lodash/eq.js
 
 /***/ }),
 
+/***/ "../../node_modules/lodash/_baseAt.js":
+/*!********************************************!*\
+  !*** ../../node_modules/lodash/_baseAt.js ***!
+  \********************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+eval("var get = __webpack_require__(/*! ./get */ \"../../node_modules/lodash/get.js\");\n/**\n * The base implementation of `_.at` without support for individual paths.\n *\n * @private\n * @param {Object} object The object to iterate over.\n * @param {string[]} paths The property paths to pick.\n * @returns {Array} Returns the picked elements.\n */\n\n\nfunction baseAt(object, paths) {\n  var index = -1,\n      length = paths.length,\n      result = Array(length),\n      skip = object == null;\n\n  while (++index < length) {\n    result[index] = skip ? undefined : get(object, paths[index]);\n  }\n\n  return result;\n}\n\nmodule.exports = baseAt;\n\n//# sourceURL=webpack:///../../node_modules/lodash/_baseAt.js?");
+
+/***/ }),
+
 /***/ "../../node_modules/lodash/_baseExtremum.js":
 /*!**************************************************!*\
   !*** ../../node_modules/lodash/_baseExtremum.js ***!
@@ -492,6 +512,16 @@ eval("var eq = __webpack_require__(/*! ./eq */ \"../../node_modules/lodash/eq.js
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 eval("var isSymbol = __webpack_require__(/*! ./isSymbol */ \"../../node_modules/lodash/isSymbol.js\");\n/**\n * The base implementation of methods like `_.max` and `_.min` which accepts a\n * `comparator` to determine the extremum value.\n *\n * @private\n * @param {Array} array The array to iterate over.\n * @param {Function} iteratee The iteratee invoked per iteration.\n * @param {Function} comparator The comparator used to compare values.\n * @returns {*} Returns the extremum value.\n */\n\n\nfunction baseExtremum(array, iteratee, comparator) {\n  var index = -1,\n      length = array.length;\n\n  while (++index < length) {\n    var value = array[index],\n        current = iteratee(value);\n\n    if (current != null && (computed === undefined ? current === current && !isSymbol(current) : comparator(current, computed))) {\n      var computed = current,\n          result = value;\n    }\n  }\n\n  return result;\n}\n\nmodule.exports = baseExtremum;\n\n//# sourceURL=webpack:///../../node_modules/lodash/_baseExtremum.js?");
+
+/***/ }),
+
+/***/ "../../node_modules/lodash/_baseFlatten.js":
+/*!*************************************************!*\
+  !*** ../../node_modules/lodash/_baseFlatten.js ***!
+  \*************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+eval("var arrayPush = __webpack_require__(/*! ./_arrayPush */ \"../../node_modules/lodash/_arrayPush.js\"),\n    isFlattenable = __webpack_require__(/*! ./_isFlattenable */ \"../../node_modules/lodash/_isFlattenable.js\");\n/**\n * The base implementation of `_.flatten` with support for restricting flattening.\n *\n * @private\n * @param {Array} array The array to flatten.\n * @param {number} depth The maximum recursion depth.\n * @param {boolean} [predicate=isFlattenable] The function invoked per iteration.\n * @param {boolean} [isStrict] Restrict to values that pass `predicate` checks.\n * @param {Array} [result=[]] The initial result value.\n * @returns {Array} Returns the new flattened array.\n */\n\n\nfunction baseFlatten(array, depth, predicate, isStrict, result) {\n  var index = -1,\n      length = array.length;\n  predicate || (predicate = isFlattenable);\n  result || (result = []);\n\n  while (++index < length) {\n    var value = array[index];\n\n    if (depth > 0 && predicate(value)) {\n      if (depth > 1) {\n        // Recursively flatten arrays (susceptible to call stack limits).\n        baseFlatten(value, depth - 1, predicate, isStrict, result);\n      } else {\n        arrayPush(result, value);\n      }\n    } else if (!isStrict) {\n      result[result.length] = value;\n    }\n  }\n\n  return result;\n}\n\nmodule.exports = baseFlatten;\n\n//# sourceURL=webpack:///../../node_modules/lodash/_baseFlatten.js?");
 
 /***/ }),
 
@@ -695,6 +725,16 @@ eval("var arraySample = __webpack_require__(/*! ./_arraySample */ \"../../node_m
 
 /***/ }),
 
+/***/ "../../node_modules/lodash/_baseSetToString.js":
+/*!*****************************************************!*\
+  !*** ../../node_modules/lodash/_baseSetToString.js ***!
+  \*****************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+eval("var constant = __webpack_require__(/*! ./constant */ \"../../node_modules/lodash/constant.js\"),\n    defineProperty = __webpack_require__(/*! ./_defineProperty */ \"../../node_modules/lodash/_defineProperty.js\"),\n    identity = __webpack_require__(/*! ./identity */ \"../../node_modules/lodash/identity.js\");\n/**\n * The base implementation of `setToString` without support for hot loop shorting.\n *\n * @private\n * @param {Function} func The function to modify.\n * @param {Function} string The `toString` result.\n * @returns {Function} Returns `func`.\n */\n\n\nvar baseSetToString = !defineProperty ? identity : function (func, string) {\n  return defineProperty(func, 'toString', {\n    'configurable': true,\n    'enumerable': false,\n    'value': constant(string),\n    'writable': true\n  });\n};\nmodule.exports = baseSetToString;\n\n//# sourceURL=webpack:///../../node_modules/lodash/_baseSetToString.js?");
+
+/***/ }),
+
 /***/ "../../node_modules/lodash/_baseTimes.js":
 /*!***********************************************!*\
   !*** ../../node_modules/lodash/_baseTimes.js ***!
@@ -775,6 +815,16 @@ eval("var root = __webpack_require__(/*! ./_root */ \"../../node_modules/lodash/
 
 /***/ }),
 
+/***/ "../../node_modules/lodash/_defineProperty.js":
+/*!****************************************************!*\
+  !*** ../../node_modules/lodash/_defineProperty.js ***!
+  \****************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+eval("var getNative = __webpack_require__(/*! ./_getNative */ \"../../node_modules/lodash/_getNative.js\");\n\nvar defineProperty = function () {\n  try {\n    var func = getNative(Object, 'defineProperty');\n    func({}, '', {});\n    return func;\n  } catch (e) {}\n}();\n\nmodule.exports = defineProperty;\n\n//# sourceURL=webpack:///../../node_modules/lodash/_defineProperty.js?");
+
+/***/ }),
+
 /***/ "../../node_modules/lodash/_equalArrays.js":
 /*!*************************************************!*\
   !*** ../../node_modules/lodash/_equalArrays.js ***!
@@ -802,6 +852,16 @@ eval("var Symbol = __webpack_require__(/*! ./_Symbol */ \"../../node_modules/lod
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 eval("var getAllKeys = __webpack_require__(/*! ./_getAllKeys */ \"../../node_modules/lodash/_getAllKeys.js\");\n/** Used to compose bitmasks for value comparisons. */\n\n\nvar COMPARE_PARTIAL_FLAG = 1;\n/** Used for built-in method references. */\n\nvar objectProto = Object.prototype;\n/** Used to check objects for own properties. */\n\nvar hasOwnProperty = objectProto.hasOwnProperty;\n/**\n * A specialized version of `baseIsEqualDeep` for objects with support for\n * partial deep comparisons.\n *\n * @private\n * @param {Object} object The object to compare.\n * @param {Object} other The other object to compare.\n * @param {number} bitmask The bitmask flags. See `baseIsEqual` for more details.\n * @param {Function} customizer The function to customize comparisons.\n * @param {Function} equalFunc The function to determine equivalents of values.\n * @param {Object} stack Tracks traversed `object` and `other` objects.\n * @returns {boolean} Returns `true` if the objects are equivalent, else `false`.\n */\n\nfunction equalObjects(object, other, bitmask, customizer, equalFunc, stack) {\n  var isPartial = bitmask & COMPARE_PARTIAL_FLAG,\n      objProps = getAllKeys(object),\n      objLength = objProps.length,\n      othProps = getAllKeys(other),\n      othLength = othProps.length;\n\n  if (objLength != othLength && !isPartial) {\n    return false;\n  }\n\n  var index = objLength;\n\n  while (index--) {\n    var key = objProps[index];\n\n    if (!(isPartial ? key in other : hasOwnProperty.call(other, key))) {\n      return false;\n    }\n  } // Check that cyclic values are equal.\n\n\n  var objStacked = stack.get(object);\n  var othStacked = stack.get(other);\n\n  if (objStacked && othStacked) {\n    return objStacked == other && othStacked == object;\n  }\n\n  var result = true;\n  stack.set(object, other);\n  stack.set(other, object);\n  var skipCtor = isPartial;\n\n  while (++index < objLength) {\n    key = objProps[index];\n    var objValue = object[key],\n        othValue = other[key];\n\n    if (customizer) {\n      var compared = isPartial ? customizer(othValue, objValue, key, other, object, stack) : customizer(objValue, othValue, key, object, other, stack);\n    } // Recursively compare objects (susceptible to call stack limits).\n\n\n    if (!(compared === undefined ? objValue === othValue || equalFunc(objValue, othValue, bitmask, customizer, stack) : compared)) {\n      result = false;\n      break;\n    }\n\n    skipCtor || (skipCtor = key == 'constructor');\n  }\n\n  if (result && !skipCtor) {\n    var objCtor = object.constructor,\n        othCtor = other.constructor; // Non `Object` object instances with different constructors are not equal.\n\n    if (objCtor != othCtor && 'constructor' in object && 'constructor' in other && !(typeof objCtor == 'function' && objCtor instanceof objCtor && typeof othCtor == 'function' && othCtor instanceof othCtor)) {\n      result = false;\n    }\n  }\n\n  stack['delete'](object);\n  stack['delete'](other);\n  return result;\n}\n\nmodule.exports = equalObjects;\n\n//# sourceURL=webpack:///../../node_modules/lodash/_equalObjects.js?");
+
+/***/ }),
+
+/***/ "../../node_modules/lodash/_flatRest.js":
+/*!**********************************************!*\
+  !*** ../../node_modules/lodash/_flatRest.js ***!
+  \**********************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+eval("var flatten = __webpack_require__(/*! ./flatten */ \"../../node_modules/lodash/flatten.js\"),\n    overRest = __webpack_require__(/*! ./_overRest */ \"../../node_modules/lodash/_overRest.js\"),\n    setToString = __webpack_require__(/*! ./_setToString */ \"../../node_modules/lodash/_setToString.js\");\n/**\n * A specialized version of `baseRest` which flattens the rest array.\n *\n * @private\n * @param {Function} func The function to apply a rest parameter to.\n * @returns {Function} Returns the new function.\n */\n\n\nfunction flatRest(func) {\n  return setToString(overRest(func, undefined, flatten), func + '');\n}\n\nmodule.exports = flatRest;\n\n//# sourceURL=webpack:///../../node_modules/lodash/_flatRest.js?");
 
 /***/ }),
 
@@ -952,6 +1012,16 @@ eval("var nativeCreate = __webpack_require__(/*! ./_nativeCreate */ \"../../node
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 eval("var nativeCreate = __webpack_require__(/*! ./_nativeCreate */ \"../../node_modules/lodash/_nativeCreate.js\");\n/** Used to stand-in for `undefined` hash values. */\n\n\nvar HASH_UNDEFINED = '__lodash_hash_undefined__';\n/**\n * Sets the hash `key` to `value`.\n *\n * @private\n * @name set\n * @memberOf Hash\n * @param {string} key The key of the value to set.\n * @param {*} value The value to set.\n * @returns {Object} Returns the hash instance.\n */\n\nfunction hashSet(key, value) {\n  var data = this.__data__;\n  this.size += this.has(key) ? 0 : 1;\n  data[key] = nativeCreate && value === undefined ? HASH_UNDEFINED : value;\n  return this;\n}\n\nmodule.exports = hashSet;\n\n//# sourceURL=webpack:///../../node_modules/lodash/_hashSet.js?");
+
+/***/ }),
+
+/***/ "../../node_modules/lodash/_isFlattenable.js":
+/*!***************************************************!*\
+  !*** ../../node_modules/lodash/_isFlattenable.js ***!
+  \***************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+eval("var Symbol = __webpack_require__(/*! ./_Symbol */ \"../../node_modules/lodash/_Symbol.js\"),\n    isArguments = __webpack_require__(/*! ./isArguments */ \"../../node_modules/lodash/isArguments.js\"),\n    isArray = __webpack_require__(/*! ./isArray */ \"../../node_modules/lodash/isArray.js\");\n/** Built-in value references. */\n\n\nvar spreadableSymbol = Symbol ? Symbol.isConcatSpreadable : undefined;\n/**\n * Checks if `value` is a flattenable `arguments` object or array.\n *\n * @private\n * @param {*} value The value to check.\n * @returns {boolean} Returns `true` if `value` is flattenable, else `false`.\n */\n\nfunction isFlattenable(value) {\n  return isArray(value) || isArguments(value) || !!(spreadableSymbol && value && value[spreadableSymbol]);\n}\n\nmodule.exports = isFlattenable;\n\n//# sourceURL=webpack:///../../node_modules/lodash/_isFlattenable.js?");
 
 /***/ }),
 
@@ -1205,6 +1275,16 @@ eval("/**\n * Creates a unary function that invokes `func` with its argument tra
 
 /***/ }),
 
+/***/ "../../node_modules/lodash/_overRest.js":
+/*!**********************************************!*\
+  !*** ../../node_modules/lodash/_overRest.js ***!
+  \**********************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+eval("var apply = __webpack_require__(/*! ./_apply */ \"../../node_modules/lodash/_apply.js\");\n/* Built-in method references for those with the same name as other `lodash` methods. */\n\n\nvar nativeMax = Math.max;\n/**\n * A specialized version of `baseRest` which transforms the rest array.\n *\n * @private\n * @param {Function} func The function to apply a rest parameter to.\n * @param {number} [start=func.length-1] The start position of the rest parameter.\n * @param {Function} transform The rest array transform.\n * @returns {Function} Returns the new function.\n */\n\nfunction overRest(func, start, transform) {\n  start = nativeMax(start === undefined ? func.length - 1 : start, 0);\n  return function () {\n    var args = arguments,\n        index = -1,\n        length = nativeMax(args.length - start, 0),\n        array = Array(length);\n\n    while (++index < length) {\n      array[index] = args[start + index];\n    }\n\n    index = -1;\n    var otherArgs = Array(start + 1);\n\n    while (++index < start) {\n      otherArgs[index] = args[index];\n    }\n\n    otherArgs[start] = transform(array);\n    return apply(func, this, otherArgs);\n  };\n}\n\nmodule.exports = overRest;\n\n//# sourceURL=webpack:///../../node_modules/lodash/_overRest.js?");
+
+/***/ }),
+
 /***/ "../../node_modules/lodash/_root.js":
 /*!******************************************!*\
   !*** ../../node_modules/lodash/_root.js ***!
@@ -1242,6 +1322,26 @@ eval("/**\n * Checks if `value` is in the array cache.\n *\n * @private\n * @nam
 /***/ ((module) => {
 
 eval("/**\n * Converts `set` to an array of its values.\n *\n * @private\n * @param {Object} set The set to convert.\n * @returns {Array} Returns the values.\n */\nfunction setToArray(set) {\n  var index = -1,\n      result = Array(set.size);\n  set.forEach(function (value) {\n    result[++index] = value;\n  });\n  return result;\n}\n\nmodule.exports = setToArray;\n\n//# sourceURL=webpack:///../../node_modules/lodash/_setToArray.js?");
+
+/***/ }),
+
+/***/ "../../node_modules/lodash/_setToString.js":
+/*!*************************************************!*\
+  !*** ../../node_modules/lodash/_setToString.js ***!
+  \*************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+eval("var baseSetToString = __webpack_require__(/*! ./_baseSetToString */ \"../../node_modules/lodash/_baseSetToString.js\"),\n    shortOut = __webpack_require__(/*! ./_shortOut */ \"../../node_modules/lodash/_shortOut.js\");\n/**\n * Sets the `toString` method of `func` to return `string`.\n *\n * @private\n * @param {Function} func The function to modify.\n * @param {Function} string The `toString` result.\n * @returns {Function} Returns `func`.\n */\n\n\nvar setToString = shortOut(baseSetToString);\nmodule.exports = setToString;\n\n//# sourceURL=webpack:///../../node_modules/lodash/_setToString.js?");
+
+/***/ }),
+
+/***/ "../../node_modules/lodash/_shortOut.js":
+/*!**********************************************!*\
+  !*** ../../node_modules/lodash/_shortOut.js ***!
+  \**********************************************/
+/***/ ((module) => {
+
+eval("/** Used to detect hot functions by number of calls within a span of milliseconds. */\nvar HOT_COUNT = 800,\n    HOT_SPAN = 16;\n/* Built-in method references for those with the same name as other `lodash` methods. */\n\nvar nativeNow = Date.now;\n/**\n * Creates a function that'll short out and invoke `identity` instead\n * of `func` when it's called `HOT_COUNT` or more times in `HOT_SPAN`\n * milliseconds.\n *\n * @private\n * @param {Function} func The function to restrict.\n * @returns {Function} Returns the new shortable function.\n */\n\nfunction shortOut(func) {\n  var count = 0,\n      lastCalled = 0;\n  return function () {\n    var stamp = nativeNow(),\n        remaining = HOT_SPAN - (stamp - lastCalled);\n    lastCalled = stamp;\n\n    if (remaining > 0) {\n      if (++count >= HOT_COUNT) {\n        return arguments[0];\n      }\n    } else {\n      count = 0;\n    }\n\n    return func.apply(undefined, arguments);\n  };\n}\n\nmodule.exports = shortOut;\n\n//# sourceURL=webpack:///../../node_modules/lodash/_shortOut.js?");
 
 /***/ }),
 
@@ -1335,6 +1435,26 @@ eval("/** Used to match a single whitespace character. */\nvar reWhitespace = /\
 
 /***/ }),
 
+/***/ "../../node_modules/lodash/at.js":
+/*!***************************************!*\
+  !*** ../../node_modules/lodash/at.js ***!
+  \***************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+eval("var baseAt = __webpack_require__(/*! ./_baseAt */ \"../../node_modules/lodash/_baseAt.js\"),\n    flatRest = __webpack_require__(/*! ./_flatRest */ \"../../node_modules/lodash/_flatRest.js\");\n/**\n * Creates an array of values corresponding to `paths` of `object`.\n *\n * @static\n * @memberOf _\n * @since 1.0.0\n * @category Object\n * @param {Object} object The object to iterate over.\n * @param {...(string|string[])} [paths] The property paths to pick.\n * @returns {Array} Returns the picked values.\n * @example\n *\n * var object = { 'a': [{ 'b': { 'c': 3 } }, 4] };\n *\n * _.at(object, ['a[0].b.c', 'a[1]']);\n * // => [3, 4]\n */\n\n\nvar at = flatRest(baseAt);\nmodule.exports = at;\n\n//# sourceURL=webpack:///../../node_modules/lodash/at.js?");
+
+/***/ }),
+
+/***/ "../../node_modules/lodash/constant.js":
+/*!*********************************************!*\
+  !*** ../../node_modules/lodash/constant.js ***!
+  \*********************************************/
+/***/ ((module) => {
+
+eval("/**\n * Creates a function that returns `value`.\n *\n * @static\n * @memberOf _\n * @since 2.4.0\n * @category Util\n * @param {*} value The value to return from the new function.\n * @returns {Function} Returns the new constant function.\n * @example\n *\n * var objects = _.times(2, _.constant({ 'a': 1 }));\n *\n * console.log(objects);\n * // => [{ 'a': 1 }, { 'a': 1 }]\n *\n * console.log(objects[0] === objects[1]);\n * // => true\n */\nfunction constant(value) {\n  return function () {\n    return value;\n  };\n}\n\nmodule.exports = constant;\n\n//# sourceURL=webpack:///../../node_modules/lodash/constant.js?");
+
+/***/ }),
+
 /***/ "../../node_modules/lodash/eq.js":
 /*!***************************************!*\
   !*** ../../node_modules/lodash/eq.js ***!
@@ -1342,6 +1462,16 @@ eval("/** Used to match a single whitespace character. */\nvar reWhitespace = /\
 /***/ ((module) => {
 
 eval("/**\n * Performs a\n * [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)\n * comparison between two values to determine if they are equivalent.\n *\n * @static\n * @memberOf _\n * @since 4.0.0\n * @category Lang\n * @param {*} value The value to compare.\n * @param {*} other The other value to compare.\n * @returns {boolean} Returns `true` if the values are equivalent, else `false`.\n * @example\n *\n * var object = { 'a': 1 };\n * var other = { 'a': 1 };\n *\n * _.eq(object, object);\n * // => true\n *\n * _.eq(object, other);\n * // => false\n *\n * _.eq('a', 'a');\n * // => true\n *\n * _.eq('a', Object('a'));\n * // => false\n *\n * _.eq(NaN, NaN);\n * // => true\n */\nfunction eq(value, other) {\n  return value === other || value !== value && other !== other;\n}\n\nmodule.exports = eq;\n\n//# sourceURL=webpack:///../../node_modules/lodash/eq.js?");
+
+/***/ }),
+
+/***/ "../../node_modules/lodash/flatten.js":
+/*!********************************************!*\
+  !*** ../../node_modules/lodash/flatten.js ***!
+  \********************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+eval("var baseFlatten = __webpack_require__(/*! ./_baseFlatten */ \"../../node_modules/lodash/_baseFlatten.js\");\n/**\n * Flattens `array` a single level deep.\n *\n * @static\n * @memberOf _\n * @since 0.1.0\n * @category Array\n * @param {Array} array The array to flatten.\n * @returns {Array} Returns the new flattened array.\n * @example\n *\n * _.flatten([1, [2, [3, [4]], 5]]);\n * // => [1, 2, [3, [4]], 5]\n */\n\n\nfunction flatten(array) {\n  var length = array == null ? 0 : array.length;\n  return length ? baseFlatten(array, 1) : [];\n}\n\nmodule.exports = flatten;\n\n//# sourceURL=webpack:///../../node_modules/lodash/flatten.js?");
 
 /***/ }),
 
@@ -1422,6 +1552,16 @@ eval("/* module decorator */ module = __webpack_require__.nmd(module);\nvar root
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 eval("var baseKeys = __webpack_require__(/*! ./_baseKeys */ \"../../node_modules/lodash/_baseKeys.js\"),\n    getTag = __webpack_require__(/*! ./_getTag */ \"../../node_modules/lodash/_getTag.js\"),\n    isArguments = __webpack_require__(/*! ./isArguments */ \"../../node_modules/lodash/isArguments.js\"),\n    isArray = __webpack_require__(/*! ./isArray */ \"../../node_modules/lodash/isArray.js\"),\n    isArrayLike = __webpack_require__(/*! ./isArrayLike */ \"../../node_modules/lodash/isArrayLike.js\"),\n    isBuffer = __webpack_require__(/*! ./isBuffer */ \"../../node_modules/lodash/isBuffer.js\"),\n    isPrototype = __webpack_require__(/*! ./_isPrototype */ \"../../node_modules/lodash/_isPrototype.js\"),\n    isTypedArray = __webpack_require__(/*! ./isTypedArray */ \"../../node_modules/lodash/isTypedArray.js\");\n/** `Object#toString` result references. */\n\n\nvar mapTag = '[object Map]',\n    setTag = '[object Set]';\n/** Used for built-in method references. */\n\nvar objectProto = Object.prototype;\n/** Used to check objects for own properties. */\n\nvar hasOwnProperty = objectProto.hasOwnProperty;\n/**\n * Checks if `value` is an empty object, collection, map, or set.\n *\n * Objects are considered empty if they have no own enumerable string keyed\n * properties.\n *\n * Array-like values such as `arguments` objects, arrays, buffers, strings, or\n * jQuery-like collections are considered empty if they have a `length` of `0`.\n * Similarly, maps and sets are considered empty if they have a `size` of `0`.\n *\n * @static\n * @memberOf _\n * @since 0.1.0\n * @category Lang\n * @param {*} value The value to check.\n * @returns {boolean} Returns `true` if `value` is empty, else `false`.\n * @example\n *\n * _.isEmpty(null);\n * // => true\n *\n * _.isEmpty(true);\n * // => true\n *\n * _.isEmpty(1);\n * // => true\n *\n * _.isEmpty([1, 2, 3]);\n * // => false\n *\n * _.isEmpty({ 'a': 1 });\n * // => false\n */\n\nfunction isEmpty(value) {\n  if (value == null) {\n    return true;\n  }\n\n  if (isArrayLike(value) && (isArray(value) || typeof value == 'string' || typeof value.splice == 'function' || isBuffer(value) || isTypedArray(value) || isArguments(value))) {\n    return !value.length;\n  }\n\n  var tag = getTag(value);\n\n  if (tag == mapTag || tag == setTag) {\n    return !value.size;\n  }\n\n  if (isPrototype(value)) {\n    return !baseKeys(value).length;\n  }\n\n  for (var key in value) {\n    if (hasOwnProperty.call(value, key)) {\n      return false;\n    }\n  }\n\n  return true;\n}\n\nmodule.exports = isEmpty;\n\n//# sourceURL=webpack:///../../node_modules/lodash/isEmpty.js?");
+
+/***/ }),
+
+/***/ "../../node_modules/lodash/isEqual.js":
+/*!********************************************!*\
+  !*** ../../node_modules/lodash/isEqual.js ***!
+  \********************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+eval("var baseIsEqual = __webpack_require__(/*! ./_baseIsEqual */ \"../../node_modules/lodash/_baseIsEqual.js\");\n/**\n * Performs a deep comparison between two values to determine if they are\n * equivalent.\n *\n * **Note:** This method supports comparing arrays, array buffers, booleans,\n * date objects, error objects, maps, numbers, `Object` objects, regexes,\n * sets, strings, symbols, and typed arrays. `Object` objects are compared\n * by their own, not inherited, enumerable properties. Functions and DOM\n * nodes are compared by strict equality, i.e. `===`.\n *\n * @static\n * @memberOf _\n * @since 0.1.0\n * @category Lang\n * @param {*} value The value to compare.\n * @param {*} other The other value to compare.\n * @returns {boolean} Returns `true` if the values are equivalent, else `false`.\n * @example\n *\n * var object = { 'a': 1 };\n * var other = { 'a': 1 };\n *\n * _.isEqual(object, other);\n * // => true\n *\n * object === other;\n * // => false\n */\n\n\nfunction isEqual(value, other) {\n  return baseIsEqual(value, other);\n}\n\nmodule.exports = isEqual;\n\n//# sourceURL=webpack:///../../node_modules/lodash/isEqual.js?");
 
 /***/ }),
 
@@ -1687,7 +1827,7 @@ eval("\n\nmodule.exports = {\n  isString: function (arg) {\n    return typeof ar
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"app\": () => (/* binding */ app)\n/* harmony export */ });\n/* harmony import */ var _styles_break_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./styles/break.scss */ \"./break/styles/break.scss\");\n/* harmony import */ var _scripts_infoBar__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./scripts/infoBar */ \"./break/scripts/infoBar.ts\");\n/* harmony import */ var _scripts_music__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./scripts/music */ \"./break/scripts/music.ts\");\n/* harmony import */ var _scripts_casters__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./scripts/casters */ \"./break/scripts/casters.ts\");\n/* harmony import */ var gsap__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! gsap */ \"../../node_modules/gsap/index.js\");\n/* harmony import */ var gsap_PixiPlugin__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! gsap/PixiPlugin */ \"../../node_modules/gsap/PixiPlugin.js\");\n/* harmony import */ var _helpers_pixi__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../helpers/pixi */ \"./helpers/pixi.ts\");\n/* harmony import */ var _scripts_background__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./scripts/background */ \"./break/scripts/background.ts\");\n/* harmony import */ var _helpers_constants__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../helpers/constants */ \"./helpers/constants.ts\");\n/* harmony import */ var _fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @fortawesome/fontawesome-svg-core */ \"../../node_modules/@fortawesome/fontawesome-svg-core/index.es.js\");\n/* harmony import */ var _fortawesome_free_brands_svg_icons_faTwitter__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @fortawesome/free-brands-svg-icons/faTwitter */ \"../../node_modules/@fortawesome/free-brands-svg-icons/faTwitter.js\");\n/* harmony import */ var _fortawesome_free_solid_svg_icons_faMicrophoneAlt__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @fortawesome/free-solid-svg-icons/faMicrophoneAlt */ \"../../node_modules/@fortawesome/free-solid-svg-icons/faMicrophoneAlt.js\");\n/* harmony import */ var _fortawesome_free_solid_svg_icons_faMusic__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @fortawesome/free-solid-svg-icons/faMusic */ \"../../node_modules/@fortawesome/free-solid-svg-icons/faMusic.js\");\n/* harmony import */ var fitted_text_dist_fitted_text__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! fitted-text/dist/fitted-text */ \"../../node_modules/fitted-text/dist/fitted-text.js\");\n/* harmony import */ var fitted_text_dist_fitted_text__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(fitted_text_dist_fitted_text__WEBPACK_IMPORTED_MODULE_8__);\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n_fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_7__.library.add(_fortawesome_free_solid_svg_icons_faMusic__WEBPACK_IMPORTED_MODULE_9__.faMusic, _fortawesome_free_solid_svg_icons_faMicrophoneAlt__WEBPACK_IMPORTED_MODULE_10__.faMicrophoneAlt, _fortawesome_free_brands_svg_icons_faTwitter__WEBPACK_IMPORTED_MODULE_11__.faTwitter);\n_fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_7__.dom.watch();\n\nif (window.obsstudio) {\n  window.addEventListener('obsSourceActiveChanged', e => {\n    if (e.detail.active) {\n      (0,_scripts_background__WEBPACK_IMPORTED_MODULE_5__.animBackgroundIn)();\n    }\n  });\n}\n\ngsap__WEBPACK_IMPORTED_MODULE_12__.gsap.registerPlugin(gsap_PixiPlugin__WEBPACK_IMPORTED_MODULE_13__[\"default\"]);\ngsap_PixiPlugin__WEBPACK_IMPORTED_MODULE_13__[\"default\"].registerPIXI(_helpers_pixi__WEBPACK_IMPORTED_MODULE_4__);\nconst app = new _helpers_pixi__WEBPACK_IMPORTED_MODULE_4__.Application({\n  width: _helpers_constants__WEBPACK_IMPORTED_MODULE_6__.APP_WIDTH,\n  height: _helpers_constants__WEBPACK_IMPORTED_MODULE_6__.APP_HEIGHT,\n  view: document.getElementById('background-canvas'),\n  backgroundColor: 0x470164\n});\napp.ticker.stop();\ngsap__WEBPACK_IMPORTED_MODULE_12__.gsap.ticker.add(time => {\n  app.ticker.update(time);\n});\n_helpers_pixi__WEBPACK_IMPORTED_MODULE_4__.Loader.shared.add('bg-icons', 'assets/sj-bg-icons.json').load(() => {\n  (0,_scripts_background__WEBPACK_IMPORTED_MODULE_5__.animBackgroundIn)();\n});\n\n//# sourceURL=webpack:///./break/main.ts?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"app\": () => (/* binding */ app)\n/* harmony export */ });\n/* harmony import */ var _styles_break_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./styles/break.scss */ \"./break/styles/break.scss\");\n/* harmony import */ var _scripts_infoBar__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./scripts/infoBar */ \"./break/scripts/infoBar.ts\");\n/* harmony import */ var _scripts_music__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./scripts/music */ \"./break/scripts/music.ts\");\n/* harmony import */ var _scripts_casters__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./scripts/casters */ \"./break/scripts/casters.ts\");\n/* harmony import */ var _scripts_teams__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./scripts/teams */ \"./break/scripts/teams.ts\");\n/* harmony import */ var gsap__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! gsap */ \"../../node_modules/gsap/index.js\");\n/* harmony import */ var gsap_PixiPlugin__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! gsap/PixiPlugin */ \"../../node_modules/gsap/PixiPlugin.js\");\n/* harmony import */ var _helpers_pixi__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../helpers/pixi */ \"./helpers/pixi.ts\");\n/* harmony import */ var _scripts_background__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./scripts/background */ \"./break/scripts/background.ts\");\n/* harmony import */ var _helpers_constants__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../helpers/constants */ \"./helpers/constants.ts\");\n/* harmony import */ var _fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @fortawesome/fontawesome-svg-core */ \"../../node_modules/@fortawesome/fontawesome-svg-core/index.es.js\");\n/* harmony import */ var _fortawesome_free_brands_svg_icons_faTwitter__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @fortawesome/free-brands-svg-icons/faTwitter */ \"../../node_modules/@fortawesome/free-brands-svg-icons/faTwitter.js\");\n/* harmony import */ var _fortawesome_free_solid_svg_icons_faMicrophoneAlt__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @fortawesome/free-solid-svg-icons/faMicrophoneAlt */ \"../../node_modules/@fortawesome/free-solid-svg-icons/faMicrophoneAlt.js\");\n/* harmony import */ var _fortawesome_free_solid_svg_icons_faMusic__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @fortawesome/free-solid-svg-icons/faMusic */ \"../../node_modules/@fortawesome/free-solid-svg-icons/faMusic.js\");\n/* harmony import */ var fitted_text_dist_fitted_text__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! fitted-text/dist/fitted-text */ \"../../node_modules/fitted-text/dist/fitted-text.js\");\n/* harmony import */ var fitted_text_dist_fitted_text__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(fitted_text_dist_fitted_text__WEBPACK_IMPORTED_MODULE_9__);\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n_fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_8__.library.add(_fortawesome_free_solid_svg_icons_faMusic__WEBPACK_IMPORTED_MODULE_10__.faMusic, _fortawesome_free_solid_svg_icons_faMicrophoneAlt__WEBPACK_IMPORTED_MODULE_11__.faMicrophoneAlt, _fortawesome_free_brands_svg_icons_faTwitter__WEBPACK_IMPORTED_MODULE_12__.faTwitter);\n_fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_8__.dom.watch();\n\nif (window.obsstudio) {\n  window.addEventListener('obsSourceActiveChanged', e => {\n    if (e.detail.active) {\n      (0,_scripts_background__WEBPACK_IMPORTED_MODULE_6__.animBackgroundIn)();\n    }\n  });\n}\n\ngsap__WEBPACK_IMPORTED_MODULE_13__.gsap.registerPlugin(gsap_PixiPlugin__WEBPACK_IMPORTED_MODULE_14__[\"default\"]);\ngsap_PixiPlugin__WEBPACK_IMPORTED_MODULE_14__[\"default\"].registerPIXI(_helpers_pixi__WEBPACK_IMPORTED_MODULE_5__);\nconst app = new _helpers_pixi__WEBPACK_IMPORTED_MODULE_5__.Application({\n  width: _helpers_constants__WEBPACK_IMPORTED_MODULE_7__.APP_WIDTH,\n  height: _helpers_constants__WEBPACK_IMPORTED_MODULE_7__.APP_HEIGHT,\n  view: document.getElementById('background-canvas'),\n  backgroundColor: 0x470164\n});\napp.ticker.stop();\ngsap__WEBPACK_IMPORTED_MODULE_13__.gsap.ticker.add(time => {\n  app.ticker.update(time);\n});\n_helpers_pixi__WEBPACK_IMPORTED_MODULE_5__.Loader.shared.add('bg-icons', 'assets/sj-bg-icons.json').load(() => {\n  (0,_scripts_background__WEBPACK_IMPORTED_MODULE_6__.animBackgroundIn)();\n});\n\n//# sourceURL=webpack:///./break/main.ts?");
 
 /***/ }),
 
@@ -1735,6 +1875,17 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _hel
 
 /***/ }),
 
+/***/ "./break/scripts/teams.ts":
+/*!********************************!*\
+  !*** ./break/scripts/teams.ts ***!
+  \********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _helpers_replicants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../helpers/replicants */ \"./helpers/replicants.ts\");\n/* harmony import */ var _helpers_object__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../helpers/object */ \"./helpers/object.ts\");\n/* harmony import */ var _helpers_anim__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../helpers/anim */ \"./helpers/anim.ts\");\n/* harmony import */ var _helpers_elem__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../helpers/elem */ \"./helpers/elem.ts\");\n/* harmony import */ var gsap__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! gsap */ \"../../node_modules/gsap/index.js\");\n\n\n\n\n\nconst teamATimeline = gsap__WEBPACK_IMPORTED_MODULE_4__.gsap.timeline();\nconst teamBTimeline = gsap__WEBPACK_IMPORTED_MODULE_4__.gsap.timeline();\nconst teamTimelines = {\n  a: teamATimeline,\n  b: teamBTimeline\n};\n_helpers_replicants__WEBPACK_IMPORTED_MODULE_0__.activeRound.on('change', (newValue, oldValue) => {\n  (0,_helpers_object__WEBPACK_IMPORTED_MODULE_1__.doOnDifference)(newValue, oldValue, 'teamA.name', name => {\n    (0,_helpers_anim__WEBPACK_IMPORTED_MODULE_2__.textOpacitySwap)(name, (0,_helpers_elem__WEBPACK_IMPORTED_MODULE_3__.elementById)('team-a-name'));\n  });\n  (0,_helpers_object__WEBPACK_IMPORTED_MODULE_1__.doOnDifference)(newValue, oldValue, 'teamB.name', name => {\n    (0,_helpers_anim__WEBPACK_IMPORTED_MODULE_2__.textOpacitySwap)(name, (0,_helpers_elem__WEBPACK_IMPORTED_MODULE_3__.elementById)('team-b-name'));\n  });\n  (0,_helpers_object__WEBPACK_IMPORTED_MODULE_1__.doOnDifference)(newValue, oldValue, 'teamA.players', players => {\n    animatePlayers(players, 'a');\n  });\n  (0,_helpers_object__WEBPACK_IMPORTED_MODULE_1__.doOnDifference)(newValue, oldValue, 'teamB.players', players => {\n    animatePlayers(players, 'b');\n  });\n});\n\nfunction animatePlayers(players, team) {\n  const timeline = teamTimelines[team];\n  timeline.add(gsap__WEBPACK_IMPORTED_MODULE_4__.gsap.to(`.team-${team}-player`, {\n    duration: 0.35,\n    opacity: 0,\n    onComplete: () => {\n      const playerContainer = (0,_helpers_elem__WEBPACK_IMPORTED_MODULE_3__.elementById)(`team-${team}-players`);\n      playerContainer.innerHTML = '';\n      players.forEach(player => {\n        const playerElem = document.createElement('fitted-text');\n        playerElem.classList.add(`team-${team}-player`);\n        playerElem.maxWidth = 475;\n        playerElem.text = player.name;\n        playerContainer.appendChild(playerElem);\n        playerElem.style.opacity = '0.0';\n      });\n      timeline.addLabel('teamsIn');\n      timeline.add(gsap__WEBPACK_IMPORTED_MODULE_4__.gsap.from(`.team-${team}-player`, {\n        duration: 0.5,\n        x: -350,\n        stagger: 0.05,\n        ease: 'power3.out'\n      }), 'teamsIn');\n      timeline.add(gsap__WEBPACK_IMPORTED_MODULE_4__.gsap.to(`.team-${team}-player`, {\n        duration: 0.5,\n        opacity: 1,\n        stagger: 0.05\n      }), 'teamsIn');\n    }\n  }));\n}\n\n//# sourceURL=webpack:///./break/scripts/teams.ts?");
+
+/***/ }),
+
 /***/ "./helpers/anim.ts":
 /*!*************************!*\
   !*** ./helpers/anim.ts ***!
@@ -1742,7 +1893,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _hel
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"textOpacitySwap\": () => (/* binding */ textOpacitySwap)\n/* harmony export */ });\n/* harmony import */ var gsap__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! gsap */ \"../../node_modules/gsap/index.js\");\n\nfunction textOpacitySwap(newText, elem, extraElems) {\n  return [gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.to([elem, ...extraElems], {\n    opacity: 0,\n    duration: 0.35,\n    onComplete: () => {\n      elem.text = newText;\n    }\n  }), gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.to([elem, ...extraElems], {\n    opacity: 1,\n    duration: 0.35,\n    delay: 0.35\n  })];\n}\n\n//# sourceURL=webpack:///./helpers/anim.ts?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"textOpacitySwap\": () => (/* binding */ textOpacitySwap)\n/* harmony export */ });\n/* harmony import */ var gsap__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! gsap */ \"../../node_modules/gsap/index.js\");\n\nfunction textOpacitySwap(newText, elem, extraElems = []) {\n  return [gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.to([elem, ...extraElems], {\n    opacity: 0,\n    duration: 0.35,\n    onComplete: () => {\n      elem.text = newText;\n    }\n  }), gsap__WEBPACK_IMPORTED_MODULE_0__.gsap.to([elem, ...extraElems], {\n    opacity: 1,\n    duration: 0.35,\n    delay: 0.35\n  })];\n}\n\n//# sourceURL=webpack:///./helpers/anim.ts?");
 
 /***/ }),
 
@@ -1779,6 +1930,17 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 
 /***/ }),
 
+/***/ "./helpers/object.ts":
+/*!***************************!*\
+  !*** ./helpers/object.ts ***!
+  \***************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"doOnDifference\": () => (/* binding */ doOnDifference),\n/* harmony export */   \"doOnOneOrMoreDifference\": () => (/* binding */ doOnOneOrMoreDifference),\n/* harmony export */   \"doOnNoDifference\": () => (/* binding */ doOnNoDifference)\n/* harmony export */ });\n/* harmony import */ var lodash_get__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash/get */ \"../../node_modules/lodash/get.js\");\n/* harmony import */ var lodash_get__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash_get__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var lodash_at__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lodash/at */ \"../../node_modules/lodash/at.js\");\n/* harmony import */ var lodash_at__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(lodash_at__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony import */ var lodash_isEqual__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! lodash/isEqual */ \"../../node_modules/lodash/isEqual.js\");\n/* harmony import */ var lodash_isEqual__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(lodash_isEqual__WEBPACK_IMPORTED_MODULE_2__);\n\n\n\nfunction doOnDifference(newValue, oldValue, path, callback) {\n  const newObject = lodash_get__WEBPACK_IMPORTED_MODULE_0___default()(newValue, path);\n  const oldObject = lodash_get__WEBPACK_IMPORTED_MODULE_0___default()(oldValue, path);\n\n  if (newObject != null && (oldObject == null || !lodash_isEqual__WEBPACK_IMPORTED_MODULE_2___default()(newObject, oldObject))) {\n    callback(newObject, oldObject);\n  }\n}\nfunction doOnOneOrMoreDifference(newValue, oldValue, paths, callback) {\n  const newPaths = lodash_at__WEBPACK_IMPORTED_MODULE_1___default()(newValue, paths);\n  const oldPaths = lodash_at__WEBPACK_IMPORTED_MODULE_1___default()(oldValue, paths);\n\n  const doesNotExist = value => value == null;\n\n  if (!newPaths.every(doesNotExist) && (oldPaths.every(doesNotExist) || !lodash_isEqual__WEBPACK_IMPORTED_MODULE_2___default()(newPaths, oldPaths))) {\n    callback(newPaths);\n  }\n}\nfunction doOnNoDifference(newValue, oldValue, path, callback) {\n  const newObject = lodash_get__WEBPACK_IMPORTED_MODULE_0___default()(newValue, path);\n  const oldObject = lodash_get__WEBPACK_IMPORTED_MODULE_0___default()(oldValue, path);\n\n  if (newObject != null && (oldObject == null || lodash_isEqual__WEBPACK_IMPORTED_MODULE_2___default()(newObject, oldObject))) {\n    callback(newObject);\n  }\n}\n\n//# sourceURL=webpack:///./helpers/object.ts?");
+
+/***/ }),
+
 /***/ "./helpers/obs.ts":
 /*!************************!*\
   !*** ./helpers/obs.ts ***!
@@ -1808,7 +1970,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"musicShown\": () => (/* binding */ musicShown),\n/* harmony export */   \"nowPlaying\": () => (/* binding */ nowPlaying),\n/* harmony export */   \"casters\": () => (/* binding */ casters)\n/* harmony export */ });\n/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./constants */ \"./helpers/constants.ts\");\n\nconst musicShown = nodecg.Replicant('musicShown', _constants__WEBPACK_IMPORTED_MODULE_0__.DASHBOARD_BUNDLE_NAME);\nconst nowPlaying = nodecg.Replicant('nowPlaying', _constants__WEBPACK_IMPORTED_MODULE_0__.DASHBOARD_BUNDLE_NAME);\nconst casters = nodecg.Replicant('casters', _constants__WEBPACK_IMPORTED_MODULE_0__.DASHBOARD_BUNDLE_NAME);\n\n//# sourceURL=webpack:///./helpers/replicants.ts?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"musicShown\": () => (/* binding */ musicShown),\n/* harmony export */   \"nowPlaying\": () => (/* binding */ nowPlaying),\n/* harmony export */   \"casters\": () => (/* binding */ casters),\n/* harmony export */   \"activeRound\": () => (/* binding */ activeRound)\n/* harmony export */ });\n/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./constants */ \"./helpers/constants.ts\");\n\nconst musicShown = nodecg.Replicant('musicShown', _constants__WEBPACK_IMPORTED_MODULE_0__.DASHBOARD_BUNDLE_NAME);\nconst nowPlaying = nodecg.Replicant('nowPlaying', _constants__WEBPACK_IMPORTED_MODULE_0__.DASHBOARD_BUNDLE_NAME);\nconst casters = nodecg.Replicant('casters', _constants__WEBPACK_IMPORTED_MODULE_0__.DASHBOARD_BUNDLE_NAME);\nconst activeRound = nodecg.Replicant('activeRound', _constants__WEBPACK_IMPORTED_MODULE_0__.DASHBOARD_BUNDLE_NAME);\n\n//# sourceURL=webpack:///./helpers/replicants.ts?");
 
 /***/ }),
 
@@ -1819,7 +1981,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ \"../../node_modules/css-loader/dist/runtime/api.js\");\n/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);\n// Imports\n\nvar ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});\n___CSS_LOADER_EXPORT___.push([module.id, \"@import url(https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Kosugi+Maru&family=Nunito:ital,wght@0,300;0,400;0,600;0,700;0,800;0,900;1,300;1,400;1,600;1,700;1,800;1,900&display=swap);\"]);\n// Module\n___CSS_LOADER_EXPORT___.push([module.id, \".glow-border.glow-blue {\\n  width: 100%;\\n  height: 100%;\\n  border-radius: 15px;\\n  box-shadow: inset 0 0 5px 0 #5FBFF9, 0 0 0 1px #5FBFF9, 0 0 0 3px white, 0 0 0 4px #5FBFF9, 0 0 8px 5px #5FBFF9;\\n}\\n.glow-border.glow-red {\\n  width: 100%;\\n  height: 100%;\\n  border-radius: 15px;\\n  box-shadow: inset 0 0 5px 0 #E03E81, 0 0 0 1px #E03E81, 0 0 0 3px white, 0 0 0 4px #E03E81, 0 0 8px 5px #E03E81;\\n}\\n\\n.info-bar-wrapper {\\n  position: absolute;\\n  width: 1920px;\\n  top: 100px;\\n}\\n.info-bar-wrapper .info-bar {\\n  background-color: rgba(63, 20, 80, 0.6);\\n  backdrop-filter: blur(5px);\\n  border-radius: 15px;\\n  position: relative;\\n  width: 1300px;\\n  height: 86px;\\n}\\n.info-bar-wrapper .info-bar .bar-content {\\n  position: absolute;\\n  left: 0;\\n  top: 0;\\n  width: 100%;\\n  height: 100%;\\n  display: grid;\\n  grid-template-rows: 1fr;\\n  grid-template-columns: 125px auto 125px;\\n  align-items: center;\\n  justify-items: center;\\n  font-size: 38px;\\n  font-style: italic;\\n}\\n.info-bar-wrapper .info-bar .bar-content .text-wrapper {\\n  position: relative;\\n  width: 100%;\\n  height: 100%;\\n}\\n.info-bar-wrapper .info-bar .bar-content .text-wrapper .info-row {\\n  position: absolute;\\n  width: 100%;\\n  height: 100%;\\n}\\n.info-bar-wrapper .info-bar .bar-content .text-wrapper .info-row svg {\\n  filter: drop-shadow(0 0 3px white);\\n  margin-right: 15px;\\n}\\n.info-bar-wrapper .info-bar .bar-content .text-wrapper .info-row.info-row-commentators > .commentators {\\n  width: 100%;\\n  height: 100%;\\n  position: absolute;\\n}\\n.info-bar-wrapper .info-bar .bar-content .icon {\\n  filter: drop-shadow(0 0 3px #5FBFF9);\\n}\\n\\n.teams-wrapper .team-display {\\n  width: 1400px;\\n  height: 525px;\\n  display: grid;\\n  grid-template-rows: 1fr;\\n  grid-template-columns: 3fr 1fr 3fr;\\n}\\n\\n.layout {\\n  display: flex;\\n}\\n.layout.c-horiz {\\n  justify-content: center;\\n}\\n.layout.c-vert {\\n  align-items: center;\\n}\\n\\n.w-max {\\n  width: 1920px;\\n}\\n\\nbody {\\n  font-family: \\\"Nunito\\\", \\\"Kosugi Maru\\\", sans-serif;\\n  font-weight: 500;\\n  font-size: 32px;\\n}\\n\\n.logo-font {\\n  font-family: \\\"Comfortaa\\\", sans-serif;\\n  font-weight: 700;\\n  font-style: normal;\\n}\\n\\nspan.pronoun {\\n  font-weight: 600;\\n  background-color: #F88D4F;\\n  color: #222;\\n  font-size: 20px;\\n  padding: 0 5px;\\n  border-radius: 5px;\\n  filter: drop-shadow(0 0 3px #F88D4F);\\n}\\n\\nbody {\\n  margin: 0;\\n  width: 1920px;\\n  height: 1080px;\\n  overflow: hidden;\\n  color: white;\\n}\\n\\n.content-wrapper {\\n  width: 1920px;\\n  height: 1080px;\\n  position: absolute;\\n  top: 0;\\n  left: 0;\\n}\", \"\"]);\n// Exports\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);\n\n\n//# sourceURL=webpack:///./break/styles/break.scss?../../node_modules/css-loader/dist/cjs.js!../../node_modules/sass-loader/dist/cjs.js");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ \"../../node_modules/css-loader/dist/runtime/api.js\");\n/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);\n// Imports\n\nvar ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});\n___CSS_LOADER_EXPORT___.push([module.id, \"@import url(https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Kosugi+Maru&family=Nunito:ital,wght@0,300;0,400;0,600;0,700;0,800;0,900;1,300;1,400;1,600;1,700;1,800;1,900&display=swap);\"]);\n// Module\n___CSS_LOADER_EXPORT___.push([module.id, \".glow-border.glow-blue {\\n  width: 100%;\\n  height: 100%;\\n  border-radius: 15px;\\n  box-shadow: inset 0 0 5px 0 #5FBFF9, 0 0 0 1px #5FBFF9, 0 0 0 3px white, 0 0 0 4px #5FBFF9, 0 0 8px 5px #5FBFF9;\\n}\\n.glow-border.glow-red {\\n  width: 100%;\\n  height: 100%;\\n  border-radius: 15px;\\n  box-shadow: inset 0 0 5px 0 #E03E81, 0 0 0 1px #E03E81, 0 0 0 3px white, 0 0 0 4px #E03E81, 0 0 8px 5px #E03E81;\\n}\\n.glow-border.glow-green {\\n  width: 100%;\\n  height: 100%;\\n  border-radius: 15px;\\n  box-shadow: inset 0 0 5px 0 #72E98A, 0 0 0 1px #72E98A, 0 0 0 3px white, 0 0 0 4px #72E98A, 0 0 8px 5px #72E98A;\\n}\\n\\n.info-bar-wrapper {\\n  position: absolute;\\n  width: 1920px;\\n  top: 100px;\\n}\\n.info-bar-wrapper .info-bar {\\n  background-color: rgba(63, 20, 80, 0.6);\\n  backdrop-filter: blur(5px);\\n  border-radius: 15px;\\n  transform: translate3d(0, 0, 0);\\n  position: relative;\\n  width: 1300px;\\n  height: 86px;\\n}\\n.info-bar-wrapper .info-bar .bar-content {\\n  position: absolute;\\n  left: 0;\\n  top: 0;\\n  width: 100%;\\n  height: 100%;\\n  display: grid;\\n  grid-template-rows: 1fr;\\n  grid-template-columns: 125px auto 125px;\\n  align-items: center;\\n  justify-items: center;\\n  font-size: 38px;\\n  font-style: italic;\\n}\\n.info-bar-wrapper .info-bar .bar-content .text-wrapper {\\n  position: relative;\\n  width: 100%;\\n  height: 100%;\\n}\\n.info-bar-wrapper .info-bar .bar-content .text-wrapper .info-row {\\n  position: absolute;\\n  width: 100%;\\n  height: 100%;\\n}\\n.info-bar-wrapper .info-bar .bar-content .text-wrapper .info-row svg {\\n  filter: drop-shadow(0 0 3px white);\\n  margin-right: 15px;\\n}\\n.info-bar-wrapper .info-bar .bar-content .text-wrapper .info-row.info-row-commentators > .commentators {\\n  width: 100%;\\n  height: 100%;\\n  position: absolute;\\n}\\n.info-bar-wrapper .info-bar .bar-content .icon {\\n  filter: drop-shadow(0 0 3px #5FBFF9);\\n}\\n\\n.teams-wrapper {\\n  position: absolute;\\n  top: 250px;\\n}\\n.teams-wrapper .team-display {\\n  width: 1400px;\\n  height: 525px;\\n  display: grid;\\n  grid-template-rows: 1fr;\\n  grid-template-columns: 2fr 1fr 2fr;\\n  align-items: center;\\n}\\n.teams-wrapper .team-display .team .content {\\n  position: relative;\\n  height: 470px;\\n  width: 500px;\\n  overflow: hidden;\\n}\\n.teams-wrapper .team-display .team .content .team-name {\\n  width: 100%;\\n  height: 112px;\\n  overflow: hidden;\\n}\\n.teams-wrapper .team-display .team .content .team-name fitted-text {\\n  font-size: 50px;\\n  font-weight: 700;\\n  font-style: italic;\\n}\\n.teams-wrapper .team-display .team .content .players {\\n  margin: 12px 20px 15px;\\n}\\n.teams-wrapper .team-display .team .content .players fitted-text {\\n  font-size: 40px;\\n  font-weight: 300;\\n  margin-bottom: 2px;\\n}\\n.teams-wrapper .team-display .team .content .background {\\n  position: absolute;\\n  width: 100%;\\n  height: 100%;\\n  top: 0;\\n  left: 0;\\n  background-color: rgba(63, 20, 80, 0.6);\\n  backdrop-filter: blur(5px);\\n  border-radius: 15px;\\n  transform: translate3d(0, 0, 0);\\n}\\n.teams-wrapper .team-display .team .line.top {\\n  width: 375px;\\n  margin-bottom: 45px;\\n}\\n.teams-wrapper .team-display .team .line.mid {\\n  position: absolute;\\n  top: 160px;\\n  width: 600px;\\n  z-index: 2;\\n}\\n.teams-wrapper .team-display .team.alpha .line {\\n  height: 2px;\\n  background-color: white;\\n  border: 1px solid #E03E81;\\n  filter: drop-shadow(0 0 2px #E03E81) drop-shadow(0 0 5px #E03E81);\\n}\\n.teams-wrapper .team-display .team.bravo .line {\\n  height: 2px;\\n  background-color: white;\\n  border: 1px solid #72E98A;\\n  filter: drop-shadow(0 0 2px #72E98A) drop-shadow(0 0 5px #72E98A);\\n}\\n.teams-wrapper .team-display .versus {\\n  font-weight: 800;\\n  font-size: 110px;\\n  text-align: center;\\n  filter: drop-shadow(0 0 3px white);\\n}\\n.teams-wrapper .prediction-wrapper {\\n  margin-top: 50px;\\n}\\n.teams-wrapper .prediction-wrapper #prediction-title {\\n  margin-bottom: 5px;\\n  font-size: 35px;\\n  font-style: italic;\\n  filter: drop-shadow(0 0 5px #470164) drop-shadow(0 0 10px #470164);\\n}\\n.teams-wrapper .prediction-wrapper .prediction-box {\\n  background-color: rgba(63, 20, 80, 0.6);\\n  backdrop-filter: blur(5px);\\n  border-radius: 15px;\\n  transform: translate3d(0, 0, 0);\\n  height: 120px;\\n  width: 1300px;\\n}\\n.teams-wrapper .prediction-wrapper .prediction-box .background {\\n  position: absolute;\\n  width: 100%;\\n  height: 100%;\\n  background: linear-gradient(90deg, rgba(224, 62, 129, 0.2) 0%, rgba(224, 62, 129, 0.2) 60%, rgba(114, 233, 138, 0.4) 60%, rgba(114, 233, 138, 0.4) 100%);\\n}\\n.teams-wrapper .prediction-wrapper .prediction-box .options {\\n  width: 100%;\\n  height: 100%;\\n  position: absolute;\\n}\\n.teams-wrapper .prediction-wrapper .prediction-box .options .option {\\n  width: 50%;\\n  margin: 6px 20px;\\n}\\n.teams-wrapper .prediction-wrapper .prediction-box .options .option.bravo {\\n  text-align: right;\\n}\\n.teams-wrapper .prediction-wrapper .prediction-box .options .option .point-count {\\n  font-size: 32px;\\n  font-style: italic;\\n}\\n.teams-wrapper .prediction-wrapper .prediction-box .options .option .percentage {\\n  font-size: 72px;\\n  font-weight: 800;\\n  line-height: 65px;\\n}\\n\\n.layout {\\n  display: flex;\\n}\\n.layout.vertical {\\n  display: flex;\\n  flex-direction: column;\\n}\\n.layout.vertical.c-horiz {\\n  align-items: center;\\n}\\n.layout:not(.vertical).c-horiz, .layout .horiz.c-horiz {\\n  justify-content: center;\\n}\\n.layout:not(.vertical).c-vert, .layout .horiz.c-vert {\\n  align-items: center;\\n}\\n\\n.w-max {\\n  width: 1920px;\\n}\\n\\nbody {\\n  font-family: \\\"Nunito\\\", \\\"Kosugi Maru\\\", sans-serif;\\n  font-weight: 500;\\n  font-size: 32px;\\n}\\n\\n.logo-font {\\n  font-family: \\\"Comfortaa\\\", sans-serif;\\n  font-weight: 700;\\n  font-style: normal;\\n}\\n\\nspan.pronoun {\\n  font-weight: 600;\\n  background-color: #F88D4F;\\n  color: #222;\\n  font-size: 20px;\\n  padding: 0 5px;\\n  border-radius: 5px;\\n  filter: drop-shadow(0 0 3px #F88D4F);\\n}\\n\\nbody {\\n  margin: 0;\\n  width: 1920px;\\n  height: 1080px;\\n  overflow: hidden;\\n  color: white;\\n}\\n\\n.content-wrapper {\\n  width: 1920px;\\n  height: 1080px;\\n  position: absolute;\\n  top: 0;\\n  left: 0;\\n}\", \"\"]);\n// Exports\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);\n\n\n//# sourceURL=webpack:///./break/styles/break.scss?../../node_modules/css-loader/dist/cjs.js!../../node_modules/sass-loader/dist/cjs.js");
 
 /***/ }),
 
@@ -1856,7 +2018,7 @@ eval("\n\nvar isOldIE = function isOldIE() {\n  var memo;\n  return function mem
 /******/ 		        // webpack-livereload-plugin
 /******/ 		        (function() {
 /******/ 		          if (typeof window === "undefined") { return };
-/******/ 		          var id = "webpack-livereload-plugin-script-f14a1d4448ceb590";
+/******/ 		          var id = "webpack-livereload-plugin-script-7709676560bb2707";
 /******/ 		          if (document.getElementById(id)) { return; }
 /******/ 		          var el = document.createElement("script");
 /******/ 		          el.id = id;

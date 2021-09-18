@@ -1,12 +1,23 @@
 .layout {
     display: flex;
 
-    &.c-horiz {
-        justify-content: center;
+    &.vertical {
+        display: flex;
+        flex-direction: column;
+
+        &.c-horiz {
+            align-items: center;
+        }
     }
 
-    &.c-vert {
-        align-items: center;
+    &:not(.vertical), .horiz {
+        &.c-horiz {
+            justify-content: center;
+        }
+
+        &.c-vert {
+            align-items: center;
+        }
     }
 }
 
