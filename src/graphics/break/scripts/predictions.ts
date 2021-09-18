@@ -1,13 +1,28 @@
-import { activeRound, predictionStore } from '../../helpers/replicants';
+import { activeBreakScene, activeRound, predictionStore } from '../../helpers/replicants';
 import { doOnDifference } from '../../helpers/object';
 import { Prediction } from 'schemas';
 import { colors } from '../../helpers/constants';
 import { gsap } from 'gsap';
 import { elementById } from '../../helpers/elem';
 import { textOpacitySwap } from '../../helpers/anim';
+import { hidePrediction, showPrediction } from './sceneSwitcher';
 
-NodeCG.waitForReplicants(predictionStore, activeRound).then(() => {
+const predictionRevealTl = gsap.timeline();
+
+NodeCG.waitForReplicants(predictionStore, activeRound, activeBreakScene).then(() => {
     predictionStore.on('change', (newValue, oldValue) => {
+        const isActive = newValue.currentPrediction?.status === 'ACTIVE';
+
+        if (oldValue && activeBreakScene.value === 'teams') {
+            doOnDifference(newValue, oldValue, 'currentPrediction.status', () => {
+                if (isActive) {
+                    animPredictionStart();
+                } else {
+                    animPredictionEnd();
+                }
+            });
+        }
+
         doOnDifference(newValue, oldValue, 'currentPrediction', (prediction?: Prediction) => {
             if (prediction) {
                 const alphaOutcome = prediction.outcomes
@@ -34,11 +49,46 @@ NodeCG.waitForReplicants(predictionStore, activeRound).then(() => {
         });
 
         doOnDifference(newValue, oldValue, 'currentPrediction.title', (title: string) => {
-            textOpacitySwap(title, elementById('prediction-title'));
+            const predictionTitle = elementById<FittedText>('prediction-title');
+            if (isActive && oldValue) {
+                textOpacitySwap(title, predictionTitle);
+            } else {
+                predictionTitle.text = title;
+            }
         });
     });
 });
 
 function findOutcome(teamName: string, outcomeTitle: string): boolean {
     return teamName === outcomeTitle || new RegExp(teamName).test(outcomeTitle);
+}
+
+function animPredictionStart() {
+    const teamsHeight = 470;
+    const teamDisplayHeight = 525;
+    const playersHeight = 330;
+    const teamsPosTop = 250;
+
+    predictionRevealTl.addLabel('anim').addLabel('show-container', '+=0.4');
+
+    predictionRevealTl.add(gsap.to('.team-display', { duration: 0.5, height: teamDisplayHeight, ease: 'power2.inOut' }), 'anim');
+    predictionRevealTl.add(gsap.to('.teams-wrapper .content .players', { duration: 0.5, height: playersHeight, ease: 'power2.inOut' }), 'anim');
+    predictionRevealTl.add(gsap.to('.teams-wrapper', { duration: 0.5, top: teamsPosTop, ease: 'power2.inOut' }), 'anim');
+    predictionRevealTl.add(gsap.to(['.teams-wrapper .content', '.team-display .background'], { duration: 0.5, height: teamsHeight, ease: 'power2.inOut' }), 'anim');
+    showPrediction(predictionRevealTl, 'show-container');
+}
+
+function animPredictionEnd() {
+    const teamsHeight = 583;
+    const teamDisplayHeight = 638;
+    const playersHeight = 443;
+    const teamsPosTop = 275;
+
+    predictionRevealTl.addLabel('hide-container').addLabel('anim', '+=0.6');
+
+    hidePrediction(predictionRevealTl, 'hide-container');
+    predictionRevealTl.add(gsap.to('.team-display', { duration: 0.5, height: teamDisplayHeight, ease: 'power2.inOut' }), 'anim');
+    predictionRevealTl.add(gsap.to('.teams-wrapper .content .players', { duration: 0.5, height: playersHeight, ease: 'power2.inOut' }), 'anim');
+    predictionRevealTl.add(gsap.to('.teams-wrapper', { duration: 0.5, top: teamsPosTop, ease: 'power2.inOut' }), 'anim');
+    predictionRevealTl.add(gsap.to(['.teams-wrapper .content', '.team-display .background'], { duration: 0.5, height: teamsHeight, ease: 'power2.inOut' }), 'anim');
 }

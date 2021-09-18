@@ -56,7 +56,7 @@ function addPlayerElems(players: Player[], team: 'a' | 'b') {
     players.forEach(player => {
         const playerElem = document.createElement('fitted-text') as FittedText;
         playerElem.classList.add(`team-${team}-player`);
-        playerElem.maxWidth = 475;
+        playerElem.maxWidth = 450;
         playerElem.text = player.name;
         playerContainer.appendChild(playerElem);
         playerElem.style.opacity = '0.0';
