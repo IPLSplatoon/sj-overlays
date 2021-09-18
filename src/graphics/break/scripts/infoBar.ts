@@ -1,5 +1,9 @@
 import { gsap } from 'gsap';
-import { musicShown } from '../../helpers/replicants';
+import { activeRound, musicShown } from '../../helpers/replicants';
+import last from 'lodash/last';
+import { elementById } from '../../helpers/elem';
+import { getIconFromMode } from '../../helpers/constants';
+import { loadImage } from '../../helpers/image';
 
 const topBarInfoRows = document.querySelectorAll('.info-rows > .info-row');
 let topInfoTl: gsap.core.Timeline;
@@ -50,6 +54,23 @@ function setTopBarAnim() {
 
 musicShown.on('change', () => {
     setTopBarAnim();
+});
+
+activeRound.on('change', newValue => {
+    const firstUnfinishedRound = newValue.games.find(round => round.winner === 'none') ?? last(newValue.games);
+
+    const modeIcon = elementById<HTMLImageElement>('mode-icon');
+    gsap.to(modeIcon, { duration: 0.35, opacity: 0, onComplete: async () => {
+        const mode = firstUnfinishedRound.mode;
+        const scale = ['Turf War', 'Unknown Mode'].includes(mode) ? '0.6' : '0.5';
+
+        const image = getIconFromMode(mode);
+        await loadImage(image);
+        modeIcon.style.transform = `scale(${scale})`;
+        modeIcon.src = image;
+
+        gsap.to(modeIcon, { duration: 0.35, opacity: 1 });
+    } });
 });
 
 document.addEventListener('DOMContentLoaded', () => {

@@ -52,8 +52,14 @@
                 }
             }
 
-            .icon {
-                filter: drop-shadow(0 0 3px $blue);
+            .icon-wrapper {
+                height: 100%;
+                width: 100px;
+                overflow: hidden;
+
+                .icon {
+                    filter: drop-shadow(0 0 4px $salmon);
+                }
             }
         }
     }
