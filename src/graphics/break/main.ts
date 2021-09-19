@@ -6,6 +6,7 @@ import './scripts/casters';
 import './scripts/teams';
 import './scripts/predictions';
 import './scripts/sceneSwitcher';
+import './scripts/stages';
 
 import { gsap } from 'gsap';
 import PixiPlugin from 'gsap/PixiPlugin';

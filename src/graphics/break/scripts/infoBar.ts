@@ -2,14 +2,14 @@ import { gsap } from 'gsap';
 import { activeRound, musicShown } from '../../helpers/replicants';
 import last from 'lodash/last';
 import { elementById } from '../../helpers/elem';
-import { getIconFromMode } from '../../helpers/constants';
+import { getGlowIconFromMode } from '../../helpers/constants';
 import { loadImage } from '../../helpers/image';
 
 const topBarInfoRows = document.querySelectorAll('.info-rows > .info-row');
 let topInfoTl: gsap.core.Timeline;
 
 function setTopBarAnim() {
-    const switchDelay = 2;
+    const switchDelay = 10;
 
     if (topInfoTl) {
         topInfoTl.kill();
@@ -64,7 +64,7 @@ activeRound.on('change', newValue => {
         const mode = firstUnfinishedRound.mode;
         const scale = ['Turf War', 'Unknown Mode'].includes(mode) ? '0.6' : '0.5';
 
-        const image = getIconFromMode(mode);
+        const image = getGlowIconFromMode(mode);
         await loadImage(image);
         modeIcon.style.transform = `scale(${scale})`;
         modeIcon.src = image;

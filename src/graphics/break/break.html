@@ -87,8 +87,20 @@
             </div>
         </div>
     </div>
-    <div class="stages-wrapper">
-
+    <div class="stages-wrapper layout vertical c-horiz">
+        <div class="stages-scoreboard">
+            <div class="background glow-border glow-blue"></div>
+            <div class="content">
+                <fitted-text id="stages-scoreboard__team-a-name" max-width="410" align="right"></fitted-text>
+                <div class="scores layout horiz c-vert">
+                    <fitted-text id="stages-scoreboard__team-a-score" max-width="50" align="center"></fitted-text>
+                    <div></div>
+                    <fitted-text id="stages-scoreboard__team-b-score" max-width="50" align="center"></fitted-text>
+                </div>
+                <fitted-text id="stages-scoreboard__team-b-name" max-width="410"></fitted-text>
+            </div>
+        </div>
+        <div class="stage-grid" id="stage-grid"></div>
     </div>
 </div>
 <canvas id="background-canvas"></canvas>

@@ -10,14 +10,22 @@ NodeCG.waitForReplicants(activeBreakScene, predictionStore).then(() => {
                 case 'teams':
                     hideTeams();
                     break;
+                case 'stages':
+                    hideStages();
+                    break;
                 default:
                     console.log('uhhhhhhh');
             }
+        } else {
+            hideStages();
         }
 
         switch (newValue) {
             case 'teams':
                 showTeams();
+                break;
+            case 'stages':
+                showStages();
                 break;
             default:
                 console.log('uhhhh');
@@ -75,4 +83,12 @@ export function hidePrediction(tl: gsap.core.Timeline, label: string): void {
     tl.add(gsap.to('.prediction-box', { duration: 0.65, width: 0, ease: 'power2.in' }), label)
         .add(gsap.to('.prediction-box', { duration: 0.10, opacity: 0, ease: 'power2.in', delay: 0.55 }), label)
         .add(gsap.to('#prediction-title', { duration: 0.5, opacity: 0, ease: 'power2.in' }), label);
+}
+
+function hideStages(): void {
+    sceneChangeTl.add(gsap.to('.stages-wrapper', { opacity: 0, duration: 0.5 }));
+}
+
+function showStages(): void {
+    sceneChangeTl.add(gsap.to('.stages-wrapper', { opacity: 1, duration: 0.5 }));
 }

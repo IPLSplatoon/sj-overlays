@@ -1,12 +1,6 @@
 @import '../../styles/background';
 @import '../../styles/constants';
-
-@mixin line-glow($color) {
-    height: 2px;
-    background-color: white;
-    border: 1px solid $color;
-    filter: drop-shadow(0 0 2px $color) drop-shadow(0 0 5px $color);
-}
+@import '../../styles/glow';
 
 .teams-wrapper {
     position: absolute;
@@ -76,20 +70,21 @@
 
             .line {
                 position: absolute;
+                height: 2px;
 
                 &.top {
                     top: 0;
                     width: 0;
                     opacity: 0;
                     margin-bottom: 45px;
-                    z-index: 2;
+                    z-index: 3;
                 }
 
                 &.mid {
                     top: 160px;
                     width: 0;
                     opacity: 0;
-                    z-index: 2;
+                    z-index: 3;
                 }
             }
 

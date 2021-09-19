@@ -12,6 +12,12 @@
         0 0 8px 5px $color;
 }
 
+@mixin line-glow($color) {
+    background-color: white;
+    border: 1px solid $color;
+    filter: drop-shadow(0 0 2px $color) drop-shadow(0 0 5px $color);
+}
+
 .glow-border {
     &.glow-blue {
         @include glow-border($blue);

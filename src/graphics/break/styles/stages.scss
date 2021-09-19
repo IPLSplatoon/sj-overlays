@@ -1,0 +1,156 @@
+@import '../../styles/constants';
+@import '../../styles/glow';
+@import '../../styles/background';
+
+.stages-scoreboard {
+    height: 60px;
+    width: 1000px;
+    position: absolute;
+    top: 227px;
+
+    .content {
+        width: 100%;
+        height: 100%;
+        display: grid;
+        grid-template-rows: 1fr;
+        grid-template-columns: 3fr 1fr 3fr;
+        align-items: center;
+        overflow: hidden;
+
+        .scores {
+            background-color: $violet-a-20;
+            z-index: 3;
+            height: 100%;
+
+            fitted-text {
+                font-weight: 800;
+                font-size: 45px;
+                width: 50px;
+                padding: 0 2px;
+                font-family: 'Montserrat', sans-serif;
+            }
+
+            div {
+                flex-grow: 1;
+            }
+        }
+
+        > fitted-text {
+            margin: 0 10px;
+        }
+    }
+
+    .background {
+        @include background();
+        width: 100%;
+        height: 100%;
+        position: absolute;
+    }
+}
+
+.stage-grid {
+    width: 1750px;
+    height: 600px;
+    position: absolute;
+    bottom: 150px;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: 1fr;
+    gap: 20px;
+
+    .stage {
+        height: 100%;
+        position: relative;
+
+        .glow-border {
+            z-index: 2;
+        }
+
+        .stage-image {
+            height: 450px;
+            width: 100%;
+            background-position: center center;
+            background-size: cover;
+            border-radius: 15px 15px 0 0;
+        }
+
+        .stage-winner-wrapper {
+            position: absolute;
+            top: 0; left: 0;
+            height: 450px;
+            width: 100%;
+            background-color: $background-a-60;
+            opacity: 0;
+
+            .winner-name {
+                align-self: flex-end;
+                margin: 0 8px 5px;
+                font-size: 30px;
+                filter: drop-shadow(0 0 4px rgba(22, 22, 22, 0.5));
+            }
+        }
+
+        .stage-line {
+            @include line-glow($blue);
+            width: calc(100% - 8px);
+            padding: 0 4px;
+            height: 2px;
+        }
+
+        .stage-line:after {
+            content: '';
+            width: calc(100% + 6px);
+            height: 2px;
+            background-color: white;
+            position: absolute;
+            left: -3px;
+            top: 0;
+        }
+
+        .stage-info {
+            flex-grow: 1;
+            height: 100px;
+            width: 100%;
+            position: relative;
+
+            .mode-name {
+                font-size: 32px;
+                font-weight: 700;
+                font-style: italic;
+                margin-top: 13px;
+            }
+
+            .mode-icon {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                opacity: 0.4;
+
+                img {
+                    height: 110px;
+                }
+            }
+
+            .stage-name-wrapper {
+                height: 70px;
+                z-index: 3;
+            }
+
+            .stage-name {
+                font-size: 30px;
+                font-weight: 400;
+                text-align: center;
+                line-height: 35px;
+                margin: 0 8px;
+            }
+
+            .background {
+                @include background(0px 0px 15px 15px);
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                left: 0; top: 0;
+            }
+        }
+    }
+}

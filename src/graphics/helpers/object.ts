@@ -1,6 +1,7 @@
 import get from 'lodash/get';
 import at from 'lodash/at';
 import isEqual from 'lodash/isEqual';
+import { Dictionary } from 'lodash';
 
 export function doOnDifference<T>(
     newValue: T,
@@ -16,14 +17,14 @@ export function doOnDifference<T>(
     }
 }
 
-export function doOnOneOrMoreDifference<T extends Record<string, unknown>>(
+export function doOnOneOrMoreDifference<T>(
     newValue: T,
     oldValue: T,
     paths: string[],
     callback: (newPaths: unknown) => void
 ): void {
-    const newPaths = at(newValue, paths);
-    const oldPaths = at(oldValue, paths);
+    const newPaths = at(newValue as unknown as Dictionary<unknown>, paths);
+    const oldPaths = at(oldValue as unknown as Dictionary<unknown>, paths);
 
     const doesNotExist = (value: unknown) => value == null;
 

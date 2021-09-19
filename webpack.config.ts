@@ -34,7 +34,7 @@ function graphicsConfig(): webpack.Configuration {
                 ),
             new CopyPlugin({
                 patterns: [
-                    { from: 'assets', to: 'assets' }
+                    { from: 'assets/**/*' }
                 ]
             }),
         ]
