@@ -1,5 +1,6 @@
 import { activeBreakScene, predictionStore } from '../../helpers/replicants';
 import { gsap } from 'gsap';
+import { forceSetSlide } from './mainSlides';
 
 const sceneChangeTl = gsap.timeline();
 
@@ -12,6 +13,9 @@ NodeCG.waitForReplicants(activeBreakScene, predictionStore).then(() => {
                     break;
                 case 'stages':
                     hideStages();
+                    break;
+                case 'main':
+                    hideMain();
                     break;
                 default:
                     console.log('uhhhhhhh');
@@ -27,13 +31,16 @@ NodeCG.waitForReplicants(activeBreakScene, predictionStore).then(() => {
             case 'stages':
                 showStages();
                 break;
+            case 'main':
+                forceSetSlide(0);
+                showMain();
+                hideInfoBar('sceneOut+=0.1');
+                break;
             default:
                 console.log('uhhhh');
         }
 
-        if (newValue === 'main') {
-            hideInfoBar('sceneOut+=0.1');
-        } else if (['teams', 'stages'].includes(newValue)) {
+        if (newValue !== 'main') {
             showInfoBar('sceneIn+=0.1');
         }
     });
@@ -117,4 +124,20 @@ function hideInfoBar(label: string): void {
 function showInfoBar(label: string): void {
     sceneChangeTl.add(gsap.to('.info-bar', { duration: 0.65, width: 1300, ease: 'power2.out' }), label)
         .add(gsap.to('.info-bar', { duration: 0.1, opacity: 1, ease: 'power2.out' }), label);
+}
+
+function showMain(): void {
+    sceneChangeTl.addLabel('sceneIn');
+
+    sceneChangeTl.add(gsap.to('.main-content-wrapper, .main-slides', { duration: 0.55, height: 700, ease: 'power2.out' }), 'sceneIn')
+        .add(gsap.to('.main-content-wrapper, .main-slides', { duration: 0.1, opacity: 1, ease: 'power2.out' }), 'sceneIn')
+        .add(gsap.to('.logo-wrapper', { opacity: 1, duration: 0.5, ease: 'power2.out' }), 'sceneIn');
+}
+
+function hideMain(): void {
+    sceneChangeTl.addLabel('sceneOut');
+
+    sceneChangeTl.add(gsap.to('.main-content-wrapper, .main-slides', { duration: 0.55, height: 0, ease: 'power2.in' }), 'sceneOut')
+        .add(gsap.to('.main-content-wrapper, .main-slides', { duration: 0.1, opacity: 0, delay: 0.45, ease: 'power2.in' }), 'sceneOut')
+        .add(gsap.to('.logo-wrapper', { opacity: 0, duration: 0.5, ease: 'power2.in' }), 'sceneOut');
 }

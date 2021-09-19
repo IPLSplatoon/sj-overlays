@@ -7,6 +7,8 @@ import './scripts/teams';
 import './scripts/predictions';
 import './scripts/sceneSwitcher';
 import './scripts/stages';
+import './scripts/mainSlides';
+import './scripts/nextStageTimer';
 
 import { gsap } from 'gsap';
 import PixiPlugin from 'gsap/PixiPlugin';
@@ -14,13 +16,18 @@ import * as PIXI from '../helpers/pixi';
 import { animBackgroundIn } from './scripts/background';
 import { ObsEvent } from '../helpers/obs';
 import { APP_HEIGHT, APP_WIDTH } from '../helpers/constants';
+import 'fitted-text/dist/fitted-text';
+
 import { dom, library } from '@fortawesome/fontawesome-svg-core';
 import { faTwitter } from '@fortawesome/free-brands-svg-icons/faTwitter';
 import { faMicrophoneAlt } from '@fortawesome/free-solid-svg-icons/faMicrophoneAlt';
 import { faMusic } from '@fortawesome/free-solid-svg-icons/faMusic';
-import 'fitted-text/dist/fitted-text';
+import { faHourglassEnd } from '@fortawesome/free-solid-svg-icons/faHourglassEnd';
+import { faGlobe } from '@fortawesome/free-solid-svg-icons/faGlobe';
+import { faPatreon } from '@fortawesome/free-brands-svg-icons/faPatreon';
+import { faDiscord } from '@fortawesome/free-brands-svg-icons/faDiscord';
 
-library.add(faMusic, faMicrophoneAlt, faTwitter);
+library.add(faMusic, faMicrophoneAlt, faTwitter, faHourglassEnd, faTwitter, faGlobe, faPatreon, faDiscord);
 dom.watch();
 
 if (window.obsstudio) {

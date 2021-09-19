@@ -39,9 +39,48 @@
             </div>
         </div>
     </div>
-    <div class="main-scene-wrapper w-max layout horiz c-vert">
-        <div class="logo-wrapper layout horiz c-horiz">
-<!--            <img src="assets/SJ_Logo.png">-->
+    <div class="main-scene-wrapper w-max layout horiz c-vert c-horiz">
+        <div class="logo-wrapper layout vertical c-horiz c-vert">
+            <img src="assets/SJ_Logo.png" class="logo">
+            <div class="logo-font">SuperJump</div>
+            <img src="assets/ipl-powered-inkling.png" class="ipl-powered">
+        </div>
+        <div class="main-content-wrapper layout c-vert">
+            <div class="background glow-border glow-blue"></div>
+            <div class="main-slides layout vertical c-horiz c-vert">
+                <div class="slide main layout vertical c-vert">
+                    <fitted-text class="title" id="main-flavor-text" max-width="900"></fitted-text>
+                    <div class="separator"></div>
+                    <div class="main-row music layout horiz c-vert">
+                        <i class="icon fas fa-music"></i>
+                        <fitted-text id="main-music-text" max-width="830"></fitted-text>
+                    </div>
+                    <div class="main-row timer layout horiz c-vert">
+                        <i class="icon fa fa-hourglass-end"></i>
+                        <fitted-text id="next-round-time-text" use-inner-html max-width="830"></fitted-text>
+                    </div>
+                </div>
+                <div class="slide support layout vertical c-vert">
+                    <div class="title">Support us!</div>
+                    <div class="separator"></div>
+                    <div class="main-row layout horiz c-vert">
+                        <i class="icon fab fa-twitter"></i>
+                        <div>@IPLSplatoon</div>
+                    </div>
+                    <div class="main-row layout horiz c-vert">
+                        <i class="icon fab fa-discord"></i>
+                        <div>IPLabs.ink/discord</div>
+                    </div>
+                    <div class="main-row layout horiz c-vert">
+                        <i class="icon fab fa-patreon"></i>
+                        <div>patreon.com/IPLSplatoon</div>
+                    </div>
+                    <div class="main-row layout horiz c-vert">
+                        <i class="icon fa fa-globe"></i>
+                        <div>IPLabs.ink</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <div class="teams-wrapper w-max layout vertical c-horiz">
@@ -49,7 +88,7 @@
             <div class="team alpha layout vertical c-horiz">
                 <div class="line top"></div>
                 <div class="line mid"></div>
-                <div class="content glow-border glow-red layout vertical c-vert c-horiz">
+                <div class="content glow-border glow-red">
                     <div class="team-name layout c-horiz c-vert">
                         <fitted-text id="team-a-name" max-width="450"></fitted-text>
                     </div>

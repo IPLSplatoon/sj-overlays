@@ -8,6 +8,10 @@
         &.c-horiz {
             align-items: center;
         }
+
+        &.c-vert {
+            justify-content: center;
+        }
     }
 
     &:not(.vertical), .horiz {
