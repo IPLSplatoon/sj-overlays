@@ -91,18 +91,21 @@ activeRound.on('change', async (newValue, oldValue) => {
     }
 });
 
-const stageStyles: Record<string, { width: number, gap: number }> = {
+const stageStyles: Record<string, { width: number, gap: number, stageWidth: number }> = {
     '3': {
         width: 1100,
         gap: 60,
+        stageWidth: 326
     },
     '5': {
         width: 1400,
-        gap: 30
+        gap: 30,
+        stageWidth: 256
     },
     '7': {
         width: 1750,
-        gap: 30
+        gap: 30,
+        stageWidth: 224
     }
 };
 
@@ -121,6 +124,7 @@ function animUpdateScore(newScore: number, oldScore: number, team: 'a' | 'b') {
 
 function createStages(games: { winner: GameWinner, mode: string, stage: string }[]): void {
     const style = stageStyles[games.length.toString()];
+    const w = style.stageWidth;
     stageGrid.style.width = `${style.width}px`;
     stageGrid.style.gridTemplateColumns = `repeat(${games.length}, 1fr)`;
     stageGrid.style.gap = `${style.gap}px`;
@@ -133,20 +137,48 @@ function createStages(games: { winner: GameWinner, mode: string, stage: string }
 
         stagesHtml += `
             <div class="stage layout vertical c-horiz" id="stage_${index}">
-                <div class="glow-border glow-blue p-abs"></div>
-                <div id="stage-image_${index}" class="stage-image" style="background-image: url('assets/stages/${mapNameToImagePath[game.stage]}'); filter: ${stageImageFilter}"></div>
-                <div id="stage-winner-wrapper_${index}" class="stage-winner-wrapper layout horiz" style="opacity: ${game.winner === 'none' ? '0' : '1'}">
-                    <div class="winner-name">${getWinnerName(game.winner)}</div>
-                </div>
-                <div class="stage-line"></div>
-                <div class="stage-info layout vertical c-horiz">
-                    <div class="background"></div>
-                    <div class="mode-icon layout horiz c-horiz c-vert">
-                        <img src="${getIconFromMode(game.mode)}" style="filter: ${colorFilter}">
+                <div class="background"></div>
+                <svg viewBox="0 0 ${style.stageWidth + 20} 620">
+                    <path class="stage-border stage-border_${index}"
+                          d="M${(w + 4) / 2},2
+                             L28,2
+                             C13.471,2 2,15.542 2,32.222
+                             L2,572
+                             C2,588.458 13.471,602 27.6,602
+                             L${w - 24},602
+                             C${w - 10}.529,602 ${w + 2},588.458 ${w + 2},571.778
+                             L${w + 2},32
+                             C${w + 2},15.542 ${w - 10}.529,2 ${w - 24}.4,2
+                             L${(w + 4) / 2},2"
+                          style="fill:none;stroke:${colors.blue};stroke-width:4px;"/>
+                    <path class="stage-border stage-border_${index}"
+                          d="M${(w + 4) / 2},2
+                             L28,2
+                             C13.471,2 2,15.542 2,32.222
+                             L2,572
+                             C2,588.458 13.471,602 27.6,602
+                             L${w - 24},602
+                             C${w - 10}.529,602 ${w + 2},588.458 ${w + 2},571.778
+                             L${w + 2},32
+                             C${w + 2},15.542 ${w - 10}.529,2 ${w - 24}.4,2
+                             L${(w + 4) / 2},2"
+                          style="fill:none;stroke:#fff;stroke-width:2px;"/>
+                </svg>
+                <div class="stage-content-wrapper">
+                    <div id="stage-image_${index}" class="stage-image" style="background-image: url('assets/stages/${mapNameToImagePath[game.stage]}'); filter: ${stageImageFilter}"></div>
+                    <div id="stage-winner-wrapper_${index}" class="stage-winner-wrapper layout horiz" style="opacity: ${game.winner === 'none' ? '0' : '1'}">
+                        <div class="winner-name">${getWinnerName(game.winner)}</div>
                     </div>
-                    <fitted-text class="mode-name" text="${game.mode}"></fitted-text>
-                    <div class="stage-name-wrapper layout horiz c-vert">
-                        <div class="stage-name">${game.stage}</div>
+                    <div class="stage-line"></div>
+                    <div class="stage-info layout vertical c-horiz">
+                        <div class="background"></div>
+                        <div class="mode-icon layout horiz c-horiz c-vert">
+                            <img src="${getIconFromMode(game.mode)}" style="filter: ${colorFilter}">
+                        </div>
+                        <fitted-text class="mode-name" text="${game.mode}"></fitted-text>
+                        <div class="stage-name-wrapper layout horiz c-vert">
+                            <div class="stage-name">${game.stage}</div>
+                        </div>
                     </div>
                 </div>
             </div>`;
@@ -218,6 +250,9 @@ async function setGameData(index: number, game: { mode: string, stage: string })
     const stageModeElem = stageElem.querySelector('.mode-name') as FittedText;
     const stageModeIconElem = stageElem.querySelector('.mode-icon img') as HTMLImageElement;
     const stageImageElem = stageElem.querySelector('.stage-image') as HTMLElement;
+    const stageLine = stageElem.querySelector('.stage-line');
+    const stageData = stageElem.querySelector('.stage-info');
+    const background = stageElem.querySelector('.background') as HTMLElement;
     const iconUrl = getIconFromMode(game.mode);
     const stageUrl = `assets/stages/${mapNameToImagePath[game.stage]}`;
 
@@ -226,11 +261,19 @@ async function setGameData(index: number, game: { mode: string, stage: string })
         await loadImage(iconUrl);
     }
 
-    tl.add(gsap.to(stageElem, { duration: 0.35, opacity: 0, onComplete: () => {
-        stageNameElem.innerText = game.stage;
-        stageModeElem.text = game.mode;
-        stageModeIconElem.src = iconUrl;
-        stageImageElem.style.backgroundImage = `url('${stageUrl}')`;
-    } }))
-        .add(gsap.to(stageElem, { duration: 0.35, opacity: 1 }));
+    tl.addLabel('stageOut').addLabel('stageIn', '+=0.5');
+
+    background.style.alignSelf = 'flex-start';
+    tl.add(gsap.to([stageImageElem, stageLine, stageData], { duration: 0.35, x: '-100%', ease: 'power2.in' }), 'stageOut')
+        .add(gsap.to(background, { duration: 0.35, width: 0, ease: 'power2.in', onComplete: () => {
+            stageNameElem.innerText = game.stage;
+            stageModeElem.text = game.mode;
+            stageModeIconElem.src = iconUrl;
+            stageImageElem.style.backgroundImage = `url('${stageUrl}')`;
+            background.style.alignSelf = 'flex-end';
+            gsap.set([stageImageElem, stageLine, stageData], { x: '100%' });
+        } }), 'stageOut')
+        .add(gsap.to([stageImageElem, stageLine, stageData], { duration: 0.35, x: 0, ease: 'power2.out' }), 'stageIn')
+        .add(gsap.to(background, { duration: 0.35, width: '100%', ease: 'power2.out' }), 'stageIn');
+
 }

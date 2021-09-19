@@ -12,6 +12,7 @@ import './scripts/nextStageTimer';
 
 import { gsap } from 'gsap';
 import PixiPlugin from 'gsap/PixiPlugin';
+import DrawSVGPlugin from 'gsap/DrawSVGPlugin';
 import * as PIXI from '../helpers/pixi';
 import { animBackgroundIn } from './scripts/background';
 import { ObsEvent } from '../helpers/obs';
@@ -38,6 +39,7 @@ if (window.obsstudio) {
     });
 }
 
+gsap.registerPlugin(DrawSVGPlugin);
 gsap.registerPlugin(PixiPlugin);
 PixiPlugin.registerPIXI(PIXI);
 
