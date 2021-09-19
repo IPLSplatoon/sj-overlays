@@ -10,17 +10,18 @@
     .info-bar {
         @include background();
 
-        position: relative;
-        width: 1300px;
-        height: 86px;
+        position: absolute;
+        overflow: hidden;
+        width: 0;
+        opacity: 0;
+        height: 86px !important;
 
         .bar-content {
             $sideContentWidth: 125px;
 
             position: absolute;
-            left: 0;
             top: 0;
-            width: 100%;
+            width: 1300px;
             height: 100%;
 
             display: grid;

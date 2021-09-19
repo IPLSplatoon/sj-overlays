@@ -30,6 +30,12 @@ NodeCG.waitForReplicants(activeBreakScene, predictionStore).then(() => {
             default:
                 console.log('uhhhh');
         }
+
+        if (newValue === 'main') {
+            hideInfoBar('sceneOut+=0.1');
+        } else if (['teams', 'stages'].includes(newValue)) {
+            showInfoBar('sceneIn+=0.1');
+        }
     });
 });
 
@@ -40,7 +46,11 @@ function showTeams(): void {
     const playersHeight = predictionActive ? 330 : 443;
     const teamsPosTop = predictionActive ? 250 : 275;
 
-    sceneChangeTl.addLabel('teamsIn').addLabel('teamsLineIn', '+=0.35').add('teamsTextIn', '+=0.45');
+    sceneChangeTl
+        .addLabel('teamsIn')
+        .addLabel('sceneIn')
+        .addLabel('teamsLineIn', '+=0.35')
+        .add('teamsTextIn', '+=0.45');
 
     sceneChangeTl.add(gsap.set('.team-display', { height: teamDisplayHeight }));
     sceneChangeTl.add(gsap.set('.teams-wrapper .content .players', { height: playersHeight }));
@@ -61,7 +71,11 @@ function showTeams(): void {
 function hideTeams(): void {
     const predictionActive = predictionStore.value.currentPrediction?.status === 'ACTIVE';
 
-    sceneChangeTl.addLabel('teamsTextOut').addLabel('teamsLineOut', '+=0.1').addLabel('teamsOut', '+=0.40');
+    sceneChangeTl
+        .addLabel('teamsTextOut')
+        .addLabel('sceneOut')
+        .addLabel('teamsLineOut', '+=0.1')
+        .addLabel('teamsOut', '+=0.40');
 
     sceneChangeTl.add(gsap.to('.teams-wrapper .content .team-a-player', { duration: 0.5, x: -350, ease: 'power2.in', stagger: 0.1, opacity: 0 }), 'teamsTextOut')
         .add(gsap.to('.teams-wrapper .content .team-b-player', { duration: 0.5, x: -350, ease: 'power2.in', stagger: 0.1, opacity: 0 }), 'teamsTextOut')
@@ -86,9 +100,21 @@ export function hidePrediction(tl: gsap.core.Timeline, label: string): void {
 }
 
 function hideStages(): void {
+    sceneChangeTl.addLabel('sceneOut');
     sceneChangeTl.add(gsap.to('.stages-wrapper', { opacity: 0, duration: 0.5 }));
 }
 
 function showStages(): void {
+    sceneChangeTl.addLabel('sceneIn');
     sceneChangeTl.add(gsap.to('.stages-wrapper', { opacity: 1, duration: 0.5 }));
+}
+
+function hideInfoBar(label: string): void {
+    sceneChangeTl.add(gsap.to('.info-bar', { duration: 0.65, width: 0, ease: 'power2.in' }), label)
+        .add(gsap.to('.info-bar', { duration: 0.1, opacity: 0, delay: 0.55, ease: 'power2.in' }), label);
+}
+
+function showInfoBar(label: string): void {
+    sceneChangeTl.add(gsap.to('.info-bar', { duration: 0.65, width: 1300, ease: 'power2.out' }), label)
+        .add(gsap.to('.info-bar', { duration: 0.1, opacity: 1, ease: 'power2.out' }), label);
 }
