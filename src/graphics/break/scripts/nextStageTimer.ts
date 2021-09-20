@@ -7,6 +7,7 @@ const nextRoundTimeElem = elementById<FittedText>('next-round-time-text');
 let nextStageDate: DateTime;
 let lastDiff: number;
 
+
 nextRoundTime.on('change', newValue => {
     toggleMainRow('.main-row.timer', newValue.isVisible, 'main');
 

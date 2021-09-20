@@ -15,13 +15,15 @@ export function forceSetSlide(index: number): void {
         gsap.to('.main-slides > .slide > *', { duration: 0.5, opacity: 0 });
     }
 
-    setSlide(index);
+    setTimeout(() => {
+        setSlide(index);
+    }, 600);
 }
 
 function setSlide(index: number): void {
     const slide = slides[index];
     const pause = index === 1 ? 15 : 45;
-    const selector = `.slide.${slide} > *[aria-hidden="false"], .slide.${slide} > *:not([aria-hidden])`;
+    const selector = `.slide.${slide} > *`;
     slideTl.add(gsap.fromTo(selector, { y: -50 }, { duration: 0.5, y: 0, opacity: 1, stagger: -0.05, ease: 'power2.out' }))
         .add(gsap.to({}, { duration: pause, onComplete: () => {
             currentSlide = slides[index + 1 === slides.length ? 0 : index + 1];
