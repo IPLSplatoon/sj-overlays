@@ -15,7 +15,6 @@ import PixiPlugin from 'gsap/PixiPlugin';
 import DrawSVGPlugin from 'gsap/DrawSVGPlugin';
 import * as PIXI from '../helpers/pixi';
 import { animBackgroundIn } from './scripts/background';
-import { ObsEvent } from '../helpers/obs';
 import { APP_HEIGHT, APP_WIDTH } from '../helpers/constants';
 import 'fitted-text/dist/fitted-text';
 
@@ -30,14 +29,6 @@ import { faDiscord } from '@fortawesome/free-brands-svg-icons/faDiscord';
 
 library.add(faMusic, faMicrophoneAlt, faTwitter, faHourglassEnd, faTwitter, faGlobe, faPatreon, faDiscord);
 dom.watch();
-
-if (window.obsstudio) {
-    window.addEventListener('obsSourceActiveChanged', (e: ObsEvent) => {
-        if (e.detail.active) {
-            animBackgroundIn();
-        }
-    });
-}
 
 gsap.registerPlugin(DrawSVGPlugin);
 gsap.registerPlugin(PixiPlugin);

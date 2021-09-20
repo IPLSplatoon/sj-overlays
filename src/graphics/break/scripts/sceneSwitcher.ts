@@ -1,8 +1,37 @@
 import { activeBreakScene, predictionStore } from '../../helpers/replicants';
 import { gsap } from 'gsap';
 import { forceSetSlide } from './mainSlides';
+import { ObsEvent } from '../../helpers/obs';
+import { animBackgroundIn } from './background';
 
 export const sceneChangeTl = gsap.timeline();
+
+if (window.obsstudio) {
+    window.addEventListener('obsSourceActiveChanged', (e: ObsEvent) => {
+        if (e.detail.active) {
+            animBackgroundIn();
+            sceneChangeTl.clear(true);
+            hideTeamsImmediate();
+            hideStagesImmediate();
+            hideMainImmediate();
+            hideInfoBarImmediate();
+            setTimeout(() => {
+                switch (activeBreakScene.value) {
+                    case 'main':
+                        showMain();
+                        break;
+                    case 'teams':
+                        showTeams();
+                        showInfoBar('sceneIn+=0.1');
+                        break;
+                    case 'stages':
+                        showStages();
+                        showInfoBar('sceneIn+=0.1');
+                }
+            }, 2500);
+        }
+    });
+}
 
 NodeCG.waitForReplicants(activeBreakScene, predictionStore).then(() => {
     activeBreakScene.on('change', (newValue, oldValue) => {
@@ -92,6 +121,17 @@ function hideTeams(): void {
     if (predictionActive) hidePrediction(sceneChangeTl, 'teamsOut');
 }
 
+function hideTeamsImmediate(): void {
+    const predictionActive = predictionStore.value.currentPrediction?.status === 'ACTIVE';
+
+    sceneChangeTl.add(gsap.set(['.teams-wrapper .content .team-a-player', '.teams-wrapper .content .team-b-player'], { x: -350, opacity: 0 }))
+        .add(gsap.set('.teams-wrapper .content .team-name fitted-text', { y: 100 }))
+        .add(gsap.set(['.teams-wrapper .line.top', '.teams-wrapper .line.mid'], { width: 0, opacity: 0 }))
+        .add(gsap.set('.teams-wrapper .versus', { y: 200 }))
+        .add(gsap.set(['.teams-wrapper .content', '.team-display .background'], { height: 0, opacity: 0 }));
+    if (predictionActive) hidePredictionImmediate(sceneChangeTl);
+}
+
 export function showPrediction(tl: gsap.core.Timeline, label: string): void {
     tl.add(gsap.to('.prediction-box', { duration: 0.65, width: 1300, ease: 'power2.out' }), label)
         .add(gsap.to('.prediction-box', { duration: 0.1, opacity: 1, ease: 'power2.out' }), label)
@@ -104,6 +144,12 @@ export function hidePrediction(tl: gsap.core.Timeline, label: string): void {
         .add(gsap.to('#prediction-title', { duration: 0.5, opacity: 0, ease: 'power2.in' }), label);
 }
 
+function hidePredictionImmediate(tl: gsap.core.Timeline): void {
+    tl.add(gsap.set('.prediction-box', { width: 0 }))
+        .add(gsap.set('.prediction-box', { opacity: 0 }))
+        .add(gsap.set('#prediction-title', { opacity: 0 }));
+}
+
 function hideStages(): void {
     sceneChangeTl.addLabel('sceneOut');
 
@@ -112,6 +158,14 @@ function hideStages(): void {
     hideStageElems();
     sceneChangeTl.add(gsap.to('.stages-scoreboard', { duration: 0.5, width: 0, ease: 'power2.in' }), 'borderOut')
         .add(gsap.to('.stages-scoreboard', { duration: 0.1, opacity: 0, delay: 0.4, ease: 'power2.in' }), 'borderOut');
+}
+
+function hideStagesImmediate(): void {
+    sceneChangeTl.add(gsap.set('.stage-info-wrapper', { x: '100%' }))
+        .add(gsap.set('.stage-info-wrapper', { opacity: 0 }))
+        .add(gsap.set('.stage > .background', { width: 0 }))
+        .add(gsap.set('.stage-border', { drawSVG: '50% 50%' }))
+        .add(gsap.set('.stages-scoreboard', { width: 0, opacity: 0 }));
 }
 
 export function hideStageElems(callback?: gsap.Callback): void {
@@ -152,6 +206,10 @@ function hideInfoBar(label: string): void {
         .add(gsap.to('.info-bar', { duration: 0.1, opacity: 0, delay: 0.55, ease: 'power2.in' }), label);
 }
 
+function hideInfoBarImmediate(): void {
+    sceneChangeTl.add(gsap.set('.info-bar', { width: 0, opacity: 0 }));
+}
+
 function showInfoBar(label: string): void {
     sceneChangeTl.add(gsap.to('.info-bar', { duration: 0.65, width: 1300, ease: 'power2.out' }), label)
         .add(gsap.to('.info-bar', { duration: 0.1, opacity: 1, ease: 'power2.out' }), label);
@@ -171,4 +229,9 @@ function hideMain(): void {
     sceneChangeTl.add(gsap.to('.main-content-wrapper, .main-slides', { duration: 0.55, height: 0, ease: 'power2.in' }), 'sceneOut')
         .add(gsap.to('.main-content-wrapper, .main-slides', { duration: 0.1, opacity: 0, delay: 0.45, ease: 'power2.in' }), 'sceneOut')
         .add(gsap.to('.logo-wrapper', { opacity: 0, duration: 0.5, ease: 'power2.in' }), 'sceneOut');
+}
+
+function hideMainImmediate(): void {
+    sceneChangeTl.add(gsap.set('.main-content-wrapper, .main-slides', { height: 0, opacity: 0 }))
+        .add(gsap.set('.logo-wrapper', { opacity: 0 }));
 }

@@ -22,7 +22,7 @@ container.pivot.set(CONTAINER_SIZE / 2, CONTAINER_SIZE / 2);
 container.x = APP_WIDTH / 2;
 container.y = APP_HEIGHT / 2;
 const backgroundAnimTimeline = gsap.timeline({ id: 'bganim' });
-const animInDelay = window.obsstudio ? 1.25 : 0.25;
+const animInDelay = window.obsstudio ? 1.75 : 0.25;
 
 let bgSpinTween: gsap.core.Tween;
 
