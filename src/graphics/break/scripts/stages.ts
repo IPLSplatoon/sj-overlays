@@ -1,4 +1,4 @@
-import { activeRound } from '../../helpers/replicants';
+import { activeBreakScene, activeRound } from '../../helpers/replicants';
 import { doOnDifference, doOnOneOrMoreDifference } from '../../helpers/object';
 import { elementById } from '../../helpers/elem';
 import { colors, getIconFromMode } from '../../helpers/constants';
@@ -7,6 +7,7 @@ import { textOpacitySwap } from '../../helpers/anim';
 import { gsap } from 'gsap';
 import { ActiveRound } from 'schemas';
 import { loadImage } from '../../helpers/image';
+import { hideStageElems, sceneChangeTl, showStageElems } from './sceneSwitcher';
 
 type GameWinner = 'none' | 'alpha' | 'bravo';
 
@@ -56,39 +57,41 @@ const stageUpdateTls: Record<string, gsap.core.Timeline> = {
     '6': gsap.timeline(),
 };
 
-activeRound.on('change', async (newValue, oldValue) => {
-    doOnDifference(newValue, oldValue, 'teamA.name', (name: string) => {
-        textOpacitySwap(name, elementById('stages-scoreboard__team-a-name'));
-    });
-
-    doOnDifference(newValue, oldValue, 'teamA.score', (newScore: number, oldScore: number) => {
-        animUpdateScore(newScore, oldScore, 'a');
-    });
-
-    doOnDifference(newValue, oldValue, 'teamB.name', (name: string) => {
-        textOpacitySwap(name, elementById('stages-scoreboard__team-b-name'));
-    });
-
-    doOnDifference(newValue, oldValue, 'teamB.score', (newScore: number, oldScore: number) => {
-        animUpdateScore(newScore, oldScore, 'b');
-    });
-
-    const isNewRound = newValue.round.id !== oldValue?.round.id;
-    if (isNewRound) {
-        await animNewRound(newValue);
-    }
-
-    for (let i = 0; i < newValue.games.length; i++) {
-        doOnDifference(newValue, oldValue, `games[${i}].winner`, (winner: GameWinner, oldWinner: GameWinner) => {
-            setWinner(i, winner, oldWinner);
+NodeCG.waitForReplicants(activeBreakScene, activeRound).then(() => {
+    activeRound.on('change', async (newValue, oldValue) => {
+        doOnDifference(newValue, oldValue, 'teamA.name', (name: string) => {
+            textOpacitySwap(name, elementById('stages-scoreboard__team-a-name'));
         });
 
-        if (!isNewRound) {
-            doOnOneOrMoreDifference(newValue, oldValue, [ `games[${i}].stage`, `games[${i}].mode` ], () => {
-                setGameData(i, newValue.games[i]);
-            });
+        doOnDifference(newValue, oldValue, 'teamA.score', (newScore: number, oldScore: number) => {
+            animUpdateScore(newScore, oldScore, 'a');
+        });
+
+        doOnDifference(newValue, oldValue, 'teamB.name', (name: string) => {
+            textOpacitySwap(name, elementById('stages-scoreboard__team-b-name'));
+        });
+
+        doOnDifference(newValue, oldValue, 'teamB.score', (newScore: number, oldScore: number) => {
+            animUpdateScore(newScore, oldScore, 'b');
+        });
+
+        const isNewRound = newValue.round.id !== oldValue?.round.id;
+        if (isNewRound) {
+            await animNewRound(newValue);
         }
-    }
+
+        for (let i = 0; i < newValue.games.length; i++) {
+            doOnDifference(newValue, oldValue, `games[${i}].winner`, (winner: GameWinner, oldWinner: GameWinner) => {
+                setWinner(i, winner, oldWinner);
+            });
+
+            if (!isNewRound) {
+                doOnOneOrMoreDifference(newValue, oldValue, [ `games[${i}].stage`, `games[${i}].mode` ], () => {
+                    setGameData(i, newValue.games[i]);
+                });
+            }
+        }
+    });
 });
 
 const stageStyles: Record<string, { width: number, gap: number, stageWidth: number }> = {
@@ -137,9 +140,9 @@ function createStages(games: { winner: GameWinner, mode: string, stage: string }
 
         stagesHtml += `
             <div class="stage layout vertical c-horiz" id="stage_${index}">
-                <div class="background"></div>
+                <div class="background" style="width: 0"></div>
                 <svg viewBox="0 0 ${style.stageWidth + 20} 620">
-                    <path class="stage-border stage-border_${index}"
+                    <path class="stage-border stage-border-color stage-border_${index}"
                           d="M${(w + 4) / 2},2
                              L28,2
                              C13.471,2 2,15.542 2,32.222
@@ -151,7 +154,7 @@ function createStages(games: { winner: GameWinner, mode: string, stage: string }
                              C${w + 2},15.542 ${w - 10}.529,2 ${w - 24}.4,2
                              L${(w + 4) / 2},2"
                           style="fill:none;stroke:${colors.blue};stroke-width:4px;"/>
-                    <path class="stage-border stage-border_${index}"
+                    <path class="stage-border stage-border-white stage-border_${index}"
                           d="M${(w + 4) / 2},2
                              L28,2
                              C13.471,2 2,15.542 2,32.222
@@ -165,19 +168,21 @@ function createStages(games: { winner: GameWinner, mode: string, stage: string }
                           style="fill:none;stroke:#fff;stroke-width:2px;"/>
                 </svg>
                 <div class="stage-content-wrapper">
-                    <div id="stage-image_${index}" class="stage-image" style="background-image: url('assets/stages/${mapNameToImagePath[game.stage]}'); filter: ${stageImageFilter}"></div>
-                    <div id="stage-winner-wrapper_${index}" class="stage-winner-wrapper layout horiz" style="opacity: ${game.winner === 'none' ? '0' : '1'}">
-                        <div class="winner-name">${getWinnerName(game.winner)}</div>
-                    </div>
-                    <div class="stage-line"></div>
-                    <div class="stage-info layout vertical c-horiz">
-                        <div class="background"></div>
-                        <div class="mode-icon layout horiz c-horiz c-vert">
-                            <img src="${getIconFromMode(game.mode)}" style="filter: ${colorFilter}">
+                    <div class="stage-info-wrapper" style="transform: translate(-100%, 0px); opacity: 0;">
+                        <div id="stage-image_${index}" class="stage-image" style="background-image: url('assets/stages/${mapNameToImagePath[game.stage]}'); filter: ${stageImageFilter}"></div>
+                        <div id="stage-winner-wrapper_${index}" class="stage-winner-wrapper layout horiz" style="opacity: ${game.winner === 'none' ? '0' : '1'}">
+                            <div class="winner-name">${getWinnerName(game.winner)}</div>
                         </div>
-                        <fitted-text class="mode-name" text="${game.mode}"></fitted-text>
-                        <div class="stage-name-wrapper layout horiz c-vert">
-                            <div class="stage-name">${game.stage}</div>
+                        <div class="stage-line"></div>
+                        <div class="stage-info layout vertical c-horiz">
+                            <div class="background"></div>
+                            <div class="mode-icon layout horiz c-horiz c-vert">
+                                <img src="${getIconFromMode(game.mode)}" style="filter: ${colorFilter}">
+                            </div>
+                            <fitted-text class="mode-name" text="${game.mode}"></fitted-text>
+                            <div class="stage-name-wrapper layout horiz c-vert">
+                                <div class="stage-name">${game.stage}</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -185,6 +190,7 @@ function createStages(games: { winner: GameWinner, mode: string, stage: string }
     });
 
     stageGrid.innerHTML = stagesHtml;
+    gsap.set('.stage-border', { drawSVG: '50% 50%' });
 }
 
 function getWinnerName(winner: GameWinner) {
@@ -229,7 +235,6 @@ function setWinner(index: number, winner: GameWinner, oldWinner: GameWinner) {
 }
 
 async function animNewRound(activeRound: ActiveRound): Promise<void> {
-    const tl = stageUpdateTls.all;
     const imageLoads: Promise<void>[] = [];
     activeRound.games.forEach(game => {
         imageLoads.push(loadImage(`assets/stages/${mapNameToImagePath[game.stage]}`));
@@ -237,10 +242,14 @@ async function animNewRound(activeRound: ActiveRound): Promise<void> {
 
     await Promise.all(imageLoads);
 
-    tl.add(gsap.to(stageGrid, { duration: 0.35, opacity: 0, onComplete: () => {
+    sceneChangeTl.addLabel('sceneOut');
+    hideStageElems(() => {
         createStages(activeRound.games);
-    } }))
-        .add(gsap.to(stageGrid, { duration: 0.35, opacity: 1 }));
+        if (activeBreakScene.value === 'stages') {
+            sceneChangeTl.addLabel('sceneIn');
+            showStageElems();
+        }
+    });
 }
 
 async function setGameData(index: number, game: { mode: string, stage: string }): Promise<void> {

@@ -2,7 +2,7 @@ import { activeBreakScene, predictionStore } from '../../helpers/replicants';
 import { gsap } from 'gsap';
 import { forceSetSlide } from './mainSlides';
 
-const sceneChangeTl = gsap.timeline();
+export const sceneChangeTl = gsap.timeline();
 
 NodeCG.waitForReplicants(activeBreakScene, predictionStore).then(() => {
     activeBreakScene.on('change', (newValue, oldValue) => {
@@ -20,8 +20,6 @@ NodeCG.waitForReplicants(activeBreakScene, predictionStore).then(() => {
                 default:
                     console.log('uhhhhhhh');
             }
-        } else {
-            hideStages();
         }
 
         switch (newValue) {
@@ -108,12 +106,45 @@ export function hidePrediction(tl: gsap.core.Timeline, label: string): void {
 
 function hideStages(): void {
     sceneChangeTl.addLabel('sceneOut');
-    sceneChangeTl.add(gsap.to('.stages-wrapper', { opacity: 0, duration: 0.5 }));
+
+    sceneChangeTl.add(gsap.set('.stage > .background', { alignSelf: 'flex-end' }));
+
+    hideStageElems();
+    sceneChangeTl.add(gsap.to('.stages-scoreboard', { duration: 0.5, width: 0, ease: 'power2.in' }), 'borderOut')
+        .add(gsap.to('.stages-scoreboard', { duration: 0.1, opacity: 0, delay: 0.4, ease: 'power2.in' }), 'borderOut');
+}
+
+export function hideStageElems(callback?: gsap.Callback): void {
+    const stageCount = document.querySelectorAll('.stage').length;
+    sceneChangeTl.addLabel('borderOut', `+=${stageCount * 0.1 - 0.2}`);
+
+    sceneChangeTl.add(gsap.to('.stage-info-wrapper', { x: '100%', duration: 0.35, ease: 'power2.in', stagger: 0.1 }), 'sceneOut')
+        .add(gsap.to('.stage-info-wrapper', { opacity: 0, duration: 0.1, ease: 'power2.in', stagger: 0.1, delay: 0.3 }), 'sceneOut')
+        .add(gsap.to('.stage > .background', { width: 0, duration: 0.35, ease: 'power2.in', stagger: 0.1 }), 'sceneOut')
+        .add(gsap.to('.stage-border-white', { duration: 0.75, drawSVG: '50% 50%', ease: 'power2.inOut', stagger: 0.1 }), 'borderOut')
+        .add(gsap.to('.stage-border-color', { duration: 0.75, drawSVG: '50% 50%', ease: 'power2.inOut', stagger: 0.1, onComplete: callback }), 'borderOut');
 }
 
 function showStages(): void {
     sceneChangeTl.addLabel('sceneIn');
-    sceneChangeTl.add(gsap.to('.stages-wrapper', { opacity: 1, duration: 0.5 }));
+
+    sceneChangeTl.add(gsap.set('.stage > .background', { alignSelf: 'flex-start', width: 0 }))
+        .add(gsap.set('.stage-info-wrapper', { x: '-100%' }));
+
+    sceneChangeTl.add(gsap.to('.stages-scoreboard', { duration: 0.5, width: 1000, ease: 'power2.out' }), 'sceneIn')
+        .add(gsap.to('.stages-scoreboard', { duration: 0.1, opacity: 1, ease: 'power2.out' }), 'sceneIn');
+    showStageElems();
+}
+
+export function showStageElems(): void {
+    const stageCount = document.querySelectorAll('.stage').length;
+    sceneChangeTl.addLabel('stagesIn', `+=${stageCount * 0.1 - 0.2}`);
+
+    sceneChangeTl.add(gsap.to('.stage-border-white', { duration: 0.75, drawSVG: true, ease: 'power2.inOut', stagger: 0.1 }), 'sceneIn')
+        .add(gsap.to('.stage-border-color', { duration: 0.75, drawSVG: true, ease: 'power2.inOut', stagger: 0.1 }), 'sceneIn')
+        .add(gsap.to('.stage-info-wrapper', { x: 0, duration: 0.35, ease: 'power2.out', stagger: 0.1 }), 'stagesIn')
+        .add(gsap.to('.stage-info-wrapper', { opacity: 1, duration: 0.1, ease: 'power2.out', stagger: 0.1 }), 'stagesIn')
+        .add(gsap.to('.stage > .background', { width: '100%', duration: 0.35, ease: 'power2.out', stagger: 0.1 }), 'stagesIn');
 }
 
 function hideInfoBar(label: string): void {
