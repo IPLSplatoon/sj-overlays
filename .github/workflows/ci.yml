@@ -48,6 +48,8 @@ jobs:
       - name: Install NPM dependencies
         working-directory: ./nodecg/bundles/sj-overlays
         run: npm ci
+        env:
+          GSAP_AUTH: ${{ secrets.GSAP_AUTH }}
 
       - name: Run ESLint on source
         working-directory: ./nodecg/bundles/sj-overlays
