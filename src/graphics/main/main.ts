@@ -1,3 +1,9 @@
-import './style.scss';
+import './styles/main.scss';
 
-console.log('hello');
+import 'fitted-text/dist/fitted-text';
+import { gsap } from 'gsap';
+import DrawSVGPlugin from 'gsap/DrawSVGPlugin';
+
+import './scripts/scoreboard';
+
+gsap.registerPlugin(DrawSVGPlugin);
