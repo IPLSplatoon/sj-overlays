@@ -9,6 +9,10 @@
         "email": "inkfarer@inkfarer.com",
         "url": "https://inkfarer.com"
     },
+    "contributors": [
+        "BrushStrokes (https://brush.rip/)",
+        "TheMoo (https://twitter.com/TheMoo_spl)"
+    ],
     "files": [
         "graphics"
     ],
