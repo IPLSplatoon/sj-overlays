@@ -5,12 +5,16 @@ import { elementById } from '../../helpers/elem';
 import { gsap } from 'gsap';
 
 const scoreboardDisplayTl = gsap.timeline();
+const scoreUpdateTls: Record<'a' | 'b', gsap.core.Timeline> = {
+    a: gsap.timeline(),
+    b: gsap.timeline()
+};
 
 activeRound.on('change', (newValue, oldValue) => {
     doOnDifference(newValue, oldValue, 'teamA.score',
-        (value: number) => elementById<FittedText>('team-a-score').text = value.toString());
+        (value: number, oldValue: number) => animUpdateScore(value, oldValue, 'a'));
     doOnDifference(newValue, oldValue, 'teamB.score',
-        (value: number) => elementById<FittedText>('team-b-score').text = value.toString());
+        (value: number, oldValue: number) => animUpdateScore(value, oldValue, 'b'));
 
     doOnDifference(newValue, oldValue, 'teamA.name',
         (value: string) => textOpacitySwap(value, elementById('team-a-name')));
@@ -27,6 +31,19 @@ activeRound.on('change', (newValue, oldValue) => {
         duration: 0.35
     });
 });
+
+function animUpdateScore(newScore: number, oldScore: number, team: 'a' | 'b') {
+    const scoreElem = elementById<FittedText>(`team-${team}-score`);
+    const posYTo = newScore > oldScore ? 50 : -50;
+    const posYFrom = newScore > oldScore ? -50 : 50;
+    const timeline = scoreUpdateTls[team];
+
+    timeline.add(gsap.to(scoreElem, { duration: 0.35, y: posYTo, ease: 'power2.in', onComplete: () => {
+        gsap.set(scoreElem, { y: posYFrom });
+        scoreElem.text = newScore.toString();
+    } }));
+    timeline.add(gsap.to(scoreElem, { duration: 0.35, y: 0, ease: 'power2.out' }));
+}
 
 scoreboardData.on('change', (newValue, oldValue) => {
     doOnDifference(newValue, oldValue, 'flavorText', (flavorText: string) => {
