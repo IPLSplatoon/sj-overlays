@@ -90,7 +90,7 @@ jobs:
         continue-on-error: true
         working-directory: ./nodecg/bundles/sj-overlays
         run: |
-          git add -f dashboard extension
+          git add -f graphics
           git commit -m "Build result from master branch" -a
 
       - name: Push built files to "build" branch
