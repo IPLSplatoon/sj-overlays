@@ -3,9 +3,12 @@ import { doOnDifference } from '../../helpers/object';
 import { textOpacitySwap } from '../../helpers/anim';
 import { elementById } from '../../helpers/elem';
 import { gsap } from 'gsap';
+import escape from 'lodash/escape';
+import isEmpty from 'lodash/isEmpty';
 
 interface Player {
     name: string;
+    pronouns?: string;
 }
 
 const teamATimeline = gsap.timeline();
@@ -57,8 +60,13 @@ function addPlayerElems(players: Player[], team: 'a' | 'b') {
         const playerElem = document.createElement('fitted-text') as FittedText;
         playerElem.classList.add(`team-${team}-player`);
         playerElem.maxWidth = 450;
-        playerElem.text = player.name;
+        if (!isEmpty(player.pronouns)) {
+            playerElem.text = `${escape(player.name)} <span class="pronoun">${player.pronouns}</span>`;
+        } else {
+            playerElem.text = escape(player.name);
+        }
         playerContainer.appendChild(playerElem);
+        playerElem.useInnerHTML = true;
         playerElem.style.opacity = '0.0';
     });
 }
