@@ -1,12 +1,12 @@
 import { gsap } from 'gsap';
-import { mainFlavorText } from '../../helpers/replicants';
+import { mainFlavorText, nextRound } from '../../helpers/replicants';
 import { textSlideSwap } from '../../helpers/anim';
 import { elementById } from '../../helpers/elem';
 
 export let currentSlide = 'main';
 const mainTextSwapTl = gsap.timeline();
 let slideTl = gsap.timeline();
-const slides = ['main', 'support'];
+const slides = ['main', 'support', 'next-round'];
 
 export function forceSetSlide(index: number): void {
     if (slideTl) {
@@ -35,7 +35,8 @@ function setSlide(index: number): void {
             stagger: -0.05,
             ease: 'power2.in',
             onComplete: function() {
-                if (index + 1 === slides.length) {
+                const nextIndex = index + 1;
+                if (nextIndex === slides.length || (nextIndex === 2 && !nextRound.value.showOnStream)) {
                     setSlide(0);
                 } else {
                     setSlide(index + 1);

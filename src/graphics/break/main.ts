@@ -9,6 +9,7 @@ import './scripts/sceneSwitcher';
 import './scripts/stages';
 import './scripts/mainSlides';
 import './scripts/nextStageTimer';
+import './scripts/nextRound';
 
 import { gsap } from 'gsap';
 import PixiPlugin from 'gsap/PixiPlugin';
