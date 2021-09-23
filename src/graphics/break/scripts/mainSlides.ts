@@ -45,7 +45,12 @@ function setSlide(index: number): void {
 }
 
 mainFlavorText.on('change', newValue => {
-    mainTextSwapTl.add(textSlideSwap(newValue, elementById('main-flavor-text')));
+    const textElem = elementById<FittedText>('main-flavor-text');
+    if (currentSlide === 'main') {
+        mainTextSwapTl.add(textSlideSwap(newValue, textElem));
+    } else {
+        textElem.text = newValue;
+    }
 });
 
 export function toggleMainRow(selector: string, isVisible: boolean, slide: string): void {
