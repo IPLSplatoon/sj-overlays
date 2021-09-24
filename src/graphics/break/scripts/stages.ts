@@ -253,6 +253,7 @@ async function setGameData(index: number, game: { mode: string, stage: string })
     const stageImageElem = stageElem.querySelector('.stage-image') as HTMLElement;
     const stageLine = stageElem.querySelector('.stage-line');
     const stageData = stageElem.querySelector('.stage-info');
+    const winnerWrapper = stageElem.querySelector('.stage-winner-wrapper');
     const background = stageElem.querySelector('.background') as HTMLElement;
     const iconUrl = getIconFromMode(game.mode);
     const stageUrl = `assets/stages/${mapNameToImagePath[game.stage]}`;
@@ -265,16 +266,16 @@ async function setGameData(index: number, game: { mode: string, stage: string })
     tl.addLabel('stageOut').addLabel('stageIn', '+=0.5');
 
     background.style.alignSelf = 'flex-start';
-    tl.add(gsap.to([stageImageElem, stageLine, stageData], { duration: 0.35, x: '-100%', ease: 'power2.in' }), 'stageOut')
+    tl.add(gsap.to([stageImageElem, stageLine, stageData, winnerWrapper], { duration: 0.35, x: '-100%', ease: 'power2.in' }), 'stageOut')
         .add(gsap.to(background, { duration: 0.35, width: 0, ease: 'power2.in', onComplete: () => {
             stageNameElem.innerText = game.stage;
             stageModeElem.text = game.mode;
             stageModeIconElem.src = iconUrl;
             stageImageElem.style.backgroundImage = `url('${stageUrl}')`;
             background.style.alignSelf = 'flex-end';
-            gsap.set([stageImageElem, stageLine, stageData], { x: '100%' });
+            gsap.set([stageImageElem, stageLine, stageData, winnerWrapper], { x: '100%' });
         } }), 'stageOut')
-        .add(gsap.to([stageImageElem, stageLine, stageData], { duration: 0.35, x: 0, ease: 'power2.out' }), 'stageIn')
+        .add(gsap.to([stageImageElem, stageLine, stageData, winnerWrapper], { duration: 0.35, x: 0, ease: 'power2.out' }), 'stageIn')
         .add(gsap.to(background, { duration: 0.35, width: '100%', ease: 'power2.out' }), 'stageIn');
 
 }
