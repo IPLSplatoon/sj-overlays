@@ -253,6 +253,6 @@ function hideMain(): void {
 }
 
 function hideMainImmediate(): void {
-    sceneChangeTl.add(gsap.set('.main-content-wrapper, .main-slides', { height: 0, opacity: 0 }))
-        .add(gsap.set('.logo-wrapper', { opacity: 0 }));
+    gsap.set('.main-content-wrapper, .main-slides', { height: 0, opacity: 0 });
+    gsap.set('.logo-wrapper', { opacity: 0 });
 }

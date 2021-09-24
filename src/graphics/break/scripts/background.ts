@@ -79,6 +79,8 @@ export function initBackground(): void {
 }
 
 export function animBackgroundIn(): void {
+    backgroundAnimTimeline.clear(true);
+
     backgroundAnimTimeline
         .addLabel('out')
         .addLabel('in', `+=${animInDelay}`);
