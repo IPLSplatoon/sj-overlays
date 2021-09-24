@@ -27,8 +27,18 @@ import { faHourglassEnd } from '@fortawesome/free-solid-svg-icons/faHourglassEnd
 import { faGlobe } from '@fortawesome/free-solid-svg-icons/faGlobe';
 import { faPatreon } from '@fortawesome/free-brands-svg-icons/faPatreon';
 import { faDiscord } from '@fortawesome/free-brands-svg-icons/faDiscord';
+import { faDollarSign } from '@fortawesome/free-solid-svg-icons/faDollarSign';
 
-library.add(faMusic, faMicrophoneAlt, faTwitter, faHourglassEnd, faTwitter, faGlobe, faPatreon, faDiscord);
+library.add(
+    faMusic,
+    faMicrophoneAlt,
+    faTwitter,
+    faHourglassEnd,
+    faTwitter,
+    faGlobe,
+    faPatreon,
+    faDiscord,
+    faDollarSign);
 dom.watch();
 
 gsap.registerPlugin(DrawSVGPlugin);
