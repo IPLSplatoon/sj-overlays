@@ -23,7 +23,7 @@ nextRound.on('change', (newValue, oldValue) => {
             const game = newValue.games[i];
 
             gamesHtml += `
-                <div class="match" style="opacity: 0">
+                <div class="match">
                     <div class="cover glow-border glow-blue"></div>
                     <div class="match-background" style="background-image: url('assets/stages/${mapNameToImagePath[game.stage]}')"></div>
                     <div class="match-text layout vertical">
@@ -36,11 +36,11 @@ nextRound.on('change', (newValue, oldValue) => {
 
         if (nextMatchesContainer.innerHTML === '') {
             nextMatchesContainer.innerHTML = gamesHtml;
-            nextRoundUpdateTl.add(gsap.to('.matches-container > .match', { duration: 0.35, opacity: 1 }));
+            nextRoundUpdateTl.add(gsap.to('.matches-container', { duration: 0.35, opacity: 1 }));
         } else {
-            nextRoundUpdateTl.add(gsap.to('.matches-container > .match', { opacity: 0, duration: 0.35, onComplete: () => {
+            nextRoundUpdateTl.add(gsap.to('.matches-container', { opacity: 0, duration: 0.35, onComplete: () => {
                 nextMatchesContainer.innerHTML = gamesHtml;
-                nextRoundUpdateTl.add(gsap.to('.matches-container > .match', { opacity: 1, duration: 0.35 }));
+                nextRoundUpdateTl.add(gsap.to('.matches-container', { opacity: 1, duration: 0.35 }));
             } }));
         }
 
