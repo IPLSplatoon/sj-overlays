@@ -1,5 +1,5 @@
 import { activeBreakScene, activeRound } from '../../helpers/replicants';
-import { doOnDifference, doOnOneOrMoreDifference } from '../../helpers/object';
+import { doOnDifference, doOnNoDifference, doOnOneOrMoreDifference } from '../../helpers/object';
 import { elementById } from '../../helpers/elem';
 import { colors, getIconFromMode, mapNameToImagePath } from '../../helpers/constants';
 import { hexToRgb, Solver } from '../../helpers/color';
@@ -31,16 +31,21 @@ const stageUpdateTls: Record<string, gsap.core.Timeline> = {
 
 NodeCG.waitForReplicants(activeBreakScene, activeRound).then(() => {
     activeRound.on('change', async (newValue, oldValue) => {
+        let teamANameDiffers = false;
+        let teamBNameDiffers = false;
+
         doOnDifference(newValue, oldValue, 'teamA.name', (name: string) => {
+            teamANameDiffers = true;
             textOpacitySwap(name, elementById('stages-scoreboard__team-a-name'));
+        });
+
+        doOnDifference(newValue, oldValue, 'teamB.name', (name: string) => {
+            teamBNameDiffers = true;
+            textOpacitySwap(name, elementById('stages-scoreboard__team-b-name'));
         });
 
         doOnDifference(newValue, oldValue, 'teamA.score', (newScore: number, oldScore: number) => {
             animUpdateScore(newScore, oldScore, 'a');
-        });
-
-        doOnDifference(newValue, oldValue, 'teamB.name', (name: string) => {
-            textOpacitySwap(name, elementById('stages-scoreboard__team-b-name'));
         });
 
         doOnDifference(newValue, oldValue, 'teamB.score', (newScore: number, oldScore: number) => {
@@ -55,6 +60,12 @@ NodeCG.waitForReplicants(activeBreakScene, activeRound).then(() => {
         for (let i = 0; i < newValue.games.length; i++) {
             doOnDifference(newValue, oldValue, `games[${i}].winner`, (winner: GameWinner, oldWinner: GameWinner) => {
                 setWinner(i, winner, oldWinner);
+            });
+
+            doOnNoDifference(newValue, oldValue, `games[${i}].winner`, (winner: GameWinner) => {
+                if ((teamANameDiffers && winner === 'alpha') || (teamBNameDiffers && winner === 'bravo')) {
+                    setWinner(i, winner, winner);
+                }
             });
 
             if (!isNewRound) {

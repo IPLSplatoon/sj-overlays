@@ -33,7 +33,7 @@ export function doOnOneOrMoreDifference<T>(
     }
 }
 
-export function doOnNoDifference<T extends Record<string, unknown>>(
+export function doOnNoDifference<T>(
     newValue: T,
     oldValue: T,
     path: string,
