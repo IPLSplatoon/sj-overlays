@@ -103,7 +103,6 @@ function createStages(games: { winner: GameWinner, mode: string, stage: string }
     stageGrid.style.width = `${style.width}px`;
     stageGrid.style.gridTemplateColumns = `repeat(${games.length}, 1fr)`;
     stageGrid.style.gap = `${style.gap}px`;
-    const colorFilter = new Solver(hexToRgb(colors.blue)).solve().filter;
 
     let stagesHtml = '';
 
@@ -149,7 +148,7 @@ function createStages(games: { winner: GameWinner, mode: string, stage: string }
                         <div class="stage-line"></div>
                         <div class="stage-info layout vertical c-horiz">
                             <div class="mode-icon layout horiz c-horiz c-vert">
-                                <img src="${getIconFromMode(game.mode)}" style="filter: ${colorFilter}">
+                                <img src="${getIconFromMode(game.mode)}">
                             </div>
                             <fitted-text class="mode-name" text="${game.mode}"></fitted-text>
                             <div class="stage-name-wrapper layout horiz c-vert">
@@ -219,10 +218,12 @@ function setStageBorderColor(index: number, color: string): void {
     const elemId = `#stage_${index}`;
     const timeline = stageUpdateTls[index];
     const dropShadowFilter = `drop-shadow(0 0 3px ${color}) drop-shadow(0 0 5px ${color})`;
+    const colorFilter = new Solver(hexToRgb(color)).solve().filter;
 
     timeline.add(gsap.to(`${elemId} .stage-border-color`, { stroke: color, duration: 0.5 }), 'setColor')
         .add(gsap.to(`${elemId} svg`, { filter: dropShadowFilter, duration: 0.5 }), 'setColor')
-        .add(gsap.to(`${elemId} .stage-line`, { border: `1px solid ${color}`, filter: dropShadowFilter, duration: 0.5 }), 'setColor');
+        .add(gsap.to(`${elemId} .stage-line`, { border: `1px solid ${color}`, filter: dropShadowFilter, duration: 0.5 }), 'setColor')
+        .add(gsap.to(`${elemId} .mode-icon`, { duration: 0.5, filter: colorFilter }), 'setColor');
 }
 
 async function animNewRound(activeRound: ActiveRound): Promise<void> {
