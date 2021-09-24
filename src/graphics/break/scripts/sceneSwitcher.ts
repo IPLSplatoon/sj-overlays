@@ -1,9 +1,10 @@
-import { activeBreakScene, predictionStore } from '../../helpers/replicants';
+import { activeBreakScene, activeRound, predictionStore } from '../../helpers/replicants';
 import { gsap } from 'gsap';
 import { forceSetSlide } from './mainSlides';
 import { ObsEvent } from '../../helpers/obs';
 import { animBackgroundIn } from './background';
 import { splitTeamAName, splitTeamBName } from './teams';
+import { getPredictionValues, predictionTextChangeTl, updatePredictionCountDisplays } from './predictions';
 
 export const sceneChangeTl = gsap.timeline();
 
@@ -34,7 +35,7 @@ if (window.obsstudio) {
     });
 }
 
-NodeCG.waitForReplicants(activeBreakScene, predictionStore).then(() => {
+NodeCG.waitForReplicants(activeBreakScene, predictionStore, activeRound).then(() => {
     activeBreakScene.on('change', (newValue, oldValue) => {
         if (oldValue) {
             switch (oldValue) {
@@ -47,8 +48,6 @@ NodeCG.waitForReplicants(activeBreakScene, predictionStore).then(() => {
                 case 'main':
                     hideMain();
                     break;
-                default:
-                    console.log('uhhhhhhh');
             }
         }
 
@@ -64,8 +63,6 @@ NodeCG.waitForReplicants(activeBreakScene, predictionStore).then(() => {
                 showMain();
                 hideInfoBar('sceneOut+=0.1');
                 break;
-            default:
-                console.log('uhhhh');
         }
 
         if (newValue !== 'main') {
@@ -135,10 +132,31 @@ function hideTeamsImmediate(): void {
     if (predictionActive) hidePredictionImmediate(sceneChangeTl);
 }
 
-export function showPrediction(tl: gsap.core.Timeline, label: string): void {
+export function showPrediction(tl: gsap.core.Timeline, label: string, animateValuesIn = true): void {
     tl.add(gsap.to('.prediction-box', { duration: 0.65, width: 1300, ease: 'power2.out' }), label)
         .add(gsap.to('.prediction-box', { duration: 0.1, opacity: 1, ease: 'power2.out' }), label)
         .add(gsap.to('#prediction-title', { duration: 0.5, opacity: 1, ease: 'power2.out' }), label);
+
+    if (animateValuesIn) {
+        const values = getPredictionValues(predictionStore.value.currentPrediction);
+
+        predictionTextChangeTl.clear(true)
+            .add(gsap.fromTo(values, {
+                countA: 0,
+                countB: 0,
+                percentA: 0,
+                percentB: 0
+            }, {
+                ...values,
+                ease: 'power2.out',
+                delay: 1.55,
+                duration: 2.5,
+                immediateRender: false,
+                onUpdate: () => {
+                    updatePredictionCountDisplays(values);
+                }
+            }));
+    }
 }
 
 export function hidePrediction(tl: gsap.core.Timeline, label: string): void {
