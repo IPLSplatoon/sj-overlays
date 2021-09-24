@@ -82,6 +82,14 @@
                         font-size: 40px;
                         font-weight: 400;
                     }
+
+                    &.music {
+                        .main-music-text-container {
+                            fitted-text {
+                                height: 48px;
+                            }
+                        }
+                    }
                 }
 
                 &.next-round {

@@ -54,8 +54,8 @@ mainFlavorText.on('change', newValue => {
     }
 });
 
-export function toggleMainRow(selector: string, isVisible: boolean, slide: string): void {
-    const elemHeight = isVisible ? 54 : 0;
+export function toggleMainRow(selector: string, isVisible: boolean, slide: string, height = 54): void {
+    const elemHeight = isVisible ? height : 0;
     const elemOpacity = (isVisible && currentSlide === slide) ? 1 : 0;
     const elemMargin = isVisible ? '8px 0' : '0 0';
     const timerElem = document.querySelector(selector) as HTMLElement;
