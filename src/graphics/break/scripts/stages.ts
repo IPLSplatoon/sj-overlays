@@ -141,13 +141,13 @@ function createStages(games: { winner: GameWinner, mode: string, stage: string }
                 </svg>
                 <div class="stage-content-wrapper">
                     <div class="stage-info-wrapper" style="transform: translate(-100%, 0px); opacity: 0;">
+                        <div class="background"></div>
                         <div id="stage-image_${index}" class="stage-image" style="background-image: url('assets/stages/${mapNameToImagePath[game.stage]}'); filter: ${stageImageFilter}"></div>
                         <div id="stage-winner-wrapper_${index}" class="stage-winner-wrapper layout horiz" style="opacity: ${game.winner === 'none' ? '0' : '1'}">
                             <div class="winner-name">${getWinnerName(game.winner)}</div>
                         </div>
                         <div class="stage-line"></div>
                         <div class="stage-info layout vertical c-horiz">
-                            <div class="background"></div>
                             <div class="mode-icon layout horiz c-horiz c-vert">
                                 <img src="${getIconFromMode(game.mode)}" style="filter: ${colorFilter}">
                             </div>
