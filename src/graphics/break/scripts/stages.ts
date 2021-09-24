@@ -1,7 +1,7 @@
 import { activeBreakScene, activeRound } from '../../helpers/replicants';
-import { doOnDifference, doOnOneOrMoreDifference } from '../../helpers/object';
+import { doOnDifference, doOnNoDifference, doOnOneOrMoreDifference } from '../../helpers/object';
 import { elementById } from '../../helpers/elem';
-import { colors, getIconFromMode } from '../../helpers/constants';
+import { colors, getIconFromMode, mapNameToImagePath } from '../../helpers/constants';
 import { hexToRgb, Solver } from '../../helpers/color';
 import { textOpacitySwap } from '../../helpers/anim';
 import { gsap } from 'gsap';
@@ -10,34 +10,6 @@ import { loadImage } from '../../helpers/image';
 import { hideStageElems, sceneChangeTl, showStageElems } from './sceneSwitcher';
 
 type GameWinner = 'none' | 'alpha' | 'bravo';
-
-const mapNameToImagePath: Record<string, string> = {
-    'Ancho-V Games': 'S2_Stage_Ancho-V_Games.png',
-    'Arowana Mall': 'S2_Stage_Arowana_Mall.png',
-    'Blackbelly Skatepark': 'S2_Stage_Blackbelly_Skatepark.png',
-    'Camp Triggerfish': 'S2_Stage_Camp_Triggerfish.png',
-    'Goby Arena': 'S2_Stage_Goby_Arena.png',
-    'Humpback Pump Track': 'S2_Stage_Humpback_Pump_Track.png',
-    'Inkblot Art Academy': 'S2_Stage_Inkblot_Art_Academy.png',
-    'Kelp Dome': 'S2_Stage_Kelp_Dome.png',
-    MakoMart: 'S2_Stage_MakoMart.png',
-    'Manta Maria': 'S2_Stage_Manta_Maria.png',
-    'Moray Towers': 'S2_Stage_Moray_Towers.png',
-    'Musselforge Fitness': 'S2_Stage_Musselforge_Fitness.png',
-    'New Albacore Hotel': 'S2_Stage_New_Albacore_Hotel.png',
-    'Piranha Pit': 'S2_Stage_Piranha_Pit.png',
-    'Port Mackerel': 'S2_Stage_Port_Mackerel.png',
-    'Shellendorf Institute': 'S2_Stage_Shellendorf_Institute.png',
-    'Shifty Station': 'S2_Stage_Shifty_Station.png',
-    'Snapper Canal': 'S2_Stage_Snapper_Canal.png',
-    'Starfish Mainstage': 'S2_Stage_Starfish_Mainstage.png',
-    'Sturgeon Shipyard': 'S2_Stage_Sturgeon_Shipyard.png',
-    'The Reef': 'S2_Stage_The_Reef.png',
-    'Wahoo World': 'S2_Stage_Wahoo_World.png',
-    'Walleye Warehouse': 'S2_Stage_Walleye_Warehouse.png',
-    'Skipper Pavilion': 'S2_Stage_Skipper_Pavilion.png',
-    'Unknown Stage': 'low-ink-unknown-map.png'
-};
 
 const stageGrid = elementById('stage-grid');
 
@@ -59,16 +31,21 @@ const stageUpdateTls: Record<string, gsap.core.Timeline> = {
 
 NodeCG.waitForReplicants(activeBreakScene, activeRound).then(() => {
     activeRound.on('change', async (newValue, oldValue) => {
+        let teamANameDiffers = false;
+        let teamBNameDiffers = false;
+
         doOnDifference(newValue, oldValue, 'teamA.name', (name: string) => {
+            teamANameDiffers = true;
             textOpacitySwap(name, elementById('stages-scoreboard__team-a-name'));
+        });
+
+        doOnDifference(newValue, oldValue, 'teamB.name', (name: string) => {
+            teamBNameDiffers = true;
+            textOpacitySwap(name, elementById('stages-scoreboard__team-b-name'));
         });
 
         doOnDifference(newValue, oldValue, 'teamA.score', (newScore: number, oldScore: number) => {
             animUpdateScore(newScore, oldScore, 'a');
-        });
-
-        doOnDifference(newValue, oldValue, 'teamB.name', (name: string) => {
-            textOpacitySwap(name, elementById('stages-scoreboard__team-b-name'));
         });
 
         doOnDifference(newValue, oldValue, 'teamB.score', (newScore: number, oldScore: number) => {
@@ -83,6 +60,12 @@ NodeCG.waitForReplicants(activeBreakScene, activeRound).then(() => {
         for (let i = 0; i < newValue.games.length; i++) {
             doOnDifference(newValue, oldValue, `games[${i}].winner`, (winner: GameWinner, oldWinner: GameWinner) => {
                 setWinner(i, winner, oldWinner);
+            });
+
+            doOnNoDifference(newValue, oldValue, `games[${i}].winner`, (winner: GameWinner) => {
+                if ((teamANameDiffers && winner === 'alpha') || (teamBNameDiffers && winner === 'bravo')) {
+                    setWinner(i, winner, winner);
+                }
             });
 
             if (!isNewRound) {
@@ -131,7 +114,6 @@ function createStages(games: { winner: GameWinner, mode: string, stage: string }
     stageGrid.style.width = `${style.width}px`;
     stageGrid.style.gridTemplateColumns = `repeat(${games.length}, 1fr)`;
     stageGrid.style.gap = `${style.gap}px`;
-    const colorFilter = new Solver(hexToRgb(colors.blue)).solve().filter;
 
     let stagesHtml = '';
 
@@ -169,15 +151,15 @@ function createStages(games: { winner: GameWinner, mode: string, stage: string }
                 </svg>
                 <div class="stage-content-wrapper">
                     <div class="stage-info-wrapper" style="transform: translate(-100%, 0px); opacity: 0;">
+                        <div class="background"></div>
                         <div id="stage-image_${index}" class="stage-image" style="background-image: url('assets/stages/${mapNameToImagePath[game.stage]}'); filter: ${stageImageFilter}"></div>
                         <div id="stage-winner-wrapper_${index}" class="stage-winner-wrapper layout horiz" style="opacity: ${game.winner === 'none' ? '0' : '1'}">
                             <div class="winner-name">${getWinnerName(game.winner)}</div>
                         </div>
                         <div class="stage-line"></div>
                         <div class="stage-info layout vertical c-horiz">
-                            <div class="background"></div>
                             <div class="mode-icon layout horiz c-horiz c-vert">
-                                <img src="${getIconFromMode(game.mode)}" style="filter: ${colorFilter}">
+                                <img src="${getIconFromMode(game.mode)}">
                             </div>
                             <fitted-text class="mode-name" text="${game.mode}"></fitted-text>
                             <div class="stage-name-wrapper layout horiz c-vert">
@@ -191,6 +173,9 @@ function createStages(games: { winner: GameWinner, mode: string, stage: string }
 
     stageGrid.innerHTML = stagesHtml;
     gsap.set('.stage-border', { drawSVG: '50% 50%' });
+    games.forEach((game, index) => {
+        setWinner(index, game.winner, undefined);
+    });
 }
 
 function getWinnerName(winner: GameWinner) {
@@ -217,7 +202,7 @@ function setWinner(index: number, winner: GameWinner, oldWinner: GameWinner) {
     const timeline = stageUpdateTls[index];
     const winnerName = getWinnerName(winner);
 
-    timeline.addLabel('add');
+    timeline.addLabel('add').addLabel('setColor');
 
     if (oldWinner === 'none' || !oldWinner) {
         winnerText.innerText = winnerName;
@@ -232,6 +217,24 @@ function setWinner(index: number, winner: GameWinner, oldWinner: GameWinner) {
         } }))
             .add(gsap.to(winnerText, { duration: 0.35, opacity: 1 }));
     }
+
+    if (winner === 'none') {
+        setStageBorderColor(index, colors.blue);
+    } else {
+        setStageBorderColor(index, winner === 'alpha' ? colors.red : colors.green);
+    }
+}
+
+function setStageBorderColor(index: number, color: string): void {
+    const elemId = `#stage_${index}`;
+    const timeline = stageUpdateTls[index];
+    const dropShadowFilter = `drop-shadow(0 0 3px ${color}) drop-shadow(0 0 5px ${color})`;
+    const colorFilter = new Solver(hexToRgb(color)).solve().filter;
+
+    timeline.add(gsap.to(`${elemId} .stage-border-color`, { stroke: color, duration: 0.5 }), 'setColor')
+        .add(gsap.to(`${elemId} svg`, { filter: dropShadowFilter, duration: 0.5 }), 'setColor')
+        .add(gsap.to(`${elemId} .stage-line`, { border: `1px solid ${color}`, filter: dropShadowFilter, duration: 0.5 }), 'setColor')
+        .add(gsap.to(`${elemId} .mode-icon`, { duration: 0.5, filter: colorFilter }), 'setColor');
 }
 
 async function animNewRound(activeRound: ActiveRound): Promise<void> {
@@ -261,6 +264,7 @@ async function setGameData(index: number, game: { mode: string, stage: string })
     const stageImageElem = stageElem.querySelector('.stage-image') as HTMLElement;
     const stageLine = stageElem.querySelector('.stage-line');
     const stageData = stageElem.querySelector('.stage-info');
+    const winnerWrapper = stageElem.querySelector('.stage-winner-wrapper');
     const background = stageElem.querySelector('.background') as HTMLElement;
     const iconUrl = getIconFromMode(game.mode);
     const stageUrl = `assets/stages/${mapNameToImagePath[game.stage]}`;
@@ -273,16 +277,17 @@ async function setGameData(index: number, game: { mode: string, stage: string })
     tl.addLabel('stageOut').addLabel('stageIn', '+=0.5');
 
     background.style.alignSelf = 'flex-start';
-    tl.add(gsap.to([stageImageElem, stageLine, stageData], { duration: 0.35, x: '-100%', ease: 'power2.in' }), 'stageOut')
+    tl.add(gsap.to([stageImageElem, stageLine, stageData, winnerWrapper], { duration: 0.35, x: '-100%', ease: 'power2.in' }), 'stageOut')
         .add(gsap.to(background, { duration: 0.35, width: 0, ease: 'power2.in', onComplete: () => {
             stageNameElem.innerText = game.stage;
             stageModeElem.text = game.mode;
             stageModeIconElem.src = iconUrl;
             stageImageElem.style.backgroundImage = `url('${stageUrl}')`;
             background.style.alignSelf = 'flex-end';
-            gsap.set([stageImageElem, stageLine, stageData], { x: '100%' });
+            gsap.set([stageImageElem, stageLine, stageData, winnerWrapper], { x: '100%' });
         } }), 'stageOut')
-        .add(gsap.to([stageImageElem, stageLine, stageData], { duration: 0.35, x: 0, ease: 'power2.out' }), 'stageIn')
-        .add(gsap.to(background, { duration: 0.35, width: '100%', ease: 'power2.out' }), 'stageIn');
-
+        .add(gsap.to([stageImageElem, stageLine, stageData, winnerWrapper], { duration: 0.35, x: 0, ease: 'power2.out' }), 'stageIn');
+    if (activeBreakScene.value === 'stages') {
+        tl.add(gsap.to(background, { duration: 0.35, width: '100%', ease: 'power2.out' }), 'stageIn');
+    }
 }

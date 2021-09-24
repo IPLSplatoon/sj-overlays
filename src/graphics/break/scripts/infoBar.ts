@@ -56,10 +56,15 @@ musicShown.on('change', () => {
     setTopBarAnim();
 });
 
-activeRound.on('change', newValue => {
+activeRound.on('change', (newValue, oldValue) => {
     const firstUnfinishedRound = newValue.games.find(round => round.winner === 'none') ?? last(newValue.games);
+    if (oldValue) {
+        const oldFirstUnfinishedRound = oldValue.games.find(round => round.winner === 'none') ?? last(oldValue.games);
+        if (oldFirstUnfinishedRound.mode === firstUnfinishedRound.mode) return;
+    }
 
     const modeIcon = elementById<HTMLImageElement>('mode-icon');
+
     gsap.to(modeIcon, { duration: 0.35, opacity: 0, onComplete: async () => {
         const mode = firstUnfinishedRound.mode;
         const scale = ['Turf War', 'Unknown Mode'].includes(mode) ? '0.6' : '0.5';

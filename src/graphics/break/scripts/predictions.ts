@@ -7,7 +7,20 @@ import { elementById } from '../../helpers/elem';
 import { textOpacitySwap } from '../../helpers/anim';
 import { hidePrediction, showPrediction } from './sceneSwitcher';
 
+interface PredictionValues {
+    countA: number;
+    countB: number;
+    percentA: number;
+    percentB: number;
+}
+
 const predictionRevealTl = gsap.timeline();
+export const predictionTextChangeTl = gsap.timeline();
+const predictionNumberFormat = new Intl.NumberFormat('en-US', { style: 'decimal' });
+const pointCountElemA = elementById('prediction-point-count-a');
+const pointCountElemB = elementById('prediction-point-count-b');
+const predictionPercentElemA = elementById('prediction-percentage-a');
+const predictionPercentElemB = elementById('prediction-percentage-b');
 
 NodeCG.waitForReplicants(predictionStore, activeRound, activeBreakScene).then(() => {
     predictionStore.on('change', (newValue, oldValue) => {
@@ -23,28 +36,26 @@ NodeCG.waitForReplicants(predictionStore, activeRound, activeBreakScene).then(()
             });
         }
 
-        doOnDifference(newValue, oldValue, 'currentPrediction', (prediction?: Prediction) => {
+        doOnDifference(newValue, oldValue, 'currentPrediction', (prediction?: Prediction, oldPrediction?: Prediction) => {
             if (prediction) {
-                const alphaOutcome = prediction.outcomes
-                    .find(outcome => findOutcome(activeRound.value.teamA.name, outcome.title))
-                    ?? prediction.outcomes[0];
-                const bravoOutcome = prediction.outcomes
-                    .find(outcome => findOutcome(activeRound.value.teamB.name, outcome.title))
-                    ?? prediction.outcomes[1];
+                const values = getPredictionValues(prediction);
+                const oldValues = getPredictionValues(oldPrediction);
 
-                const totalPointsUsed = alphaOutcome.pointsUsed + bravoOutcome.pointsUsed;
-                const alphaPercentage = alphaOutcome.pointsUsed / totalPointsUsed * 100;
-                const bravoPercentage = bravoOutcome.pointsUsed / totalPointsUsed * 100;
+                const background = (values.percentA === 0 && values.percentB === 0) ? 'unset' : `linear-gradient(90deg, ${colors.red_a_20} 0%, ${colors.red_a_20} ${values.percentA}%, ${colors.green_a_40} ${values.percentA}%, ${colors.green_a_40} 100%)`;
+                gsap.to('#prediction-background', { duration: 0.25, background });
 
-                const background = `linear-gradient(90deg, ${colors.red_a_20} 0%, ${colors.red_a_20} ${alphaPercentage}%, ${colors.green_a_40} ${alphaPercentage}%, ${colors.green_a_40} 100%)`;
-                gsap.to('#prediction-background', { duration: 0.1, background });
-
-                const numberFormat = new Intl.NumberFormat('en-US', { style: 'decimal' });
-                elementById('prediction-point-count-a').innerText = `${numberFormat.format(alphaOutcome.pointsUsed)}p`;
-                elementById('prediction-point-count-b').innerText = `${numberFormat.format(bravoOutcome.pointsUsed)}p`;
-
-                elementById('prediction-percentage-a').innerText = `${Math.round(alphaPercentage)}%`;
-                elementById('prediction-percentage-b').innerText = `${Math.round(bravoPercentage)}%`;
+                predictionTextChangeTl.add(gsap.fromTo(values, {
+                    ...oldValues
+                }, {
+                    ...values,
+                    ease: 'power2.inOut',
+                    duration: 0.25,
+                    immediateRender: false,
+                    onUpdate: () => {
+                        updatePredictionCountDisplays(values);
+                    }
+                }));
+                updatePredictionCountDisplays(values);
             }
         });
 
@@ -58,6 +69,42 @@ NodeCG.waitForReplicants(predictionStore, activeRound, activeBreakScene).then(()
         });
     });
 });
+
+export function getPredictionValues(prediction: Prediction): PredictionValues {
+    if (!prediction) {
+        return {
+            countA: 0,
+            countB: 0,
+            percentA: 0,
+            percentB: 0
+        };
+    }
+
+    const alphaOutcome = prediction.outcomes
+        .find(outcome => findOutcome(activeRound.value.teamA.name, outcome.title))
+        ?? prediction.outcomes[0];
+    const bravoOutcome = prediction.outcomes
+        .find(outcome => findOutcome(activeRound.value.teamB.name, outcome.title))
+        ?? prediction.outcomes[1];
+
+    const totalPointsUsed = alphaOutcome.pointsUsed + bravoOutcome.pointsUsed;
+    const alphaPercentage = totalPointsUsed === 0 ? 0 : alphaOutcome.pointsUsed / totalPointsUsed * 100;
+    const bravoPercentage = totalPointsUsed === 0 ? 0 : bravoOutcome.pointsUsed / totalPointsUsed * 100;
+
+    return {
+        countA: alphaOutcome.pointsUsed,
+        countB: bravoOutcome.pointsUsed,
+        percentA: alphaPercentage,
+        percentB: bravoPercentage
+    };
+}
+
+export function updatePredictionCountDisplays(values: PredictionValues): void {
+    predictionPercentElemA.innerText = `${Math.round(values.percentA)}%`;
+    predictionPercentElemB.innerText = `${Math.round(values.percentB)}%`;
+    pointCountElemA.innerText = `${predictionNumberFormat.format(Math.round(values.countA))}p`;
+    pointCountElemB.innerText = `${predictionNumberFormat.format(Math.round(values.countB))}p`;
+}
 
 function findOutcome(teamName: string, outcomeTitle: string): boolean {
     return teamName === outcomeTitle || new RegExp(teamName).test(outcomeTitle);
@@ -75,7 +122,7 @@ function animPredictionStart() {
     predictionRevealTl.add(gsap.to('.teams-wrapper .content .players', { duration: 0.5, height: playersHeight, ease: 'power2.inOut' }), 'anim');
     predictionRevealTl.add(gsap.to('.teams-wrapper', { duration: 0.5, top: teamsPosTop, ease: 'power2.inOut' }), 'anim');
     predictionRevealTl.add(gsap.to(['.teams-wrapper .content', '.team-display .background'], { duration: 0.5, height: teamsHeight, ease: 'power2.inOut' }), 'anim');
-    showPrediction(predictionRevealTl, 'show-container');
+    showPrediction(predictionRevealTl, 'show-container', false);
 }
 
 function animPredictionEnd() {

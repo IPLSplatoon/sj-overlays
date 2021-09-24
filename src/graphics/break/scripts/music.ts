@@ -26,9 +26,12 @@ nowPlaying.on('change', newValue => {
             songName,
             elementById<FittedText>('info-bar-music'),
             [elementById('info-bar-music-icon')]));
-    mainMusicTl.add(textSlideSwap(songName, elementById('main-music-text')));
+
+    mainMusicTl.addLabel('song-change');
+    mainMusicTl.add(textSlideSwap(isEmpty(newValue.song) ? 'Unknown Track' : newValue.song, elementById('main-music-text-song')), 'song-change')
+        .add(textSlideSwap(isEmpty(newValue.artist) ? 'Unknown Artist' : newValue.artist, elementById('main-music-text-artist')), 'song-change');
 });
 
 musicShown.on('change', newValue => {
-    toggleMainRow('.main-row.music', newValue, 'main');
+    toggleMainRow('.main-row.music', newValue, 'main', 90);
 });

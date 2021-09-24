@@ -1,12 +1,12 @@
 import { gsap } from 'gsap';
-import { mainFlavorText } from '../../helpers/replicants';
+import { mainFlavorText, nextRound } from '../../helpers/replicants';
 import { textSlideSwap } from '../../helpers/anim';
 import { elementById } from '../../helpers/elem';
 
 export let currentSlide = 'main';
 const mainTextSwapTl = gsap.timeline();
 let slideTl = gsap.timeline();
-const slides = ['main', 'support'];
+const slides = ['main', 'support', 'next-round'];
 
 export function forceSetSlide(index: number): void {
     if (slideTl) {
@@ -35,7 +35,8 @@ function setSlide(index: number): void {
             stagger: -0.05,
             ease: 'power2.in',
             onComplete: function() {
-                if (index + 1 === slides.length) {
+                const nextIndex = index + 1;
+                if (nextIndex === slides.length || (nextIndex === 2 && !nextRound.value.showOnStream)) {
                     setSlide(0);
                 } else {
                     setSlide(index + 1);
@@ -45,11 +46,16 @@ function setSlide(index: number): void {
 }
 
 mainFlavorText.on('change', newValue => {
-    mainTextSwapTl.add(textSlideSwap(newValue, elementById('main-flavor-text')));
+    const textElem = elementById<FittedText>('main-flavor-text');
+    if (currentSlide === 'main') {
+        mainTextSwapTl.add(textSlideSwap(newValue, textElem));
+    } else {
+        textElem.text = newValue;
+    }
 });
 
-export function toggleMainRow(selector: string, isVisible: boolean, slide: string): void {
-    const elemHeight = isVisible ? 54 : 0;
+export function toggleMainRow(selector: string, isVisible: boolean, slide: string, height = 54): void {
+    const elemHeight = isVisible ? height : 0;
     const elemOpacity = (isVisible && currentSlide === slide) ? 1 : 0;
     const elemMargin = isVisible ? '8px 0' : '0 0';
     const timerElem = document.querySelector(selector) as HTMLElement;

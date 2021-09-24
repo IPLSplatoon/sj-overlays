@@ -1,8 +1,10 @@
-import { activeBreakScene, predictionStore } from '../../helpers/replicants';
+import { activeBreakScene, activeRound, predictionStore } from '../../helpers/replicants';
 import { gsap } from 'gsap';
 import { forceSetSlide } from './mainSlides';
 import { ObsEvent } from '../../helpers/obs';
 import { animBackgroundIn } from './background';
+import { splitTeamAName, splitTeamBName } from './teams';
+import { getPredictionValues, predictionTextChangeTl, updatePredictionCountDisplays } from './predictions';
 
 export const sceneChangeTl = gsap.timeline();
 
@@ -33,7 +35,7 @@ if (window.obsstudio) {
     });
 }
 
-NodeCG.waitForReplicants(activeBreakScene, predictionStore).then(() => {
+NodeCG.waitForReplicants(activeBreakScene, predictionStore, activeRound).then(() => {
     activeBreakScene.on('change', (newValue, oldValue) => {
         if (oldValue) {
             switch (oldValue) {
@@ -46,8 +48,6 @@ NodeCG.waitForReplicants(activeBreakScene, predictionStore).then(() => {
                 case 'main':
                     hideMain();
                     break;
-                default:
-                    console.log('uhhhhhhh');
             }
         }
 
@@ -63,8 +63,6 @@ NodeCG.waitForReplicants(activeBreakScene, predictionStore).then(() => {
                 showMain();
                 hideInfoBar('sceneOut+=0.1');
                 break;
-            default:
-                console.log('uhhhh');
         }
 
         if (newValue !== 'main') {
@@ -96,7 +94,8 @@ function showTeams(): void {
         .add(gsap.to(['.teams-wrapper .content', '.team-display .background'], { duration: 0.10, opacity: 1, ease: 'power2.out' }), 'teamsIn')
         .add(gsap.to('.teams-wrapper .line.top', { duration: 0.55, width: 375, opacity: 1, ease: 'power2.out' }), 'teamsLineIn')
         .add(gsap.to('.teams-wrapper .line.mid', { duration: 0.55, width: 600, opacity: 1, ease: 'power2.out' }), 'teamsLineIn')
-        .add(gsap.to('.teams-wrapper .content .team-name fitted-text', { duration: 0.5, y: 0, ease: 'power2.out' }), 'teamsTextIn')
+        .add(gsap.to(splitTeamAName.words, { duration: 0.5, y: 0, ease: 'power2.out', stagger: { amount: 0.2 } }), 'teamsTextIn')
+        .add(gsap.to(splitTeamBName.words, { duration: 0.5, y: 0, ease: 'power2.out', stagger: { amount: 0.2 } }), 'teamsTextIn')
         .add(gsap.to('.teams-wrapper .content .team-b-player', { duration: 0.5, x: 0, ease: 'power2.out', stagger: 0.1, opacity: 1 }), 'teamsTextIn')
         .add(gsap.to('.teams-wrapper .content .team-a-player', { duration: 0.5, x: 0, ease: 'power2.out', stagger: 0.1, opacity: 1 }), 'teamsTextIn');
 
@@ -108,12 +107,13 @@ function hideTeams(): void {
     sceneChangeTl
         .addLabel('teamsTextOut')
         .addLabel('sceneOut')
-        .addLabel('teamsLineOut', '+=0.1')
-        .addLabel('teamsOut', '+=0.40');
+        .addLabel('teamsLineOut', '+=0.4')
+        .addLabel('teamsOut', '+=0.6');
 
     sceneChangeTl.add(gsap.to('.teams-wrapper .content .team-a-player', { duration: 0.5, x: -350, ease: 'power2.in', stagger: 0.1, opacity: 0 }), 'teamsTextOut')
         .add(gsap.to('.teams-wrapper .content .team-b-player', { duration: 0.5, x: -350, ease: 'power2.in', stagger: 0.1, opacity: 0 }), 'teamsTextOut')
-        .add(gsap.to('.teams-wrapper .content .team-name fitted-text', { duration: 0.5, y: 100, ease: 'power2.in' }), 'teamsTextOut')
+        .add(gsap.to(splitTeamAName.words, { duration: 0.5, y: 100, ease: 'power2.in', stagger: { amount: 0.2 } }), 'teamsTextOut')
+        .add(gsap.to(splitTeamBName.words, { duration: 0.5, y: 100, ease: 'power2.in', stagger: { amount: 0.2 } }), 'teamsTextOut')
         .add(gsap.to(['.teams-wrapper .line.top', '.teams-wrapper .line.mid'], { duration: 0.55, width: 0, opacity: 0, ease: 'power2.in' }), 'teamsLineOut')
         .add(gsap.to('.teams-wrapper .versus', { duration: 0.40, y: 200, ease: 'power1.in', delay: 0.15 }), 'teamsOut')
         .add(gsap.to(['.teams-wrapper .content', '.team-display .background'], { duration: 0.55, height: 0, ease: 'power2.in' }), 'teamsOut')
@@ -125,17 +125,38 @@ function hideTeamsImmediate(): void {
     const predictionActive = predictionStore.value.currentPrediction?.status === 'ACTIVE';
 
     sceneChangeTl.add(gsap.set(['.teams-wrapper .content .team-a-player', '.teams-wrapper .content .team-b-player'], { x: -350, opacity: 0 }))
-        .add(gsap.set('.teams-wrapper .content .team-name fitted-text', { y: 100 }))
+        .add(gsap.set([splitTeamAName.words, splitTeamBName.words], { y: 100 }))
         .add(gsap.set(['.teams-wrapper .line.top', '.teams-wrapper .line.mid'], { width: 0, opacity: 0 }))
         .add(gsap.set('.teams-wrapper .versus', { y: 200 }))
         .add(gsap.set(['.teams-wrapper .content', '.team-display .background'], { height: 0, opacity: 0 }));
     if (predictionActive) hidePredictionImmediate(sceneChangeTl);
 }
 
-export function showPrediction(tl: gsap.core.Timeline, label: string): void {
+export function showPrediction(tl: gsap.core.Timeline, label: string, animateValuesIn = true): void {
     tl.add(gsap.to('.prediction-box', { duration: 0.65, width: 1300, ease: 'power2.out' }), label)
         .add(gsap.to('.prediction-box', { duration: 0.1, opacity: 1, ease: 'power2.out' }), label)
         .add(gsap.to('#prediction-title', { duration: 0.5, opacity: 1, ease: 'power2.out' }), label);
+
+    if (animateValuesIn) {
+        const values = getPredictionValues(predictionStore.value.currentPrediction);
+
+        predictionTextChangeTl.clear(true)
+            .add(gsap.fromTo(values, {
+                countA: 0,
+                countB: 0,
+                percentA: 0,
+                percentB: 0
+            }, {
+                ...values,
+                ease: 'power2.out',
+                delay: 1.55,
+                duration: 2.5,
+                immediateRender: false,
+                onUpdate: () => {
+                    updatePredictionCountDisplays(values);
+                }
+            }));
+    }
 }
 
 export function hidePrediction(tl: gsap.core.Timeline, label: string): void {

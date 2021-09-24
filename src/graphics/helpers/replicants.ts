@@ -1,6 +1,6 @@
 import { DASHBOARD_BUNDLE_NAME } from './constants';
 import { NodeCGBrowser } from 'nodecg/browser';
-import { MusicShown, NowPlaying, Casters, ActiveRound, PredictionStore, ActiveBreakScene, MainFlavorText, NextRoundStartTime, ScoreboardData } from 'schemas';
+import { MusicShown, NowPlaying, Casters, ActiveRound, PredictionStore, ActiveBreakScene, MainFlavorText, NextRoundStartTime, ScoreboardData, NextRound } from 'schemas';
 
 export const musicShown = nodecg.Replicant<MusicShown>('musicShown', DASHBOARD_BUNDLE_NAME);
 export const nowPlaying = nodecg.Replicant<NowPlaying>('nowPlaying', DASHBOARD_BUNDLE_NAME);
@@ -11,3 +11,4 @@ export const activeBreakScene = nodecg.Replicant<ActiveBreakScene>('activeBreakS
 export const mainFlavorText = nodecg.Replicant<MainFlavorText>('mainFlavorText', DASHBOARD_BUNDLE_NAME);
 export const nextRoundTime = nodecg.Replicant<NextRoundStartTime>('nextRoundStartTime', DASHBOARD_BUNDLE_NAME);
 export const scoreboardData = nodecg.Replicant<ScoreboardData>('scoreboardData', DASHBOARD_BUNDLE_NAME);
+export const nextRound = nodecg.Replicant<NextRound>('nextRound', DASHBOARD_BUNDLE_NAME);

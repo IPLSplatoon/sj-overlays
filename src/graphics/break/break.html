@@ -53,7 +53,10 @@
                     <div class="separator"></div>
                     <div class="main-row music layout horiz c-vert">
                         <i class="icon fas fa-music"></i>
-                        <fitted-text id="main-music-text" max-width="830"></fitted-text>
+                        <div class="layout vertical main-music-text-container">
+                            <fitted-text id="main-music-text-artist" max-width="830"></fitted-text>
+                            <fitted-text id="main-music-text-song" max-width="830"></fitted-text>
+                        </div>
                     </div>
                     <div class="main-row timer layout horiz c-vert">
                         <i class="icon fa fa-hourglass-end"></i>
@@ -79,6 +82,17 @@
                         <i class="icon fa fa-globe"></i>
                         <div>IPLabs.ink</div>
                     </div>
+                </div>
+                <div class="slide next-round layout vertical c-vert">
+                    <div class="title">Up next</div>
+                    <div class="separator"></div>
+                    <div>
+                        <fitted-text id="next-team-names" max-width="900" use-inner-html></fitted-text>
+                    </div>
+                    <div>
+                        <div class="matches-container layout horiz c-vert" id="next-matches-container"></div>
+                    </div>
+                    <span id="round-size"></span>
                 </div>
             </div>
         </div>
