@@ -163,6 +163,9 @@ function createStages(games: { winner: GameWinner, mode: string, stage: string }
 
     stageGrid.innerHTML = stagesHtml;
     gsap.set('.stage-border', { drawSVG: '50% 50%' });
+    games.forEach((game, index) => {
+        setWinner(index, game.winner, undefined);
+    });
 }
 
 function getWinnerName(winner: GameWinner) {
@@ -189,7 +192,7 @@ function setWinner(index: number, winner: GameWinner, oldWinner: GameWinner) {
     const timeline = stageUpdateTls[index];
     const winnerName = getWinnerName(winner);
 
-    timeline.addLabel('add');
+    timeline.addLabel('add').addLabel('setColor');
 
     if (oldWinner === 'none' || !oldWinner) {
         winnerText.innerText = winnerName;
@@ -204,6 +207,22 @@ function setWinner(index: number, winner: GameWinner, oldWinner: GameWinner) {
         } }))
             .add(gsap.to(winnerText, { duration: 0.35, opacity: 1 }));
     }
+
+    if (winner === 'none') {
+        setStageBorderColor(index, colors.blue);
+    } else {
+        setStageBorderColor(index, winner === 'alpha' ? colors.red : colors.green);
+    }
+}
+
+function setStageBorderColor(index: number, color: string): void {
+    const elemId = `#stage_${index}`;
+    const timeline = stageUpdateTls[index];
+    const dropShadowFilter = `drop-shadow(0 0 3px ${color}) drop-shadow(0 0 5px ${color})`;
+
+    timeline.add(gsap.to(`${elemId} .stage-border-color`, { stroke: color, duration: 0.5 }), 'setColor')
+        .add(gsap.to(`${elemId} svg`, { filter: dropShadowFilter, duration: 0.5 }), 'setColor')
+        .add(gsap.to(`${elemId} .stage-line`, { border: `1px solid ${color}`, filter: dropShadowFilter, duration: 0.5 }), 'setColor');
 }
 
 async function animNewRound(activeRound: ActiveRound): Promise<void> {
