@@ -1,8 +1,9 @@
-import { activeRound } from '../../helpers/replicants';
+import { activeBreakScene, activeRound } from '../../helpers/replicants';
 import { doOnDifference } from '../../helpers/object';
 import { textOpacitySwap } from '../../helpers/anim';
 import { elementById } from '../../helpers/elem';
 import { gsap } from 'gsap';
+import { SplitText } from 'gsap/SplitText';
 import escape from 'lodash/escape';
 import isEmpty from 'lodash/isEmpty';
 
@@ -19,6 +20,9 @@ const teamTimelines = {
     b: teamBTimeline
 };
 
+export let splitTeamAName = new SplitText('#team-a-name > div', { type: 'words' });
+export let splitTeamBName = new SplitText('#team-b-name > div', { type: 'words' });
+
 activeRound.on('change', (newValue, oldValue) => {
     if (!oldValue) {
         addPlayerElems(newValue.teamA.players, 'a');
@@ -34,11 +38,21 @@ activeRound.on('change', (newValue, oldValue) => {
     }
 
     doOnDifference(newValue, oldValue, 'teamA.name', (name: string) => {
-        textOpacitySwap(name, elementById('team-a-name'));
+        textOpacitySwap(name, elementById('team-a-name'), [], () => {
+            splitTeamAName = new SplitText('#team-a-name > div', { type: 'words' });
+            if (activeBreakScene.value !== 'teams') {
+                gsap.set(splitTeamAName.words, { y: 100 });
+            }
+        });
     });
 
     doOnDifference(newValue, oldValue, 'teamB.name', (name: string) => {
-        textOpacitySwap(name, elementById('team-b-name'));
+        textOpacitySwap(name, elementById('team-b-name'), [], () => {
+            splitTeamBName = new SplitText('#team-b-name > div', { type: 'words' });
+            if (activeBreakScene.value !== 'teams') {
+                gsap.set(splitTeamBName.words, { y: 100 });
+            }
+        });
     });
 });
 
