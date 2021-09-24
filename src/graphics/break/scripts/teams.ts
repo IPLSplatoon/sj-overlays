@@ -1,6 +1,5 @@
 import { activeBreakScene, activeRound } from '../../helpers/replicants';
 import { doOnDifference } from '../../helpers/object';
-import { textOpacitySwap } from '../../helpers/anim';
 import { elementById } from '../../helpers/elem';
 import { gsap } from 'gsap';
 import { SplitText } from 'gsap/SplitText';
@@ -14,6 +13,9 @@ interface Player {
 
 const teamATimeline = gsap.timeline();
 const teamBTimeline = gsap.timeline();
+
+const teamANameElem = elementById<FittedText>('team-a-name');
+const teamBNameElem = elementById<FittedText>('team-b-name');
 
 const teamTimelines = {
     a: teamATimeline,
@@ -38,21 +40,25 @@ activeRound.on('change', (newValue, oldValue) => {
     }
 
     doOnDifference(newValue, oldValue, 'teamA.name', (name: string) => {
-        textOpacitySwap(name, elementById('team-a-name'), [], () => {
+        gsap.to(splitTeamAName.words, { y: 100, duration: 0.5, stagger: { amount: 0.1 }, ease: 'power2.in', onComplete: () => {
+            teamANameElem.text = name;
             splitTeamAName = new SplitText('#team-a-name > div', { type: 'words' });
-            if (activeBreakScene.value !== 'teams') {
-                gsap.set(splitTeamAName.words, { y: 100 });
+            gsap.set(splitTeamAName.words, { y: 100 });
+            if (activeBreakScene.value === 'teams') {
+                gsap.to(splitTeamAName.words, { y: 0, duration: 0.5, stagger: { amount: 0.1 }, ease: 'power2.out' });
             }
-        });
+        } });
     });
 
     doOnDifference(newValue, oldValue, 'teamB.name', (name: string) => {
-        textOpacitySwap(name, elementById('team-b-name'), [], () => {
+        gsap.to(splitTeamBName.words, { y: 100, duration: 0.5, stagger: { amount: 0.1 }, ease: 'power2.in', onComplete: () => {
+            teamBNameElem.text = name;
             splitTeamBName = new SplitText('#team-b-name > div', { type: 'words' });
-            if (activeBreakScene.value !== 'teams') {
-                gsap.set(splitTeamBName.words, { y: 100 });
+            gsap.set(splitTeamBName.words, { y: 100 });
+            if (activeBreakScene.value === 'teams') {
+                gsap.to(splitTeamBName.words, { y: 0, duration: 0.5, stagger: { amount: 0.1 }, ease: 'power2.out' });
             }
-        });
+        } });
     });
 });
 
