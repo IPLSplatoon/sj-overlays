@@ -61,8 +61,10 @@ function animatePlayers(players: Player[], team: 'a' | 'b') {
     timeline.add(gsap.to(`.team-${team}-player`, { duration: 0.35, opacity: 0, onComplete: () => {
         addPlayerElems(players, team);
 
-        timeline.addLabel('teamsIn');
-        timeline.add(gsap.to(`.team-${team}-player`, { duration: 0.5, x: 0, opacity: 1, stagger: 0.05 }), 'teamsIn');
+        if (activeBreakScene.value === 'teams') {
+            timeline.addLabel('teamsIn');
+            timeline.add(gsap.to(`.team-${team}-player`, { duration: 0.5, x: 0, opacity: 1, stagger: 0.05 }), 'teamsIn');
+        }
     } }));
 }
 
