@@ -286,7 +286,8 @@ async function setGameData(index: number, game: { mode: string, stage: string })
             background.style.alignSelf = 'flex-end';
             gsap.set([stageImageElem, stageLine, stageData, winnerWrapper], { x: '100%' });
         } }), 'stageOut')
-        .add(gsap.to([stageImageElem, stageLine, stageData, winnerWrapper], { duration: 0.35, x: 0, ease: 'power2.out' }), 'stageIn')
-        .add(gsap.to(background, { duration: 0.35, width: '100%', ease: 'power2.out' }), 'stageIn');
-
+        .add(gsap.to([stageImageElem, stageLine, stageData, winnerWrapper], { duration: 0.35, x: 0, ease: 'power2.out' }), 'stageIn');
+    if (activeBreakScene.value === 'stages') {
+        tl.add(gsap.to(background, { duration: 0.35, width: '100%', ease: 'power2.out' }), 'stageIn');
+    }
 }
