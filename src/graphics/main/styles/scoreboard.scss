@@ -49,6 +49,14 @@
                 font-family: 'Montserrat', sans-serif;
             }
 
+            #team-a-score {
+                transform: translate(0px, 50px);
+            }
+
+            #team-b-score {
+                transform: translate(0px, -50px);
+            }
+
             .team-color {
                 height: 33px;
                 width: 20px;
@@ -62,10 +70,10 @@
     .flavor-text-container {
         position: absolute;
         top: 109px;
-        left: 45px;
+        left: 30px;
         padding-right: 7px;
         height: 43px;
-        width: 315px;
+        width: 330px;
         justify-content: flex-end;
         overflow: hidden;
 
@@ -88,6 +96,7 @@
         fitted-text {
             font-size: 24px;
             z-index: 5;
+            opacity: 0;
         }
     }
 }

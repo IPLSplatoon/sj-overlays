@@ -50,7 +50,7 @@ nodecg.listenFor('mainShowCasters', DASHBOARD_BUNDLE_NAME, () => {
         .add(gsap.to('#casters > .caster', { x: 0, opacity: 1, duration: 0.65, ease: 'power2.out', stagger: 0.1, delay: 0.25 }), 'textIn')
         .add(gsap.to('.casters-wrapper > .title > .icon, .casters-wrapper > .title > .text', { x: 0, opacity: 1, duration: 0.65, ease: 'power2.out', stagger: 0.1 }), 'textIn');
 
-    castersDisplayTl.add(gsap.to({}, { duration: 5 }));
+    castersDisplayTl.add(gsap.to({}, { duration: 15 }));
 
     castersDisplayTl.addLabel('textOut').addLabel('lineOut', '+=0.35');
 
