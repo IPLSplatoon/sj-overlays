@@ -10,27 +10,49 @@ const scoreUpdateTls: Record<'a' | 'b', gsap.core.Timeline> = {
     b: gsap.timeline()
 };
 
-activeRound.on('change', (newValue, oldValue) => {
-    doOnDifference(newValue, oldValue, 'teamA.score',
-        (value: number, oldValue: number) => animUpdateScore(value, oldValue, 'a'));
-    doOnDifference(newValue, oldValue, 'teamB.score',
-        (value: number, oldValue: number) => animUpdateScore(value, oldValue, 'b'));
+NodeCG.waitForReplicants(activeRound, scoreboardData).then(() => {
+    activeRound.on('change', (newValue, oldValue) => {
+        if (scoreboardData.value.isVisible) {
+            doOnDifference(newValue, oldValue, 'teamA.score',
+                (value: number, oldValue: number) => animUpdateScore(value, oldValue, 'a'));
+            doOnDifference(newValue, oldValue, 'teamB.score',
+                (value: number, oldValue: number) => animUpdateScore(value, oldValue, 'b'));
+        } else {
+            elementById<FittedText>('team-a-score').text = newValue.teamA.score.toString();
+            elementById<FittedText>('team-b-score').text = newValue.teamB.score.toString();
+        }
 
-    doOnDifference(newValue, oldValue, 'teamA.name',
-        (value: string) => textOpacitySwap(value, elementById('team-a-name')));
-    doOnDifference(newValue, oldValue, 'teamB.name',
-        (value: string) => textOpacitySwap(value, elementById('team-b-name')));
+        doOnDifference(newValue, oldValue, 'teamA.name',
+            (value: string) => textOpacitySwap(value, elementById('team-a-name')));
+        doOnDifference(newValue, oldValue, 'teamB.name',
+            (value: string) => textOpacitySwap(value, elementById('team-b-name')));
 
-    gsap.to('#team-a-color', {
-        backgroundColor: newValue.teamA.color,
-        duration: 0.35
+        gsap.to('#team-a-color', {
+            backgroundColor: newValue.teamA.color,
+            duration: 0.35
+        });
+
+        gsap.to('#team-b-color', {
+            backgroundColor: newValue.teamB.color,
+            duration: 0.35
+        });
     });
 
-    gsap.to('#team-b-color', {
-        backgroundColor: newValue.teamB.color,
-        duration: 0.35
+    scoreboardData.on('change', (newValue, oldValue) => {
+        if (newValue.isVisible) {
+            doOnDifference(newValue, oldValue, 'flavorText', (flavorText: string) => {
+                textOpacitySwap(flavorText, elementById('scoreboard-flavor-text'));
+            });
+
+            showScoreboard();
+        } else {
+            elementById<FittedText>('scoreboard-flavor-text').text = newValue.flavorText;
+
+            hideScoreboard();
+        }
     });
 });
+
 
 function animUpdateScore(newScore: number, oldScore: number, team: 'a' | 'b') {
     const scoreElem = elementById<FittedText>(`team-${team}-score`);
@@ -44,18 +66,6 @@ function animUpdateScore(newScore: number, oldScore: number, team: 'a' | 'b') {
     } }));
     timeline.add(gsap.to(scoreElem, { duration: 0.35, y: 0, ease: 'power2.out' }));
 }
-
-scoreboardData.on('change', (newValue, oldValue) => {
-    doOnDifference(newValue, oldValue, 'flavorText', (flavorText: string) => {
-        textOpacitySwap(flavorText, elementById('scoreboard-flavor-text'));
-    });
-
-    if (newValue.isVisible) {
-        showScoreboard();
-    } else {
-        hideScoreboard();
-    }
-});
 
 function showScoreboard(): void {
     scoreboardDisplayTl.addLabel('lineIn').addLabel('textIn', '+=0.45');
