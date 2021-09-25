@@ -57,5 +57,5 @@ export const mapNameToImagePath: Record<string, string> = {
     'Wahoo World': 'S2_Stage_Wahoo_World.png',
     'Walleye Warehouse': 'S2_Stage_Walleye_Warehouse.png',
     'Skipper Pavilion': 'S2_Stage_Skipper_Pavilion.png',
-    'Unknown Stage': 'low-ink-unknown-map.png'
+    'Unknown Stage': 'SJ_Unknown-Map-4.png'
 };

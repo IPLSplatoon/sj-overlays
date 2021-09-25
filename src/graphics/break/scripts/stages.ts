@@ -161,7 +161,7 @@ function createStages(games: { winner: GameWinner, mode: string, stage: string }
                             <div class="mode-icon layout horiz c-horiz c-vert">
                                 <img src="${getIconFromMode(game.mode)}">
                             </div>
-                            <fitted-text class="mode-name" text="${game.mode}"></fitted-text>
+                            <fitted-text class="mode-name" text="${game.mode}" max-width="${style.stageWidth - 30}"></fitted-text>
                             <div class="stage-name-wrapper layout horiz c-vert">
                                 <div class="stage-name">${game.stage}</div>
                             </div>
