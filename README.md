@@ -5,15 +5,15 @@ Broadcast overlays for SuperJump, a Splatoon tournament by Inkling Performance L
 ## Setup
 
 - Set up `ipl-overlay-controls` using the [install guide.](https://github.com/inkfarer/ipl-overlay-controls#readme)
-- Ensure you have access to the private GSAP registry: [Guide](https://greensock.com/docs/v3/Installation#private)
 
 ### Pre-built version (For production use)
 
 - Clone the `build` branch of this repository to `[nodecg]/bundles/sj-overlays`
-- Install dependencies: `npm i --production`
+- All done!
 
 ### Build manually
 
+- Ensure you have access to the private GSAP registry ('Shockingly' tier at minimum): [Guide](https://greensock.com/docs/v3/Installation#private)
 - Clone this repository to `[nodecg]/bundles/sj-overlays`
 - Install dependencies: `npm i`
 - Run build: `npm run build`
