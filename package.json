@@ -1,7 +1,7 @@
 {
     "name": "sj-overlays",
     "version": "0.0.0",
-    "compatibleDashboardVersion": "^3.1.0",
+    "compatibleDashboardVersion": "^4.0.0",
     "description": "Broadcast overlays for SuperJump, a Splatoon tournament by Inkling Performance Labs.",
     "homepage": "https://github.com/iplsplatoon/sj-overlays",
     "author": {
