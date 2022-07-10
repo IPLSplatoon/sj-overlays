@@ -52,7 +52,7 @@ NodeCG.waitForReplicants(activeBreakScene, activeRound).then(() => {
             animUpdateScore(newScore, oldScore, 'b');
         });
 
-        const isNewRound = newValue.round.id !== oldValue?.round.id;
+        const isNewRound = newValue.match.id !== oldValue?.match.id;
         if (isNewRound) {
             await animNewRound(newValue);
         }
