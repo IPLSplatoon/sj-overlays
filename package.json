@@ -49,8 +49,6 @@
         "@fortawesome/free-brands-svg-icons": "^6.1.1",
         "@fortawesome/free-solid-svg-icons": "6.1.1",
         "@fortawesome/vue-fontawesome": "^3.0.0-5",
-
-
         "@pixi/app": "^6.1.2",
         "@pixi/constants": "^6.1.2",
         "@pixi/core": "^6.1.2",
@@ -63,49 +61,40 @@
         "@pixi/spritesheet": "^6.1.2",
         "@pixi/ticker": "^6.1.2",
         "@pixi/utils": "^6.1.2",
-        "pixi-filters": "^4.1.4",
-
-        "gsap": "npm:@gsap/shockingly@^3.10.2",
-
-
         "@types/lodash": "^4.14.171",
         "@types/luxon": "^1.27.1",
-        "ts-node": "^10.7.0",
-        "typescript": "^4.6.3",
-
-
-        "@vue/compiler-sfc": "^3.2.31",
-        "vue": "^3.2.33",
-        "vue-loader": "^17.0.0",
-        "pinia": "^2.0.11",
-
-
+        "@types/node": "^15.14.9",
+        "@types/webpack": "^5.28.0",
         "@typescript-eslint/eslint-plugin": "^4.26.0",
         "@typescript-eslint/parser": "^4.26.0",
-        "eslint-plugin-vue": "^7.19.1",
-        "vue-eslint-parser": "^7.11.0",
+        "@vue/compiler-sfc": "^3.2.31",
+        "cross-env": "^7.0.3",
+        "css-loader": "^6.2.0",
         "eslint": "^7.28.0",
         "eslint-import-resolver-typescript": "^2.4.0",
-        "eslint-plugin-import": "^2.23.4",
-
-
-        "cross-env": "^7.0.3",
-        "luxon": "^2.0.1",
-        "trash-cli": "^4.0.0",
-        "lodash": "^4.17.21",
-
-
-        "webpack": "^5.72.0",
-        "webpack-cli": "^4.9.2",
-        "tsconfig-paths-webpack-plugin": "^3.5.2",
-        "webpack-livereload-plugin": "^3.0.2",
+        "eslint-plugin-vue": "^7.19.1",
+        "fitted-text": "^2.0.5",
         "fork-ts-checker-webpack-plugin": "^7.2.3",
-        "html-webpack-plugin": "^5.3.1",
         "globby": "^11.0.3",
-
+        "gsap": "npm:@gsap/shockingly@^3.10.2",
+        "html-webpack-plugin": "^5.5.0",
+        "lodash": "^4.17.21",
+        "luxon": "^2.0.1",
+        "pinia": "^2.0.11",
+        "pixi-filters": "^4.1.4",
         "sass": "^1.49.10",
         "sass-loader": "^12.6.0",
         "style-loader": "^3.3.1",
-        "css-loader": "^6.2.0"
+        "trash-cli": "^4.0.0",
+        "ts-loader": "^9.2.6",
+        "ts-node": "^10.7.0",
+        "tsconfig-paths-webpack-plugin": "^3.5.2",
+        "typescript": "^4.6.3",
+        "vue": "^3.2.33",
+        "vue-eslint-parser": "^7.11.0",
+        "vue-loader": "^17.0.0",
+        "webpack": "^5.72.0",
+        "webpack-cli": "^4.9.2",
+        "webpack-livereload-plugin": "^3.0.2"
     }
 }

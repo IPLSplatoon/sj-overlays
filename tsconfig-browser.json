@@ -9,9 +9,6 @@
             "dom",
             "dom.iterable"
         ],
-        "types": [
-            "webpack-env"
-        ],
         "esModuleInterop": true,
         "experimentalDecorators": true,
         "skipLibCheck": true,
