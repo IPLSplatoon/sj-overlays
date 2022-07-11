@@ -10,8 +10,7 @@
             "dom.iterable"
         ],
         "types": [
-            "webpack-env",
-            "jest"
+            "webpack-env"
         ],
         "esModuleInterop": true,
         "experimentalDecorators": true,
@@ -22,6 +21,9 @@
         "paths": {
             "nodecg/*": [
                 "../../types/*"
+            ],
+            "types/*": [
+                "src/types/*"
             ],
             "schemas": [
                 "../ipl-overlay-controls/src/types/schemas/index"

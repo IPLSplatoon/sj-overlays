@@ -11,7 +11,8 @@
     "extends": [
         "eslint:recommended",
         "plugin:@typescript-eslint/recommended",
-        "plugin:import/typescript"
+        "plugin:import/typescript",
+        "plugin:vue/vue3-recommended"
     ],
     "settings": {
         "import/resolver": {
@@ -25,8 +26,9 @@
         },
         "import/extensions": [".js", ".ts"]
     },
-    "parser": "@typescript-eslint/parser",
+    "parser": "vue-eslint-parser",
     "parserOptions": {
+        "parser": "@typescript-eslint/parser",
         "ecmaVersion": 12,
         "sourceType": "module"
     },
@@ -35,13 +37,7 @@
     ],
     "rules": {
         "import/no-extraneous-dependencies": "off",
-        "max-len": ["error", {
-            "code": 120,
-            "ignorePattern": "^import\\s.+\\sfrom\\s.+;$",
-            "ignoreRegExpLiterals": true,
-            "ignoreTemplateLiterals": true,
-            "ignoreStrings": true
-        }],
+        "max-len": "off",
         "indent": ["warn", 4, { "SwitchCase": 1 }],
         "linebreak-style": "off",
         "quotes": ["error", "single"],
@@ -83,15 +79,8 @@
         ],
         "operator-linebreak": ["error", "before"],
         "eol-last": 2,
-        "quote-props": [2, "as-needed", {"numbers": true}]
-    },
-    "overrides": [
-        {
-            "files": ["*.test.ts", "mockNodecg.ts"],
-            "rules": {
-                "@typescript-eslint/no-var-requires": 0,
-                "@typescript-eslint/no-this-alias": 0
-            }
-        }
-    ]
+        "quote-props": [2, "as-needed", {"numbers": true}],
+        "vue/html-indent": ["error", 4],
+        "vue/singleline-html-element-content-newline": "off"
+    }
 }
