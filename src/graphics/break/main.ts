@@ -58,7 +58,7 @@ gsap.ticker.add((time) => {
 });
 
 PIXI.Loader.shared
-    .add('bg-icons', 'assets/sj-bg-icons.json')
+    .add('bg-icons', '/bundles/sj-overlays/assets/sj-bg-icons.json')
     .load(() => {
         animBackgroundIn();
     });

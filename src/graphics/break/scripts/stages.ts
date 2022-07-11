@@ -152,7 +152,7 @@ function createStages(games: { winner: GameWinner, mode: string, stage: string }
                 <div class="stage-content-wrapper">
                     <div class="stage-info-wrapper" style="transform: translate(-100%, 0px); opacity: 0;">
                         <div class="background"></div>
-                        <div id="stage-image_${index}" class="stage-image" style="background-image: url('assets/stages/${mapNameToImagePath[game.stage]}'); filter: ${stageImageFilter}"></div>
+                        <div id="stage-image_${index}" class="stage-image" style="background-image: url('/bundles/sj-overlays/assets/stages/${mapNameToImagePath[game.stage]}'); filter: ${stageImageFilter}"></div>
                         <div id="stage-winner-wrapper_${index}" class="stage-winner-wrapper layout horiz" style="opacity: ${game.winner === 'none' ? '0' : '1'}">
                             <div class="winner-name">${getWinnerName(game.winner)}</div>
                         </div>
@@ -240,7 +240,7 @@ function setStageBorderColor(index: number, color: string): void {
 async function animNewRound(activeRound: ActiveRound): Promise<void> {
     const imageLoads: Promise<void>[] = [];
     activeRound.games.forEach(game => {
-        imageLoads.push(loadImage(`assets/stages/${mapNameToImagePath[game.stage]}`));
+        imageLoads.push(loadImage(`/bundles/sj-overlays/assets/stages/${mapNameToImagePath[game.stage]}`));
     });
 
     await Promise.all(imageLoads);
@@ -267,7 +267,7 @@ async function setGameData(index: number, game: { mode: string, stage: string })
     const winnerWrapper = stageElem.querySelector('.stage-winner-wrapper');
     const background = stageElem.querySelector('.background') as HTMLElement;
     const iconUrl = getIconFromMode(game.mode);
-    const stageUrl = `assets/stages/${mapNameToImagePath[game.stage]}`;
+    const stageUrl = `/bundles/sj-overlays/assets/stages/${mapNameToImagePath[game.stage]}`;
 
     await loadImage(stageUrl);
     if (iconUrl !== '') {

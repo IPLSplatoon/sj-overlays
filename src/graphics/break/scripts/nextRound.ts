@@ -25,7 +25,7 @@ nextRound.on('change', (newValue, oldValue) => {
             gamesHtml += `
                 <div class="match">
                     <div class="cover glow-border glow-blue"></div>
-                    <div class="match-background" style="background-image: url('assets/stages/${mapNameToImagePath[game.stage]}')"></div>
+                    <div class="match-background" style="background-image: url('/bundles/sj-overlays/assets/stages/${mapNameToImagePath[game.stage]}')"></div>
                     <div class="match-text layout vertical">
                         <fitted-text class="mode-name" text="${game.mode}" max-width="250"></fitted-text>
                         <div class="stage-name">${game.stage}</div>

@@ -11,14 +11,14 @@ export const colors = {
 };
 
 export function getGlowIconFromMode(mode: string): string {
-    return modeToGlowIcon[mode] ?? 'assets/SJ_Eyes.png';
+    return modeToGlowIcon[mode] ?? '/bundles/sj-overlays/assets/SJ_Eyes.png';
 }
 
 const modeToGlowIcon: {[key: string]: string} = {
-    'Splat Zones': 'assets/SJ_SZ-Glow.png',
-    Rainmaker: 'assets/SJ_RM-Glow.png',
-    'Clam Blitz': 'assets/SJ_CB-Glow.png',
-    'Tower Control': 'assets/SJ_TC-Glow.png'
+    'Splat Zones': '/bundles/sj-overlays/assets/SJ_SZ-Glow.png',
+    Rainmaker: '/bundles/sj-overlays/assets/SJ_RM-Glow.png',
+    'Clam Blitz': '/bundles/sj-overlays/assets/SJ_CB-Glow.png',
+    'Tower Control': '/bundles/sj-overlays/assets/SJ_TC-Glow.png'
 };
 
 export function getIconFromMode(mode: string): string {
@@ -26,10 +26,10 @@ export function getIconFromMode(mode: string): string {
 }
 
 const modeToIcon: {[key: string]: string} = {
-    'Splat Zones': 'assets/SJ_SZ.png',
-    Rainmaker: 'assets/SJ_RM.png',
-    'Clam Blitz': 'assets/SJ_CB.png',
-    'Tower Control': 'assets/SJ_TC.png'
+    'Splat Zones': '/bundles/sj-overlays/assets/SJ_SZ.png',
+    Rainmaker: '/bundles/sj-overlays/assets/SJ_RM.png',
+    'Clam Blitz': '/bundles/sj-overlays/assets/SJ_CB.png',
+    'Tower Control': '/bundles/sj-overlays/assets/SJ_TC.png'
 };
 
 export const mapNameToImagePath: Record<string, string> = {
