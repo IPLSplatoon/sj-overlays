@@ -89,19 +89,14 @@ function browserConfig(source) {
                     test: /\.css$/,
                     use: [
                         'style-loader',
-                        {
-                            loader: 'css-loader',
-                            options: {
-                                esModule: false
-                            }
-                        }
+                        'css-loader'
                     ]
                 },
                 {
                     test: /\.s[ac]ss$/,
                     use: [
                         'style-loader',
-                        'css-loader?url=false',
+                        'css-loader',
                         'sass-loader'
                     ]
                 },
