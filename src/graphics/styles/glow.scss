@@ -18,6 +18,10 @@
     filter: drop-shadow(0 0 2px $color) drop-shadow(0 0 5px $color);
 }
 
+@mixin svg-glow() {
+    filter: drop-shadow(0 0 3px $blue) drop-shadow(0 0 5px $blue);
+}
+
 .glow-border {
     &.glow-blue {
         @include glow-border($blue);
