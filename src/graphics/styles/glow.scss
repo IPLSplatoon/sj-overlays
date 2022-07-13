@@ -16,6 +16,7 @@
     background-color: white;
     border: 1px solid $color;
     filter: drop-shadow(0 0 2px $color) drop-shadow(0 0 5px $color);
+    border-radius: 9999px;
 }
 
 @mixin svg-glow() {
