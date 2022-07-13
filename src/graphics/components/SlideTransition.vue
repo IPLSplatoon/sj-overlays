@@ -1,6 +1,6 @@
 <template>
     <transition
-        name="opacity-swap"
+        name="slide"
         mode="out-in"
         :css="false"
         @enter="enter"
@@ -16,18 +16,18 @@ import { defineComponent } from '@vue/runtime-core';
 import gsap from 'gsap';
 
 export default defineComponent({
-    name: 'OpacitySwapTransition',
+    name: 'SlideTransition',
 
     setup() {
         return {
             beforeEnter: (elem: HTMLElement) => {
-                gsap.set(elem, { opacity: 0 });
+                gsap.set(elem, { x: -15, opacity: 0 });
             },
             enter: (elem: HTMLElement, done: gsap.Callback) => {
-                gsap.to(elem, { opacity: 1, onComplete: done, duration: 0.35 });
+                gsap.to(elem, { opacity: 1, x: 0, ease: 'power2.out', onComplete: done, duration: 0.35 });
             },
             leave: (elem: HTMLElement, done: gsap.Callback) => {
-                gsap.to(elem, { opacity: 0, onComplete: done, duration: 0.35 });
+                gsap.to(elem, { opacity: 0, x: 15, ease: 'power2.in', onComplete: done, duration: 0.35 });
             }
         };
     }
