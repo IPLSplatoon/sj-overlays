@@ -32,6 +32,11 @@ const modeToIcon: {[key: string]: string} = {
     'Tower Control': '/bundles/sj-overlays/assets/SJ_TC.png'
 };
 
+export function getMapImageName(name: string): string {
+    return mapNameToImagePath[name] ?? 'SJ_Unknown-Map-4.png';
+}
+
+// todo: use getMapImageName instead
 export const mapNameToImagePath: Record<string, string> = {
     'Ancho-V Games': 'S2_Stage_Ancho-V_Games.png',
     'Arowana Mall': 'S2_Stage_Arowana_Mall.png',
@@ -56,6 +61,5 @@ export const mapNameToImagePath: Record<string, string> = {
     'The Reef': 'S2_Stage_The_Reef.png',
     'Wahoo World': 'S2_Stage_Wahoo_World.png',
     'Walleye Warehouse': 'S2_Stage_Walleye_Warehouse.png',
-    'Skipper Pavilion': 'S2_Stage_Skipper_Pavilion.png',
-    'Unknown Stage': 'SJ_Unknown-Map-4.png'
+    'Skipper Pavilion': 'S2_Stage_Skipper_Pavilion.png'
 };

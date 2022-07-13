@@ -5,7 +5,7 @@ import min from 'lodash/min';
 import maxBy from 'lodash/maxBy';
 import random from 'lodash/random';
 import { gsap } from 'gsap';
-import '../../helpers/obs';
+import '../../types/obs';
 import { APP_HEIGHT, APP_WIDTH } from '../../helpers/constants';
 import { distanceBetween, easeOutCirc } from '../../helpers/math';
 

@@ -1,7 +1,7 @@
 import { activeBreakScene, activeRound, predictionStore } from '../../helpers/replicants';
 import { gsap } from 'gsap';
 import { forceSetSlide } from './mainSlides';
-import { ObsEvent } from '../../helpers/obs';
+import { ObsEvent } from '../../types/obs';
 import { animBackgroundIn } from './background';
 import { splitTeamAName, splitTeamBName } from './teams';
 import { getPredictionValues, predictionTextChangeTl, updatePredictionCountDisplays } from './predictions';
