@@ -123,7 +123,7 @@ export default defineComponent({
         .players {
             position: absolute;
             width: 460px;
-            height: 443px;
+            height: calc(100% - 140px);
             margin: 12px 20px 15px;
             bottom: 0;
             left: 0;

@@ -1,6 +1,10 @@
 <template>
     <div class="teams-wrapper w-max layout vertical c-horiz">
-        <div class="team-display">
+        <div
+            class="team-display"
+            :class="{ 'predictions-hidden': !predictionsVisible }"
+            :style="{ height: teamDisplayHeight }"
+        >
             <break-screen-team
                 team="A"
                 class="team-a-display"
@@ -13,21 +17,44 @@
                 class="team-b-display"
             />
         </div>
+        <break-teams-prediction-display />
     </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { NodeCGBrowser } from 'nodecg/browser';
+import { computed, defineComponent, provide, ref } from 'vue';
 import gsap from 'gsap';
 import BreakScreenTeam from './BreakScreenTeam.vue';
 import SplitTextTransition from '../../../../components/SplitTextTransition.vue';
+import { useReplicant } from 'nodecg-vue-composable';
+import { DASHBOARD_BUNDLE_NAME } from '../../../../helpers/constants';
+import { PredictionStore } from 'schemas';
+import BreakTeamsPredictionDisplay from './BreakTeamsPredictionDisplay.vue';
+import { TransitionFunctionMap, transitionFunctionsInjectionKey } from '../../../../helpers/transition';
 
 export default defineComponent({
     name: 'BreakTeams',
 
-    components: { BreakScreenTeam },
+    components: { BreakTeamsPredictionDisplay, BreakScreenTeam },
 
     setup() {
+        const predictionStore = useReplicant<PredictionStore>('predictionStore', DASHBOARD_BUNDLE_NAME);
+        const predictionActive = computed(() => predictionStore.data?.currentPrediction?.status === 'ACTIVE');
+        const forceShowPredictions = ref(false);
+        const predictionsVisible = computed(() => predictionActive.value || forceShowPredictions.value);
+
+        nodecg.listenFor('showPredictionData', DASHBOARD_BUNDLE_NAME, () => {
+            forceShowPredictions.value = true;
+            setTimeout(() => {
+                forceShowPredictions.value = false;
+            }, 20 * 1000);
+        });
+
+        const transitions: TransitionFunctionMap = {};
+        provide(transitionFunctionsInjectionKey, transitions);
+        provide('predictionsVisible', predictionsVisible);
+
         function getTeamNameComponents(elem: HTMLElement): { a: typeof SplitTextTransition, b: typeof SplitTextTransition } {
             return {
                 // @ts-ignore: vue doesn't acknowledge these exist, but we will
@@ -38,6 +65,9 @@ export default defineComponent({
         }
 
         return {
+            teamDisplayHeight: computed(() => predictionsVisible.value ? '525px' : '638px'),
+            predictionsVisible,
+
             beforeEnter: (elem: HTMLElement) => {
                 const teamNameComponents = getTeamNameComponents(elem);
 
@@ -55,6 +85,10 @@ export default defineComponent({
                 gsap.set(
                     elem.querySelectorAll('.teams-wrapper .content'),
                     { height: 0 });
+
+                if (predictionsVisible.value) {
+                    transitions.predictions.beforeEnter(elem.querySelector('.prediction-display'));
+                }
             },
             enter: (elem: HTMLElement, done: gsap.Callback) => {
                 const tl = gsap.timeline({ onComplete: done });
@@ -66,6 +100,10 @@ export default defineComponent({
                     .addLabel('teamsLineIn', '+=0.35')
                     .add('teamsTextIn', '+=0.45');
 
+                if (predictionsVisible.value) {
+                    tl.add(transitions.predictions.enter(elem.querySelector('.prediction-display'), 0), 'teamsIn');
+                }
+
                 tl
                     .to(
                         elem.querySelector('.teams-wrapper .versus'),
@@ -73,7 +111,7 @@ export default defineComponent({
                         'teamsIn')
                     .to(
                         elem.querySelectorAll('.teams-wrapper .content'),
-                        { duration: 0.55, height: 583, ease: 'power2.out' },
+                        { duration: 0.55, height: 'calc(100% - 55px)', ease: 'power2.out' },
                         'teamsIn')
                     .to(
                         elem.querySelectorAll('.teams-wrapper .line.top'),
@@ -128,6 +166,10 @@ export default defineComponent({
                         elem.querySelectorAll('.teams-wrapper .content'),
                         { duration: 0.55, height: 0, ease: 'power2.in' },
                         'teamsOut');
+
+                if (predictionsVisible.value) {
+                    tl.add(transitions.predictions.leave(elem.querySelector('.prediction-display')), 'teamsOut-=0.1');
+                }
             }
         };
     }
@@ -141,12 +183,16 @@ export default defineComponent({
 
     .team-display {
         width: 1400px;
-        height: 638px;
         display: grid;
         grid-template-rows: 1fr;
         grid-template-columns: 2fr 1fr 2fr;
         align-items: end;
         position: relative;
+        transition: height 500ms;
+
+        &.predictions-hidden {
+            transition-delay: 750ms;
+        }
 
         .versus-wrapper {
             width: 100%;
