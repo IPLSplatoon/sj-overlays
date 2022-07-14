@@ -23,5 +23,7 @@ span.badge {
     padding: 0 5px;
     border-radius: 5px;
     filter: drop-shadow(0 0 3px $salmon);
+    display: inline-block;
+    transform: translateY(-5px);
 }
 </style>
