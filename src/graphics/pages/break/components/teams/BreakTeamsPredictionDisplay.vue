@@ -137,7 +137,7 @@ export default defineComponent({
             return tl;
         };
 
-        provideTransitions('predictions', { beforeEnter, enter, leave });
+        provideTransitions('predictions', '.prediction-display', { beforeEnter, enter, leave });
 
         return {
             predictionsVisible: inject<ComputedRef<boolean>>('predictionsVisible'),

@@ -87,7 +87,7 @@ export default defineComponent({
                     { height: 0 });
 
                 if (predictionsVisible.value) {
-                    transitions.predictions.beforeEnter(elem.querySelector('.prediction-display'));
+                    transitions.predictions.beforeEnter(elem);
                 }
             },
             enter: (elem: HTMLElement, done: gsap.Callback) => {
@@ -101,7 +101,7 @@ export default defineComponent({
                     .add('teamsTextIn', '+=0.45');
 
                 if (predictionsVisible.value) {
-                    tl.add(transitions.predictions.enter(elem.querySelector('.prediction-display'), 0), 'teamsIn');
+                    tl.add(transitions.predictions.enter(elem, 0), 'teamsIn');
                 }
 
                 tl
@@ -168,7 +168,7 @@ export default defineComponent({
                         'teamsOut');
 
                 if (predictionsVisible.value) {
-                    tl.add(transitions.predictions.leave(elem.querySelector('.prediction-display')), 'teamsOut-=0.1');
+                    tl.add(transitions.predictions.leave(elem), 'teamsOut-=0.1');
                 }
             }
         };
