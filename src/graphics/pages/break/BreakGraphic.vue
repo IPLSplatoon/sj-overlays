@@ -8,7 +8,7 @@
     >
         <break-stages v-if="activeBreakScene.data === 'stages'" />
         <break-teams v-else-if="activeBreakScene.data === 'teams'" />
-        <break-main v-else />
+        <break-main v-else-if="activeBreakScene.data === 'main'" />
     </transition>
     <icon-background />
 </template>
