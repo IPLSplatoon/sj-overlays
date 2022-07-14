@@ -7,7 +7,7 @@
     >
         <fitted-content
             :key="value"
-            :max-width="40"
+            :max-width="maxWidth"
             align="center"
         >
             {{ value }}
@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref } from 'vue';
+import { defineComponent, ref } from 'vue';
 import gsap from 'gsap';
 import FittedContent from './FittedContent.vue';
 
@@ -30,9 +30,9 @@ export default defineComponent({
             type: Number,
             required: true
         },
-        scrollDirection: {
-            type: String as PropType<'up' | 'down'>,
-            default: 'down'
+        maxWidth: {
+            type: Number,
+            default: 40
         }
     },
 
