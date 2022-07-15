@@ -19,7 +19,7 @@ import IconBackground from '../../components/IconBackground.vue';
 import { useReplicant } from 'nodecg-vue-composable';
 import { DASHBOARD_BUNDLE_NAME } from '../../helpers/constants';
 import { ActiveBreakScene } from 'schemas';
-import BreakStages from './components/BreakStages.vue';
+import BreakStages from './components/stages/BreakStages.vue';
 import BreakTeams from './components/teams/BreakTeams.vue';
 import BreakMain from './components/main/BreakMain.vue';
 import gsap from 'gsap';
