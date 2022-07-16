@@ -76,15 +76,17 @@
             </div>
             <div class="flavor-text-container layout horiz c-vert">
                 <div class="background flavor-text-background" />
-
-                <fitted-content
-                    id="scoreboard-flavor-text"
-                    align="left"
-                    :max-width="270"
-                    class="scoreboard-flavor-text"
-                >
-                    {{ scoreboardStore.scoreboardData.flavorText }}
-                </fitted-content>
+                <opacity-swap-transition>
+                    <fitted-content
+                        id="scoreboard-flavor-text"
+                        :key="scoreboardStore.scoreboardData.flavorText"
+                        align="left"
+                        :max-width="270"
+                        class="scoreboard-flavor-text"
+                    >
+                        {{ scoreboardStore.scoreboardData.flavorText }}
+                    </fitted-content>
+                </opacity-swap-transition>
                 <img
                     class="scoreboard-icon"
                     src="/bundles/sj-overlays/assets/SJ_eyes.png"
