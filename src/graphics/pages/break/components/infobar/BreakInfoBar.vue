@@ -25,11 +25,14 @@
                     </div>
                 </div>
                 <div class="icon-wrapper mode-icon layout horiz c-vert c-horiz">
-                    <img
-                        id="mode-icon"
-                        src="/bundles/sj-overlays/assets/SJ_RM-Glow.png"
-                        class="icon mode-icon"
-                    >
+                    <opacity-swap-transition>
+                        <img
+                            :key="nextMode"
+                            :src="modeIconSrc"
+                            class="icon"
+                            :class="{ 'mode-icon': nextMode != null, 'eyes-icon': nextMode == null }"
+                        >
+                    </opacity-swap-transition>
                 </div>
             </div>
         </div>
@@ -45,11 +48,15 @@ import BreakInfoBarCasters from './BreakInfoBarCasters.vue';
 import BreakInfoBarMusic from './BreakInfoBarMusic.vue';
 import BreakInfoBarCasterTwitters from './BreakInfoBarCasterTwitters.vue';
 import { useMusicStore } from '../../../../store/musicStore';
+import { useActiveRoundStore } from '../../../../store/activeRoundStore';
+import { getGlowIconFromMode } from '../../../../helpers/constants';
+import OpacitySwapTransition from '../../../../components/OpacitySwapTransition.vue';
 
 export default defineComponent({
     name: 'BreakInfoBar',
 
     components: {
+        OpacitySwapTransition,
         BreakInfoBarWelcome,
         BreakInfoBarCasters,
         BreakInfoBarCasterTwitters,
@@ -58,6 +65,7 @@ export default defineComponent({
 
     setup() {
         const musicStore = useMusicStore();
+        const activeRoundStore = useActiveRoundStore();
 
         const slides = useSlides([
             { component: 'BreakInfoBarWelcome', duration: 10 },
@@ -66,8 +74,13 @@ export default defineComponent({
             { component: 'BreakInfoBarMusic', enabled: computed(() => musicStore.musicShown) }
         ]);
 
+        const nextMode = computed(() => activeRoundStore.activeRound.games.find(game => game.winner === 'none')?.mode);
+
         return {
             activeSlide: slides.activeComponent,
+
+            nextMode,
+            modeIconSrc: computed(() => getGlowIconFromMode(nextMode.value)),
 
             beforeSlideEnter: (elem: HTMLElement) => {
                 gsap.set(elem, { opacity: 0, y: -35 });
