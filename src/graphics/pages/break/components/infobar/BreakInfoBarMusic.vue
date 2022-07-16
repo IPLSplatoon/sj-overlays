@@ -22,10 +22,8 @@ import { computed, defineComponent } from 'vue';
 import FittedContent from '../../../../components/FittedContent.vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import OpacitySwapTransition from '../../../../components/OpacitySwapTransition.vue';
-import { useReplicant } from 'nodecg-vue-composable';
-import { DASHBOARD_BUNDLE_NAME } from '../../../../helpers/constants';
-import { NowPlaying } from 'schemas';
 import { getSongNameAsString } from '../../../../helpers/string';
+import { useMusicStore } from '../../../../store/musicStore';
 
 export default defineComponent({
     name: 'BreakInfoBarMusic',
@@ -33,10 +31,10 @@ export default defineComponent({
     components: { FittedContent, OpacitySwapTransition, FontAwesomeIcon },
 
     setup() {
-        const nowPlaying = useReplicant<NowPlaying>('nowPlaying', DASHBOARD_BUNDLE_NAME);
+        const musicStore = useMusicStore();
 
         return {
-            nowPlaying: computed(() => getSongNameAsString(nowPlaying.data)),
+            nowPlaying: computed(() => getSongNameAsString(musicStore.nowPlaying)),
         };
     }
 });

@@ -5,7 +5,7 @@
         @before-enter="beforeScoreboardEnter"
     >
         <div
-            v-if="scoreboardData.data?.isVisible"
+            v-if="scoreboardStore.scoreboardData.isVisible"
             class="scoreboard-wrapper"
         >
             <svg
@@ -83,7 +83,7 @@
                     :max-width="270"
                     class="scoreboard-flavor-text"
                 >
-                    {{ scoreboardData.data?.flavorText }}
+                    {{ scoreboardStore.scoreboardData.flavorText }}
                 </fitted-content>
                 <img
                     class="scoreboard-icon"
@@ -97,13 +97,12 @@
 <script lang="ts">
 import { computed, defineComponent } from 'vue';
 import gsap from 'gsap';
-import { useReplicant } from 'nodecg-vue-composable';
-import { ActiveRound, ScoreboardData } from 'schemas';
-import { DASHBOARD_BUNDLE_NAME } from '../../../helpers/constants';
 import { addDots } from '../../../helpers/string';
 import FittedContent from '../../../components/FittedContent.vue';
 import OpacitySwapTransition from '../../../components/OpacitySwapTransition.vue';
 import ScoreCounter from '../../../components/ScoreCounter.vue';
+import { useActiveRoundStore } from '../../../store/activeRoundStore';
+import { useScoreboardStore } from '../../../store/scoreboardStore';
 
 export default defineComponent({
     name: 'Scoreboard',
@@ -111,18 +110,18 @@ export default defineComponent({
     components: { ScoreCounter, OpacitySwapTransition, FittedContent },
 
     setup() {
-        const activeRound = useReplicant<ActiveRound>('activeRound', DASHBOARD_BUNDLE_NAME);
-        const teamA = computed(() => activeRound.data?.teamA);
-        const teamB = computed(() => activeRound.data?.teamB);
+        const activeRoundStore = useActiveRoundStore();
+        const teamA = computed(() => activeRoundStore.activeRound.teamA);
+        const teamB = computed(() => activeRoundStore.activeRound.teamB);
 
-        const scoreboardData = useReplicant<ScoreboardData>('scoreboardData', DASHBOARD_BUNDLE_NAME);
+        const scoreboardStore = useScoreboardStore();
 
         return {
             teamA,
             teamB,
             teamAName: computed(() => addDots(teamA.value?.name)),
             teamBName: computed(() => addDots(teamB.value?.name)),
-            scoreboardData,
+            scoreboardStore,
             scoreboardEnter: (elem: HTMLElement, done: gsap.Callback) => {
                 const tl = gsap.timeline({
                     onComplete: done,

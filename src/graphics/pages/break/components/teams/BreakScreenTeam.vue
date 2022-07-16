@@ -43,13 +43,11 @@
 
 <script lang="ts">
 import { computed, defineComponent, PropType } from 'vue';
-import { useReplicant } from 'nodecg-vue-composable';
-import { DASHBOARD_BUNDLE_NAME } from '../../../../helpers/constants';
-import { ActiveRound } from 'schemas';
 import FittedContent from '../../../../components/FittedContent.vue';
 import Badge from '../../../../components/Badge.vue';
 import SplitTextTransition from '../../../../components/SplitTextTransition.vue';
 import gsap from 'gsap';
+import { useActiveRoundStore } from '../../../../store/activeRoundStore';
 
 export default defineComponent({
     name: 'BreakScreenTeam',
@@ -64,8 +62,8 @@ export default defineComponent({
     },
 
     setup(props) {
-        const activeRound = useReplicant<ActiveRound>('activeRound', DASHBOARD_BUNDLE_NAME);
-        const teamData = computed(() => props.team === 'A' ? activeRound.data?.teamA : activeRound.data?.teamB);
+        const activeRoundStore = useActiveRoundStore();
+        const teamData = computed(() => props.team === 'A' ? activeRoundStore.activeRound.teamA : activeRoundStore.activeRound.teamB);
 
         return {
             teamData,
@@ -78,10 +76,6 @@ export default defineComponent({
             },
             playersLeave: (elem: HTMLElement, done: gsap.Callback) => {
                 gsap.to(elem.querySelectorAll('.player'), { duration: 0.35, opacity: 0, ease: 'power2.in', onComplete: done });
-            },
-            hideTeamName() {
-                const teamNameElem = this.$el.querySelector('.team-name div');
-                return teamNameElem.__vueParentComponent.ctx.leave(teamNameElem, null);
             }
         };
     }

@@ -48,13 +48,12 @@
 <script lang="ts">
 import { computed, ComputedRef, defineComponent, inject } from 'vue';
 import FittedContent from '../../../../components/FittedContent.vue';
-import { useReplicant } from 'nodecg-vue-composable';
-import { ActiveRound, PredictionStore } from 'schemas';
-import { DASHBOARD_BUNDLE_NAME } from '../../../../helpers/constants';
 import { useTweenedNumber } from '../../../../helpers/useTweenedNumber';
 import { colors } from '../../../../helpers/constants';
 import gsap from 'gsap';
 import { provideTransitions } from '../../../../helpers/transition';
+import { usePredictionDataStore } from '../../../../store/predictionDataStore';
+import { useActiveRoundStore } from '../../../../store/activeRoundStore';
 
 export default defineComponent({
     name: 'BreakTeamsPredictionDisplay',
@@ -62,17 +61,17 @@ export default defineComponent({
     components: { FittedContent },
 
     setup() {
-        const predictionStore = useReplicant<PredictionStore>('predictionStore', DASHBOARD_BUNDLE_NAME);
-        const activeRound = useReplicant<ActiveRound>('activeRound', DASHBOARD_BUNDLE_NAME);
+        const predictionDataStore = usePredictionDataStore();
+        const activeRoundStore = useActiveRoundStore();
 
         function findOutcome(teamName: string, defaultIndex: number) {
-            const matchingOutcomeIndex = predictionStore.data?.currentPrediction?.outcomes
+            const matchingOutcomeIndex = predictionDataStore.predictionStore.currentPrediction?.outcomes
                 .findIndex(outcome => outcome.title.toLowerCase() === teamName?.toLowerCase());
 
-            return predictionStore.data?.currentPrediction?.outcomes[matchingOutcomeIndex >= 0 ? matchingOutcomeIndex : defaultIndex];
+            return predictionDataStore.predictionStore.currentPrediction?.outcomes[matchingOutcomeIndex >= 0 ? matchingOutcomeIndex : defaultIndex];
         }
-        const firstOutcome = computed(() => findOutcome(activeRound.data?.teamA.name, 0));
-        const secondOutcome = computed(() => findOutcome(activeRound.data?.teamB.name, 1));
+        const firstOutcome = computed(() => findOutcome(activeRoundStore.activeRound.teamA.name, 0));
+        const secondOutcome = computed(() => findOutcome(activeRoundStore.activeRound.teamB.name, 1));
 
         const totalPointsUsed = computed(() => (firstOutcome.value?.pointsUsed ?? 0) + (secondOutcome.value?.pointsUsed ?? 0));
         const firstOutcomePercentage = computed(() => {
@@ -141,7 +140,7 @@ export default defineComponent({
 
         return {
             predictionsVisible: inject<ComputedRef<boolean>>('predictionsVisible'),
-            predictionTitle: computed(() => predictionStore.data?.currentPrediction?.title),
+            predictionTitle: computed(() => predictionDataStore.predictionStore.currentPrediction?.title),
             firstOutcomePercentage,
             secondOutcomePercentage,
             firstOutcomePercentageTweened,

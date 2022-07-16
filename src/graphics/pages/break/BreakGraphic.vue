@@ -6,9 +6,9 @@
         @leave="leave"
         @before-enter="beforeEnter"
     >
-        <break-stages v-if="activeBreakScene.data === 'stages'" />
-        <break-teams v-else-if="activeBreakScene.data === 'teams'" />
-        <break-main v-else-if="activeBreakScene.data === 'main'" />
+        <break-stages v-if="activeBreakScene === 'stages'" />
+        <break-teams v-else-if="activeBreakScene === 'teams'" />
+        <break-main v-else-if="activeBreakScene === 'main'" />
     </transition>
     <transition
         mode="out-in"
@@ -17,22 +17,20 @@
         @leave="infoBarLeave"
         @before-enter="beforeInfoBarEnter"
     >
-        <break-info-bar v-if="activeBreakScene.data === 'teams' || activeBreakScene.data === 'stages'" />
+        <break-info-bar v-if="activeBreakScene === 'teams' || activeBreakScene === 'stages'" />
     </transition>
     <icon-background />
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { computed, defineComponent } from 'vue';
 import IconBackground from '../../components/IconBackground.vue';
-import { useReplicant } from 'nodecg-vue-composable';
-import { DASHBOARD_BUNDLE_NAME } from '../../helpers/constants';
-import { ActiveBreakScene } from 'schemas';
 import BreakStages from './components/stages/BreakStages.vue';
 import BreakTeams from './components/teams/BreakTeams.vue';
 import BreakMain from './components/main/BreakMain.vue';
 import gsap from 'gsap';
 import BreakInfoBar from './components/infobar/BreakInfoBar.vue';
+import { useBreakScreenStore } from '../../store/breakScreenStore';
 
 interface AnimatedSceneComponent extends HTMLElement {
     __vueParentComponent: InternalAnimatedSceneComponentInstance
@@ -52,7 +50,7 @@ export default defineComponent({
     components: { BreakInfoBar, BreakMain, BreakTeams, BreakStages, IconBackground },
 
     setup() {
-        const activeBreakScene = useReplicant<ActiveBreakScene>('activeBreakScene', DASHBOARD_BUNDLE_NAME);
+        const breakScreenStore = useBreakScreenStore();
 
         const beforeInfoBarEnter = (elem: HTMLElement) => {
             gsap.set(elem.querySelector('.info-bar'), { width: 0, opacity: 0 });
@@ -79,7 +77,7 @@ export default defineComponent({
         };
 
         return {
-            activeBreakScene,
+            activeBreakScene: computed(() => breakScreenStore.activeBreakScene),
             // Accesses the internal Vue instance of the components and runs the appropriate animation methods.
             // This means that child components in this transition MUST contain 'beforeEnter', 'enter', and 'leave' methods.
             // There's likely a better way to do this, but it works...

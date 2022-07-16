@@ -89,13 +89,12 @@
 
 <script lang="ts">
 import { computed, defineComponent, getCurrentInstance, onMounted, PropType, watch } from 'vue';
-import { colors, DASHBOARD_BUNDLE_NAME, getIconFromMode, getStageImagePath } from '../../../../helpers/constants';
+import { colors, getIconFromMode, getStageImagePath } from '../../../../helpers/constants';
 import FittedContent from '../../../../components/FittedContent.vue';
 import { hexToRgb, Solver } from '../../../../helpers/color';
-import { useReplicant } from 'nodecg-vue-composable';
-import { ActiveRound } from 'schemas';
 import gsap from 'gsap';
 import OpacitySwapTransition from '../../../../components/OpacitySwapTransition.vue';
+import { useActiveRoundStore } from '../../../../store/activeRoundStore';
 
 export default defineComponent({
     name: 'BreakStageDisplay',
@@ -114,7 +113,7 @@ export default defineComponent({
     },
 
     setup(props) {
-        const activeRound = useReplicant<ActiveRound>('activeRound', DASHBOARD_BUNDLE_NAME);
+        const activeRoundStore = useActiveRoundStore();
 
         const color = computed(() => {
             switch (props.game.winner) {
@@ -158,9 +157,9 @@ export default defineComponent({
             winnerName: computed(() => {
                 switch (props.game.winner) {
                     case 'alpha':
-                        return activeRound.data?.teamA.name;
+                        return activeRoundStore.activeRound.teamA.name;
                     case 'bravo':
-                        return activeRound.data?.teamB.name;
+                        return activeRoundStore.activeRound.teamB.name;
                     default:
                         return undefined;
                 }

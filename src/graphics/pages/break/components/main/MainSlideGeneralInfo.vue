@@ -39,13 +39,12 @@ import { computed, defineComponent, ref, watch } from 'vue';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faMusic } from '@fortawesome/free-solid-svg-icons/faMusic';
 import { faHourglassEnd } from '@fortawesome/free-solid-svg-icons/faHourglassEnd';
-import { useReplicant } from 'nodecg-vue-composable';
-import { MainFlavorText, MusicShown, NextRoundStartTime, NowPlaying } from 'schemas';
-import { DASHBOARD_BUNDLE_NAME } from '../../../../helpers/constants';
 import { setNextStageTimer } from '../../../../helpers/timer';
 import FittedContent from '../../../../components/FittedContent.vue';
 import MainSlideRow from './MainSlideRow.vue';
 import SlideTransition from '../../../../components/SlideTransition.vue';
+import { useBreakScreenStore } from '../../../../store/breakScreenStore';
+import { useMusicStore } from '../../../../store/musicStore';
 
 library.add(faMusic, faHourglassEnd);
 
@@ -55,22 +54,20 @@ export default defineComponent({
     components: { SlideTransition, MainSlideRow, FittedContent },
 
     setup() {
-        const mainFlavorText = useReplicant<MainFlavorText>('mainFlavorText', DASHBOARD_BUNDLE_NAME);
-        const nowPlaying = useReplicant<NowPlaying>('nowPlaying', DASHBOARD_BUNDLE_NAME);
-        const musicShown = useReplicant<MusicShown>('musicShown', DASHBOARD_BUNDLE_NAME);
-        const nextRoundStartTime = useReplicant<NextRoundStartTime>('nextRoundStartTime', DASHBOARD_BUNDLE_NAME);
+        const breakScreenStore = useBreakScreenStore();
+        const musicStore = useMusicStore();
         const nextRoundStartDiffNow = ref(0);
 
-        watch(() => nextRoundStartTime.data?.startTime, startTime => {
+        watch(() => breakScreenStore.nextRoundStartTime.startTime, startTime => {
             setNextStageTimer(startTime, (newValue) => nextRoundStartDiffNow.value = newValue);
         }, { immediate: true });
 
         return {
-            nowPlaying: computed(() => nowPlaying.data ?? {}),
-            musicShown: computed(() => musicShown?.data ?? true),
+            nowPlaying: computed(() => musicStore.nowPlaying),
+            musicShown: computed(() => musicStore.musicShown),
             nextRoundStartDiffNow,
-            nextRoundTimeVisible: computed(() => nextRoundStartTime.data?.isVisible ?? false),
-            mainFlavorText: computed(() => mainFlavorText.data ?? '')
+            nextRoundTimeVisible: computed(() => breakScreenStore.nextRoundStartTime.isVisible),
+            mainFlavorText: computed(() => breakScreenStore.mainFlavorText)
         };
     }
 });

@@ -46,11 +46,10 @@ import { computed, defineComponent } from 'vue';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faMusic } from '@fortawesome/free-solid-svg-icons/faMusic';
 import { faHourglassEnd } from '@fortawesome/free-solid-svg-icons/faHourglassEnd';
-import { useReplicant } from 'nodecg-vue-composable';
-import { DASHBOARD_BUNDLE_NAME, getStageImagePath } from '../../../../helpers/constants';
+import { getStageImagePath } from '../../../../helpers/constants';
 import FittedContent from '../../../../components/FittedContent.vue';
 import SlideTransition from '../../../../components/SlideTransition.vue';
-import { NextRound } from 'schemas';
+import { useNextRoundStore } from '../../../../store/nextRoundStore';
 
 library.add(faMusic, faHourglassEnd);
 
@@ -60,16 +59,16 @@ export default defineComponent({
     components: { SlideTransition, FittedContent },
 
     setup() {
-        const nextRound = useReplicant<NextRound>('nextRound', DASHBOARD_BUNDLE_NAME);
+        const nextRoundStore = useNextRoundStore();
 
         return {
-            teamA: computed(() => nextRound.data?.teamA),
-            teamB: computed(() => nextRound.data?.teamB),
-            nextGames: computed(() => nextRound.data?.games.slice(0, 3)),
-            numberOfGames: computed(() => nextRound.data?.games.length),
+            teamA: computed(() => nextRoundStore.nextRound.teamA),
+            teamB: computed(() => nextRoundStore.nextRound.teamB),
+            nextGames: computed(() => nextRoundStore.nextRound.games.slice(0, 3)),
+            numberOfGames: computed(() => nextRoundStore.nextRound.games.length),
             roundType: computed(() => {
-                const gameCount = nextRound.data?.games.length;
-                return nextRound.data?.round.type === 'PLAY_ALL' ? `Play all ${gameCount}` : `Best of ${gameCount}`;
+                const gameCount = nextRoundStore.nextRound.games.length;
+                return nextRoundStore.nextRound.round.type === 'PLAY_ALL' ? `Play all ${gameCount}` : `Best of ${gameCount}`;
             }),
             getStageImagePath
         };

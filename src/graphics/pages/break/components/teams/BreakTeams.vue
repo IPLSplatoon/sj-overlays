@@ -27,11 +27,10 @@ import { computed, defineComponent, provide, ref } from 'vue';
 import gsap from 'gsap';
 import BreakScreenTeam from './BreakScreenTeam.vue';
 import SplitTextTransition from '../../../../components/SplitTextTransition.vue';
-import { useReplicant } from 'nodecg-vue-composable';
 import { DASHBOARD_BUNDLE_NAME } from '../../../../helpers/constants';
-import { PredictionStore } from 'schemas';
 import BreakTeamsPredictionDisplay from './BreakTeamsPredictionDisplay.vue';
 import { TransitionFunctionMap, transitionFunctionsInjectionKey } from '../../../../helpers/transition';
+import { usePredictionDataStore } from '../../../../store/predictionDataStore';
 
 export default defineComponent({
     name: 'BreakTeams',
@@ -39,8 +38,8 @@ export default defineComponent({
     components: { BreakTeamsPredictionDisplay, BreakScreenTeam },
 
     setup() {
-        const predictionStore = useReplicant<PredictionStore>('predictionStore', DASHBOARD_BUNDLE_NAME);
-        const predictionActive = computed(() => predictionStore.data?.currentPrediction?.status === 'ACTIVE');
+        const predictionDataStore = usePredictionDataStore();
+        const predictionActive = computed(() => predictionDataStore.predictionStore.currentPrediction?.status === 'ACTIVE');
         const forceShowPredictions = ref(false);
         const predictionsVisible = computed(() => predictionActive.value || forceShowPredictions.value);
 

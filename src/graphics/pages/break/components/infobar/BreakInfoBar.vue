@@ -42,11 +42,9 @@ import { useSlides } from '../../../../helpers/useSlides';
 import BreakInfoBarWelcome from './BreakInfoBarWelcome.vue';
 import gsap from 'gsap';
 import BreakInfoBarCasters from './BreakInfoBarCasters.vue';
-import { useReplicant } from 'nodecg-vue-composable';
-import { DASHBOARD_BUNDLE_NAME } from '../../../../helpers/constants';
-import { MusicShown } from 'schemas';
 import BreakInfoBarMusic from './BreakInfoBarMusic.vue';
 import BreakInfoBarCasterTwitters from './BreakInfoBarCasterTwitters.vue';
+import { useMusicStore } from '../../../../store/musicStore';
 
 export default defineComponent({
     name: 'BreakInfoBar',
@@ -59,13 +57,13 @@ export default defineComponent({
     },
 
     setup() {
-        const musicShown = useReplicant<MusicShown>('musicShown', DASHBOARD_BUNDLE_NAME);
+        const musicStore = useMusicStore();
 
         const slides = useSlides([
             { component: 'BreakInfoBarWelcome', duration: 10 },
             { component: 'BreakInfoBarCasters', duration: 20 },
             { component: 'BreakInfoBarCasterTwitters', duration: 20 },
-            { component: 'BreakInfoBarMusic', enabled: computed(() => musicShown.data ?? true) }
+            { component: 'BreakInfoBarMusic', enabled: computed(() => musicStore.musicShown) }
         ]);
 
         return {

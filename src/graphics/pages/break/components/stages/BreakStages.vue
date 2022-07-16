@@ -9,13 +9,13 @@
             @before-enter="stagesBeforeEnter"
         >
             <div
-                :key="activeRound.data?.match.id"
+                :key="activeRound.match.id"
                 class="stage-grid"
                 :style="{ width: `${styles.width}px`, gap: `${styles.gap}px`, gridTemplateColumns: `repeat(${games?.length ?? '3'}, 1fr)` }"
             >
                 <break-stage-display
                     v-for="(game, index) in games"
-                    :key="`${activeRound.data?.match.id}_${index}`"
+                    :key="`${activeRound.match.id}_${index}`"
                     :game="game"
                     :width="styles.stageWidth"
                 />
@@ -29,10 +29,8 @@ import { computed, defineComponent, provide } from 'vue';
 import gsap from 'gsap';
 import BreakStagesScoreboard from './BreakStagesScoreboard.vue';
 import { TransitionFunctionMap, transitionFunctionsInjectionKey } from '../../../../helpers/transition';
-import { DASHBOARD_BUNDLE_NAME } from '../../../../helpers/constants';
-import { ActiveRound } from 'schemas';
-import { useReplicant } from 'nodecg-vue-composable';
 import BreakStageDisplay from './BreakStageDisplay.vue';
+import { useActiveRoundStore } from '../../../../store/activeRoundStore';
 
 const stageStyles: Record<string, { width: number, gap: number, stageWidth: number }> = {
     '3': {
@@ -61,8 +59,8 @@ export default defineComponent({
         const transitions: TransitionFunctionMap = {};
         provide(transitionFunctionsInjectionKey, transitions);
 
-        const activeRound = useReplicant<ActiveRound>('activeRound', DASHBOARD_BUNDLE_NAME);
-        const games = computed(() => activeRound.data?.games);
+        const activeRoundStore = useActiveRoundStore();
+        const games = computed(() => activeRoundStore.activeRound.games);
 
         const stagesBeforeEnter = (elem: HTMLElement) => {
             // set these to 102% because 100% causes weird subtle artifacts when the animation starts
@@ -117,7 +115,7 @@ export default defineComponent({
         };
 
         return {
-            activeRound,
+            activeRound: computed(() => activeRoundStore.activeRound),
             games,
             styles: computed(() => stageStyles[games.value?.length.toString()] ?? stageStyles['3']),
 

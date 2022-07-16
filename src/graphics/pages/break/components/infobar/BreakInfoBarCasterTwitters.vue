@@ -37,15 +37,13 @@
 
 <script lang="ts">
 import { computed, defineComponent } from 'vue';
-import { useReplicant } from 'nodecg-vue-composable';
-import { Casters } from 'schemas';
-import { DASHBOARD_BUNDLE_NAME } from '../../../../helpers/constants';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import Badge from '../../../../components/Badge.vue';
 import FittedContent from '../../../../components/FittedContent.vue';
 import OpacitySwapTransition from '../../../../components/OpacitySwapTransition.vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faTwitter } from '@fortawesome/free-brands-svg-icons/faTwitter';
+import { useCasterStore } from '../../../../store/casterStore';
 
 library.add(faTwitter);
 
@@ -55,15 +53,15 @@ export default defineComponent({
     components: { Badge, FittedContent, OpacitySwapTransition, FontAwesomeIcon },
 
     setup() {
-        const casters = useReplicant<Casters>('casters', DASHBOARD_BUNDLE_NAME);
+        const casterStore = useCasterStore();
 
         return {
             key: computed(() =>
-                Object.values(casters.data ?? {})
+                Object.values(casterStore.casters)
                     .map(caster => `${caster.twitter}_${caster.pronouns}`)
                     .join('_')),
-            casterCount: computed(() => Object.keys(casters.data ?? {}).length),
-            casters: computed(() => casters.data ?? {})
+            casterCount: computed(() => Object.keys(casterStore.casters).length),
+            casters: computed(() => casterStore.casters)
         };
     }
 });

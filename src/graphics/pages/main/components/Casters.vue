@@ -39,7 +39,7 @@
             <div class="content layout vertical c-vert">
                 <div class="background casters-background" />
                 <div
-                    v-for="(caster, key) in casters.data"
+                    v-for="(caster, key) in casters"
                     :key="key"
                     class="caster"
                 >
@@ -64,16 +64,15 @@
 
 <script lang="ts">
 import { NodeCGBrowser } from 'nodecg/browser';
-import { defineComponent, ref } from 'vue';
+import { computed, defineComponent, ref } from 'vue';
 import gsap from 'gsap';
-import { useReplicant } from 'nodecg-vue-composable';
-import { Casters } from 'schemas';
 import { DASHBOARD_BUNDLE_NAME } from '../../../helpers/constants';
 import FittedContent from '../../../components/FittedContent.vue';
 import Badge from '../../../components/Badge.vue';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faMicrophone } from '@fortawesome/free-solid-svg-icons/faMicrophone';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { useCasterStore } from '../../../store/casterStore';
 
 library.add(faMicrophone);
 
@@ -83,7 +82,7 @@ export default defineComponent({
     components: { Badge, FittedContent, FontAwesomeIcon },
 
     setup() {
-        const casters = useReplicant<Casters>('casters', DASHBOARD_BUNDLE_NAME);
+        const casterStore = useCasterStore();
         const castersVisible = ref(false);
 
         nodecg.listenFor('mainShowCasters', DASHBOARD_BUNDLE_NAME, () => {
@@ -97,7 +96,7 @@ export default defineComponent({
         });
 
         return {
-            casters,
+            casters: computed(() => casterStore.casters),
             castersVisible,
 
             castersEnter: (elem: HTMLElement, done: gsap.Callback) => {

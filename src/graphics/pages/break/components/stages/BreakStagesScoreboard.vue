@@ -35,14 +35,12 @@
 
 <script lang="ts">
 import { computed, defineComponent } from 'vue';
-import { useReplicant } from 'nodecg-vue-composable';
-import { DASHBOARD_BUNDLE_NAME } from '../../../../helpers/constants';
-import { ActiveRound } from 'schemas';
 import ScoreCounter from '../../../../components/ScoreCounter.vue';
 import FittedContent from '../../../../components/FittedContent.vue';
 import OpacitySwapTransition from '../../../../components/OpacitySwapTransition.vue';
 import gsap from 'gsap';
 import { provideTransitions } from '../../../../helpers/transition';
+import { useActiveRoundStore } from '../../../../store/activeRoundStore';
 
 export default defineComponent({
     name: 'BreakStagesScoreboard',
@@ -50,7 +48,7 @@ export default defineComponent({
     components: { OpacitySwapTransition, FittedContent, ScoreCounter },
 
     setup() {
-        const activeRound = useReplicant<ActiveRound>('activeRound', DASHBOARD_BUNDLE_NAME);
+        const activeRoundStore = useActiveRoundStore();
 
         const beforeEnter = (elem: HTMLElement) => {
             gsap.set(elem, { width: 0, opacity: 0 });
@@ -82,8 +80,8 @@ export default defineComponent({
         provideTransitions('stagesScoreboard', '.stages-scoreboard', { enter, beforeEnter, leave });
 
         return {
-            teamA: computed(() => activeRound.data?.teamA),
-            teamB: computed(() => activeRound.data?.teamB),
+            teamA: computed(() => activeRoundStore.activeRound.teamA),
+            teamB: computed(() => activeRoundStore.activeRound.teamB),
         };
     }
 });

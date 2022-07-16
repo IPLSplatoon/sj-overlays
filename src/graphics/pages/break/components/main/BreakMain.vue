@@ -33,10 +33,8 @@ import gsap from 'gsap';
 import { useSlides } from '../../../../helpers/useSlides';
 import MainSlideGeneralInfo from './MainSlideGeneralInfo.vue';
 import MainSlideSupport from './MainSlideSupport.vue';
-import { DASHBOARD_BUNDLE_NAME } from '../../../../helpers/constants';
-import { NextRound } from 'schemas';
-import { useReplicant } from 'nodecg-vue-composable';
 import MainSlideNextMatch from './MainSlideNextMatch.vue';
+import { useNextRoundStore } from '../../../../store/nextRoundStore';
 
 export default defineComponent({
     name: 'BreakMain',
@@ -44,12 +42,12 @@ export default defineComponent({
     components: { MainSlideGeneralInfo, MainSlideSupport, MainSlideNextMatch },
 
     setup() {
-        const nextRound = useReplicant<NextRound>('nextRound', DASHBOARD_BUNDLE_NAME);
+        const nextRoundStore = useNextRoundStore();
 
         const slides = useSlides([
             { component: 'MainSlideGeneralInfo' },
             { component: 'MainSlideSupport', duration: 15 },
-            { component: 'MainSlideNextMatch', enabled: computed(() => nextRound.data?.showOnStream) }
+            { component: 'MainSlideNextMatch', enabled: computed(() => nextRoundStore.nextRound.showOnStream) }
         ]);
 
         return {
