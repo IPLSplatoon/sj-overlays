@@ -5,7 +5,13 @@
                 src="/bundles/sj-overlays/assets/SJ_Logo.png"
                 class="logo"
             >
-            <div class="logo-font">SuperJump</div>
+            <div class="tournament-name layout horiz">
+                <span class="logo-font">SuperJump</span>
+                <img
+                    src="/bundles/sj-overlays/assets/SJ_2.png"
+                    class="edition"
+                >
+            </div>
             <img
                 src="/bundles/sj-overlays/assets/ipl-powered-inkling.png"
                 class="ipl-powered"
@@ -119,6 +125,15 @@ export default defineComponent({
 
         .logo {
             height: 700px;
+        }
+
+        .tournament-name {
+            align-items: flex-end;
+            margin-top: -100px;
+
+            > img {
+                width: 100px;
+            }
         }
 
         .ipl-powered {
