@@ -38,8 +38,7 @@ export function getStageImagePath(stage: string): string {
     return `/bundles/sj-overlays/assets/stages/${imageName}`;
 }
 
-// todo: use getStageImagePath instead
-export const mapNameToImagePath: Record<string, string> = {
+const mapNameToImagePath: Record<string, string> = {
     'Ancho-V Games': 'S2_Stage_Ancho-V_Games.png',
     'Arowana Mall': 'S2_Stage_Arowana_Mall.png',
     'Blackbelly Skatepark': 'S2_Stage_Blackbelly_Skatepark.png',
