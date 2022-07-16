@@ -13,9 +13,15 @@
                         id="info-rows"
                         class="info-rows"
                     >
-                        <div class="info-row layout c-horiz c-vert">
-                            <div>Welcome to <span class="logo-font">SuperJump!</span></div>
-                        </div>
+                        <transition
+                            mode="out-in"
+                            :css="false"
+                            @enter="slideEnter"
+                            @leave="slideLeave"
+                            @before-enter="beforeSlideEnter"
+                        >
+                            <component :is="activeSlide" />
+                        </transition>
                     </div>
                 </div>
                 <div class="icon-wrapper mode-icon layout horiz c-vert c-horiz">
@@ -31,10 +37,51 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { computed, defineComponent } from 'vue';
+import { useSlides } from '../../../../helpers/useSlides';
+import BreakInfoBarWelcome from './BreakInfoBarWelcome.vue';
+import gsap from 'gsap';
+import BreakInfoBarCasters from './BreakInfoBarCasters.vue';
+import { useReplicant } from 'nodecg-vue-composable';
+import { DASHBOARD_BUNDLE_NAME } from '../../../../helpers/constants';
+import { MusicShown } from 'schemas';
+import BreakInfoBarMusic from './BreakInfoBarMusic.vue';
+import BreakInfoBarCasterTwitters from './BreakInfoBarCasterTwitters.vue';
 
 export default defineComponent({
-    name: 'BreakInfoBar'
+    name: 'BreakInfoBar',
+
+    components: {
+        BreakInfoBarWelcome,
+        BreakInfoBarCasters,
+        BreakInfoBarCasterTwitters,
+        BreakInfoBarMusic
+    },
+
+    setup() {
+        const musicShown = useReplicant<MusicShown>('musicShown', DASHBOARD_BUNDLE_NAME);
+
+        const slides = useSlides([
+            { component: 'BreakInfoBarWelcome', duration: 10 },
+            { component: 'BreakInfoBarCasters', duration: 20 },
+            { component: 'BreakInfoBarCasterTwitters', duration: 20 },
+            { component: 'BreakInfoBarMusic', enabled: computed(() => musicShown.data ?? true) }
+        ]);
+
+        return {
+            activeSlide: slides.activeComponent,
+
+            beforeSlideEnter: (elem: HTMLElement) => {
+                gsap.set(elem, { opacity: 0, y: -35 });
+            },
+            slideEnter: (elem: HTMLElement, done: gsap.Callback) => {
+                gsap.to(elem, { opacity: 1, y: 0, ease: 'power2.out', duration: 0.35, onComplete: done });
+            },
+            slideLeave: (elem: HTMLElement, done: gsap.Callback) => {
+                gsap.to(elem, { opacity: 0, y: 35, ease: 'power2.in', duration: 0.35, onComplete: done });
+            }
+        };
+    }
 });
 </script>
 
@@ -81,14 +128,9 @@ export default defineComponent({
                     position: absolute;
                     width: 100%; height: 100%;
 
-                    svg {
+                    .icon {
                         filter: drop-shadow(0 0 3px white);
                         margin-right: 15px;
-                    }
-
-                    &.info-row-commentators > .commentators {
-                        width: 100%; height: 100%;
-                        position: absolute;
                     }
                 }
             }

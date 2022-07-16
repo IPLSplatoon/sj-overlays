@@ -1,3 +1,5 @@
+import { NowPlaying } from 'schemas';
+
 export function addDots(value: string, maxLength = 48): string {
     const rolloff = '...';
 
@@ -11,4 +13,10 @@ export function addDots(value: string, maxLength = 48): string {
 
 export function isBlank(value?: string | null): boolean {
     return value === null || value === undefined || value.trim() === '';
+}
+
+export function getSongNameAsString(nowPlaying: NowPlaying): string {
+    return [ nowPlaying?.artist, nowPlaying?.song ]
+        .filter(value => !isBlank(value))
+        .join(' - ');
 }
