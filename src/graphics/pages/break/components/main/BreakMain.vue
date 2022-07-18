@@ -124,12 +124,12 @@ export default defineComponent({
         margin-bottom: 50px;
 
         .logo {
-            height: 700px;
+            height: 675px;
         }
 
         .tournament-name {
             align-items: flex-end;
-            margin-top: -100px;
+            margin-top: -65px;
 
             > img {
                 width: 100px;
