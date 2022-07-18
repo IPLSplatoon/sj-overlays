@@ -15,6 +15,7 @@ import { breakScreenReps, useBreakScreenStore } from './store/breakScreenStore';
 import { musicReps, useMusicStore } from './store/musicStore';
 import { nextRoundReps, useNextRoundStore } from './store/nextRoundStore';
 import { predictionReps, usePredictionDataStore } from './store/predictionDataStore';
+import { localeInfoReps, useLocaleInfoStore } from './store/localeInfoStore';
 
 gsap.registerPlugin(DrawSVGPlugin);
 gsap.registerPlugin(PixiPlugin);
@@ -29,6 +30,7 @@ PixiPlugin.registerPIXI(PIXI);
     await setUpReplicants(musicReps, useMusicStore());
     await setUpReplicants(nextRoundReps, useNextRoundStore());
     await setUpReplicants(predictionReps, usePredictionDataStore());
+    await setUpReplicants(localeInfoReps, useLocaleInfoStore());
     app.config.globalProperties.$helpers = {
         addDots,
         isBlank

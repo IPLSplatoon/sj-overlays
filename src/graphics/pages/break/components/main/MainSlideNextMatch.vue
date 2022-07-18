@@ -30,9 +30,9 @@
                             :max-width="250"
                             class="mode-name"
                         >
-                            {{ game.mode }}
+                            {{ localeInfo.modes[game.mode] }}
                         </fitted-content>
-                        <div class="stage-name">{{ game.stage }}</div>
+                        <div class="stage-name">{{ localeInfo.stages[game.stage] }}</div>
                     </div>
                 </div>
             </div>
@@ -50,6 +50,7 @@ import { getStageImagePath } from '../../../../helpers/constants';
 import FittedContent from '../../../../components/FittedContent.vue';
 import SlideTransition from '../../../../components/SlideTransition.vue';
 import { useNextRoundStore } from '../../../../store/nextRoundStore';
+import { useLocaleInfoStore } from '../../../../store/localeInfoStore';
 
 library.add(faMusic, faHourglassEnd);
 
@@ -60,8 +61,10 @@ export default defineComponent({
 
     setup() {
         const nextRoundStore = useNextRoundStore();
+        const localeInfoStore = useLocaleInfoStore();
 
         return {
+            localeInfo: computed(() => localeInfoStore.localeInfo),
             teamA: computed(() => nextRoundStore.nextRound.teamA),
             teamB: computed(() => nextRoundStore.nextRound.teamB),
             nextGames: computed(() => nextRoundStore.nextRound.games.slice(0, 3)),

@@ -75,10 +75,10 @@
                             align="center"
                             class="mode-name"
                         >
-                            {{ game.mode }}
+                            {{ localizedModeName }}
                         </fitted-content>
                         <div class="stage-name-wrapper layout horiz c-vert">
-                            <div class="stage-name">{{ game.stage }}</div>
+                            <div class="stage-name">{{ localizedStageName }}</div>
                         </div>
                     </div>
                 </div>
@@ -95,6 +95,7 @@ import { hexToRgb, Solver } from '../../../../helpers/color';
 import gsap from 'gsap';
 import OpacitySwapTransition from '../../../../components/OpacitySwapTransition.vue';
 import { useActiveRoundStore } from '../../../../store/activeRoundStore';
+import { useLocaleInfoStore } from '../../../../store/localeInfoStore';
 
 export default defineComponent({
     name: 'BreakStageDisplay',
@@ -114,6 +115,7 @@ export default defineComponent({
 
     setup(props) {
         const activeRoundStore = useActiveRoundStore();
+        const localeInfoStore = useLocaleInfoStore();
 
         const color = computed(() => {
             switch (props.game.winner) {
@@ -148,6 +150,8 @@ export default defineComponent({
 
         return {
             color,
+            localizedStageName: computed(() => localeInfoStore.localeInfo.stages[props.game.stage]),
+            localizedModeName: computed(() => localeInfoStore.localeInfo.modes[props.game.mode]),
             dropShadowFilter: computed(() => `drop-shadow(0 0 3px ${color.value}) drop-shadow(0 0 5px ${color.value})`),
             colorFilter: computed(() => new Solver(hexToRgb(color.value)).solve().filter),
             colors,
