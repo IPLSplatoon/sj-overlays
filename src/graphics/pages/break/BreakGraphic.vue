@@ -1,29 +1,33 @@
 <template>
-    <transition
-        mode="out-in"
-        :css="false"
-        @enter="enter"
-        @leave="leave"
-        @before-enter="beforeEnter"
-    >
-        <break-stages v-if="activeBreakScene === 'stages'" />
-        <break-teams v-else-if="activeBreakScene === 'teams'" />
-        <break-main v-else-if="activeBreakScene === 'main'" />
-    </transition>
-    <transition
-        mode="out-in"
-        :css="false"
-        @enter="infoBarEnter"
-        @leave="infoBarLeave"
-        @before-enter="beforeInfoBarEnter"
-    >
-        <break-info-bar v-if="activeBreakScene === 'teams' || activeBreakScene === 'stages'" />
-    </transition>
+    <template v-if="contentVisible">
+        <transition
+            appear
+            mode="out-in"
+            :css="false"
+            @enter="enter"
+            @leave="leave"
+            @before-enter="beforeEnter"
+        >
+            <break-stages v-if="activeBreakScene === 'stages'" />
+            <break-teams v-else-if="activeBreakScene === 'teams'" />
+            <break-main v-else-if="activeBreakScene === 'main'" />
+        </transition>
+        <transition
+            appear
+            mode="out-in"
+            :css="false"
+            @enter="infoBarEnter"
+            @leave="infoBarLeave"
+            @before-enter="beforeInfoBarEnter"
+        >
+            <break-info-bar v-if="activeBreakScene === 'teams' || activeBreakScene === 'stages'" />
+        </transition>
+    </template>
     <icon-background />
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue';
+import { computed, defineComponent, ref } from 'vue';
 import IconBackground from '../../components/IconBackground.vue';
 import BreakStages from './components/stages/BreakStages.vue';
 import BreakTeams from './components/teams/BreakTeams.vue';
@@ -31,6 +35,7 @@ import BreakMain from './components/main/BreakMain.vue';
 import gsap from 'gsap';
 import BreakInfoBar from './components/infobar/BreakInfoBar.vue';
 import { useBreakScreenStore } from '../../store/breakScreenStore';
+import { bindEntranceToFunction } from '../../helpers/obs';
 
 interface AnimatedSceneComponent extends HTMLElement {
     __vueParentComponent: InternalAnimatedSceneComponentInstance
@@ -51,6 +56,17 @@ export default defineComponent({
 
     setup() {
         const breakScreenStore = useBreakScreenStore();
+        const contentVisible = ref(true);
+
+        bindEntranceToFunction(e => {
+            if (e.detail.active || e.detail.visible) {
+                contentVisible.value = false;
+
+                setTimeout(() => {
+                    contentVisible.value = true;
+                }, 2500);
+            }
+        });
 
         const beforeInfoBarEnter = (elem: HTMLElement) => {
             gsap.set(elem.querySelector('.info-bar'), { width: 0, opacity: 0 });
@@ -93,7 +109,9 @@ export default defineComponent({
 
             beforeInfoBarEnter,
             infoBarEnter,
-            infoBarLeave
+            infoBarLeave,
+
+            contentVisible
         };
     }
 });
