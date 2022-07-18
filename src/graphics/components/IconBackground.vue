@@ -23,7 +23,7 @@ function createApplication(canvas: HTMLCanvasElement): PIXI.Application {
         width: APP_WIDTH,
         height: APP_HEIGHT,
         view: canvas,
-        backgroundColor: 0x470164
+        backgroundColor: 0x3d1a4b
     });
 
     app.ticker.stop();
