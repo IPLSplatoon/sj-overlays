@@ -1,25 +1,26 @@
 import { DateTime } from 'luxon';
+import { computed, onUnmounted, ref, Ref, watch } from 'vue';
+import { useBreakScreenStore } from '../store/breakScreenStore';
 
-let nextStageDate: DateTime;
-let lastNextStageDiff: number;
-let nextStageDiffInterval: number;
+export function useNextStageTimer(): Ref<number> {
+    const breakScreenStore = useBreakScreenStore();
+    const startTime = computed(() => DateTime.fromISO(breakScreenStore.nextRoundStartTime.startTime));
+    const diff = ref<number>(null);
 
-export function setNextStageTimer(time: string, diffChangeCallback: (newValue: number) => unknown): void {
     function checkDiff() {
-        const diff = Math.ceil(nextStageDate.diffNow(['minutes']).toObject().minutes);
-        if (lastNextStageDiff !== diff) {
-            lastNextStageDiff = diff;
-            diffChangeCallback(diff);
+        const diffNow = Math.ceil(startTime.value.diffNow(['minutes']).toObject().minutes);
+        if (diff.value !== diffNow) {
+            diff.value = diffNow;
         }
     }
 
-    const newDate = DateTime.fromISO(time);
+    checkDiff();
+    watch(startTime, checkDiff);
+    const nextStageDiffInterval = window.setInterval(checkDiff, 1000);
 
-    if (newDate.toMillis() !== nextStageDate?.toMillis()) {
-        nextStageDate = newDate;
-        clearInterval(nextStageDiffInterval);
+    onUnmounted(() => {
+        window.clearInterval(nextStageDiffInterval);
+    });
 
-        checkDiff();
-        nextStageDiffInterval = window.setInterval(checkDiff, 1000);
-    }
+    return diff;
 }

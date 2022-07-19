@@ -39,7 +39,7 @@ import { computed, defineComponent, ref, watch } from 'vue';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faMusic } from '@fortawesome/free-solid-svg-icons/faMusic';
 import { faHourglassEnd } from '@fortawesome/free-solid-svg-icons/faHourglassEnd';
-import { setNextStageTimer } from '../../../../helpers/timer';
+import { useNextStageTimer } from '../../../../helpers/timer';
 import FittedContent from '../../../../components/FittedContent.vue';
 import MainSlideRow from './MainSlideRow.vue';
 import SlideTransition from '../../../../components/SlideTransition.vue';
@@ -56,13 +56,12 @@ export default defineComponent({
     setup() {
         const breakScreenStore = useBreakScreenStore();
         const musicStore = useMusicStore();
-        const nextRoundStartDiffNow = ref(0);
-
-        watch(() => breakScreenStore.nextRoundStartTime.startTime, startTime => {
-            setNextStageTimer(startTime, (newValue) => nextRoundStartDiffNow.value = newValue);
-        }, { immediate: true });
+        const nextRoundStartDiffNow = useNextStageTimer();
+        const localeInfoStore = useLocaleInfoStore();
+        const { strings } = toRefs(localeInfoStore);
 
         return {
+            strings,
             nowPlaying: computed(() => musicStore.nowPlaying),
             musicShown: computed(() => musicStore.musicShown),
             nextRoundStartDiffNow,
