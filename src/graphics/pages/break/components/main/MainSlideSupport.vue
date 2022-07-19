@@ -1,32 +1,19 @@
 <template>
     <div class="slide support layout vertical c-vert">
-        <div class="title">Support us!</div>
+        <div class="title">{{ strings.break.main.support.title }}</div>
         <div class="separator" />
         <main-slide-row
-            :icon="['fab', 'twitter']"
-            first-row="@IPLSplatoon"
-        />
-        <main-slide-row
-            :icon="['fab', 'discord']"
-            first-row="iplabs.ink/discord"
-        />
-        <main-slide-row
-            icon="globe"
-            first-row="iplabs.ink"
-        />
-        <main-slide-row
-            icon="dollar-sign"
-            first-row="iplabs.ink/donate"
-        />
-        <main-slide-row
-            :icon="['fab', 'patreon']"
-            first-row="patreon.com/IPLSplatoon"
+            v-for="(item, index) in strings.break.main.support.items"
+            :key="`support-item_${index}`"
+            :is-custom-icon="item.isCustomIcon ?? false"
+            :icon="item.icon"
+            :first-row="item.text"
         />
     </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, toRefs } from 'vue';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faTwitter } from '@fortawesome/free-brands-svg-icons/faTwitter';
 import { faPatreon } from '@fortawesome/free-brands-svg-icons/faPatreon';
@@ -34,12 +21,24 @@ import { faGlobe } from '@fortawesome/free-solid-svg-icons/faGlobe';
 import { faDiscord } from '@fortawesome/free-brands-svg-icons/faDiscord';
 import { faDollarSign } from '@fortawesome/free-solid-svg-icons/faDollarSign';
 import MainSlideRow from './MainSlideRow.vue';
+import { faYoutube } from '@fortawesome/free-brands-svg-icons/faYoutube';
+import { faTwitch } from '@fortawesome/free-brands-svg-icons/faTwitch';
+import { useLocaleInfoStore } from '../../../../store/localeInfoStore';
 
-library.add(faTwitter, faPatreon, faGlobe, faDiscord, faDollarSign);
+library.add(faTwitter, faPatreon, faGlobe, faDiscord, faDollarSign, faYoutube, faTwitch);
 
 export default defineComponent({
     name: 'MainSlideSupport',
 
-    components: { MainSlideRow }
+    components: { MainSlideRow },
+
+    setup() {
+        const localeInfoStore = useLocaleInfoStore();
+        const { strings } = toRefs(localeInfoStore);
+
+        return {
+            strings
+        };
+    }
 });
 </script>

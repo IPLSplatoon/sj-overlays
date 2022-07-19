@@ -11,7 +11,12 @@
             class="main-slide-row layout horiz c-vert"
             :class="{ 'has-second-row': !!secondRow }"
         >
+            <i
+                v-if="isCustomIcon"
+                :class="['icon', icon]"
+            />
             <font-awesome-icon
+                v-else
                 :icon="icon"
                 class="icon"
             />
@@ -58,6 +63,10 @@ export default defineComponent({
         icon: {
             type: [String, Array] as PropType<string | string[]>,
             required: true
+        },
+        isCustomIcon: {
+            type: Boolean,
+            default: false
         },
         firstRow: {
             type: String,
@@ -107,12 +116,13 @@ export default defineComponent({
 .main-slide-row {
     margin: 8px 0;
     overflow: hidden;
+    height: 54px;
 
     .icon {
         margin-right: 15px;
         font-size: 45px;
         filter: drop-shadow(0 0 3px white);
-        width: 50px;
+        width: 55px;
         text-align: center;
     }
 
@@ -121,8 +131,12 @@ export default defineComponent({
         font-weight: 400;
     }
 
-    &.has-second-row .fitted-content-wrapper {
-        height: 48px;
+    &.has-second-row {
+        height: 96px;
+
+        .fitted-content-wrapper {
+            height: 48px;
+        }
     }
 }
 </style>

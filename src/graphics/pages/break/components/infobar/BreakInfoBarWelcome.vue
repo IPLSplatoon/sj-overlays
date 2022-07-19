@@ -1,13 +1,23 @@
 <template>
     <div class="info-row layout c-horiz c-vert">
-        <div>Welcome to <span class="logo-font">SuperJump!</span></div>
+        <div v-html="strings.break.infobar.welcome" />
     </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, toRefs } from 'vue';
+import { useLocaleInfoStore } from '../../../../store/localeInfoStore';
 
 export default defineComponent({
-    name: 'BreakInfoBarWelcome'
+    name: 'BreakInfoBarWelcome',
+
+    setup() {
+        const localeInfoStore = useLocaleInfoStore();
+        const { strings } = toRefs(localeInfoStore);
+
+        return {
+            strings
+        };
+    }
 });
 </script>

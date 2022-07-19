@@ -21,21 +21,13 @@
             icon="hourglass-end"
             :is-visible="nextRoundTimeVisible"
         >
-            <span v-if="nextRoundStartDiffNow > 1">
-                Resuming in <span class="bold">~{{ nextRoundStartDiffNow }}</span> minutes...
-            </span>
-            <span v-else-if="nextRoundStartDiffNow === 1">
-                Resuming in <span class="bold">~{{ nextRoundStartDiffNow }}</span> minute...
-            </span>
-            <span v-else>
-                The stream will resume soon!
-            </span>
+            <span v-html="strings.break.main.general.steamResumes(nextRoundStartDiffNow)" />
         </main-slide-row>
     </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, watch } from 'vue';
+import { computed, defineComponent, toRefs } from 'vue';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faMusic } from '@fortawesome/free-solid-svg-icons/faMusic';
 import { faHourglassEnd } from '@fortawesome/free-solid-svg-icons/faHourglassEnd';
@@ -45,6 +37,7 @@ import MainSlideRow from './MainSlideRow.vue';
 import SlideTransition from '../../../../components/SlideTransition.vue';
 import { useBreakScreenStore } from '../../../../store/breakScreenStore';
 import { useMusicStore } from '../../../../store/musicStore';
+import { useLocaleInfoStore } from '../../../../store/localeInfoStore';
 
 library.add(faMusic, faHourglassEnd);
 

@@ -1,6 +1,6 @@
 <template>
     <div class="slide next-round layout vertical c-vert">
-        <div class="title">Up next</div>
+        <div class="title">{{ strings.break.main.nextup.title }}</div>
         <div class="separator" />
         <div>
             <slide-transition>
@@ -37,12 +37,12 @@
                 </div>
             </div>
         </div>
-        <span id="round-size">{{ numberOfGames }} games total</span>
+        <span id="round-size">{{ strings.break.main.nextup.matchCount(numberOfGames) }}</span>
     </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue';
+import { computed, defineComponent, toRefs } from 'vue';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faMusic } from '@fortawesome/free-solid-svg-icons/faMusic';
 import { faHourglassEnd } from '@fortawesome/free-solid-svg-icons/faHourglassEnd';
@@ -62,8 +62,10 @@ export default defineComponent({
     setup() {
         const nextRoundStore = useNextRoundStore();
         const localeInfoStore = useLocaleInfoStore();
+        const { strings } = toRefs(localeInfoStore);
 
         return {
+            strings,
             localeInfo: computed(() => localeInfoStore.localeInfo),
             teamA: computed(() => nextRoundStore.nextRound.teamA),
             teamB: computed(() => nextRoundStore.nextRound.teamB),
