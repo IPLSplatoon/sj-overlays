@@ -1,8 +1,6 @@
 @import './constants';
 
 @mixin glow-border($color, $radius: 15px) {
-    width: 100%;
-    height: 100%;
     border-radius: $radius;
     box-shadow:
         inset 0 0 5px 0 $color,
@@ -16,6 +14,11 @@
     background-color: white;
     border: 1px solid $color;
     filter: drop-shadow(0 0 2px $color) drop-shadow(0 0 5px $color);
+    border-radius: 9999px;
+}
+
+@mixin svg-glow() {
+    filter: drop-shadow(0 0 3px $blue) drop-shadow(0 0 5px $blue);
 }
 
 .glow-border {
