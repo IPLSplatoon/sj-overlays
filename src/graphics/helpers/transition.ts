@@ -17,13 +17,31 @@ export type TransitionFunctionMap = Record<string, TransitionFunctions>;
 
 export const transitionFunctionsInjectionKey = Symbol() as InjectionKey<TransitionFunctionMap>;
 
-export function provideTransitions(key: string, rootQuerySelector: string, transitions: RawTransitionFunctions): void {
+export function provideTransitions(key: string, rootQuerySelector: string | null, transitions: RawTransitionFunctions): void {
     const injection = inject(transitionFunctionsInjectionKey);
     if (injection == null) return;
 
     injection[key] = {
-        beforeEnter: (elem: HTMLElement) => transitions.beforeEnter(elem.querySelector(rootQuerySelector)),
-        enter: (elem: HTMLElement, ...args: unknown[]) => transitions.enter(elem.querySelector(rootQuerySelector), null, ...args),
-        leave: (elem: HTMLElement, ...args: unknown[]) => transitions.leave(elem.querySelector(rootQuerySelector), null, ...args)
+        beforeEnter: (elem: HTMLElement) => {
+            if (rootQuerySelector != null) {
+                elem = elem.querySelector(rootQuerySelector);
+            }
+
+            transitions.beforeEnter(elem);
+        },
+        enter: (elem: HTMLElement, ...args: unknown[]) => {
+            if (rootQuerySelector != null) {
+                elem = elem.querySelector(rootQuerySelector);
+            }
+
+            return transitions.enter(elem, null, ...args);
+        },
+        leave: (elem: HTMLElement, ...args: unknown[]) => {
+            if (rootQuerySelector != null) {
+                elem = elem.querySelector(rootQuerySelector);
+            }
+
+            return transitions.leave(elem, null, ...args);
+        }
     };
 }
