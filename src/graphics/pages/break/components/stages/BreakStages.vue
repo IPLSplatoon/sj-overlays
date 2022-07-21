@@ -75,8 +75,9 @@ export default defineComponent({
         const stagesEnter = (elem: HTMLElement, done: gsap.Callback) => {
             const tl = gsap.timeline({ onComplete: done });
 
-            const stageCount = games.value?.length;
-            tl.addLabel('stagesIn', `+=${stageCount * 0.1 - 0.2}`);
+            tl
+                .addLabel('borderIn')
+                .addLabel('stagesIn', 'borderIn+=0.35');
 
             tl
                 .to(
@@ -98,8 +99,9 @@ export default defineComponent({
         const stagesLeave = (elem: HTMLElement, done: gsap.Callback) => {
             const tl = gsap.timeline({ onComplete: done });
 
-            const stageCount = games.value?.length;
-            tl.addLabel('borderOut', `+=${stageCount * 0.1 - 0.2}`);
+            tl
+                .addLabel('sceneOut')
+                .addLabel('borderOut', 'sceneOut+=0.25');
 
             tl
                 .to(
