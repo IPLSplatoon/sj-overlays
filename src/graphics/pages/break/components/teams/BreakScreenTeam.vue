@@ -13,6 +13,9 @@
                 <split-text-transition
                     :max-width="450"
                     :value="$helpers.addDots(teamData?.name)"
+                    :transition-key="`team-${team.toLowerCase()}-name`"
+                    :transition-selector="`.team-${team.toLowerCase()}-name`"
+                    :class="`team-${team.toLowerCase()}-name`"
                 />
             </div>
             <transition

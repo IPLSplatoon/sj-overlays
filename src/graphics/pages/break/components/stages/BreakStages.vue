@@ -28,7 +28,11 @@
 import { computed, defineComponent, provide } from 'vue';
 import gsap from 'gsap';
 import BreakStagesScoreboard from './BreakStagesScoreboard.vue';
-import { TransitionFunctionMap, transitionFunctionsInjectionKey } from '../../../../helpers/transition';
+import {
+    provideTransitions,
+    TransitionFunctionMap,
+    transitionFunctionsInjectionKey
+} from '../../../../helpers/transition';
 import BreakStageDisplay from './BreakStageDisplay.vue';
 import { useActiveRoundStore } from '../../../../store/activeRoundStore';
 
@@ -114,29 +118,41 @@ export default defineComponent({
             return tl;
         };
 
+        const beforeEnter = (elem: HTMLElement) => {
+            transitions.stagesScoreboard.beforeEnter(elem);
+            stagesBeforeEnter(elem.querySelector('.stage-grid'));
+        };
+
+        const enter = (elem: HTMLElement, done: gsap.Callback) => {
+            const tl = gsap.timeline({ onComplete: done });
+
+            tl
+                .add(transitions.stagesScoreboard.enter(elem), 'sceneIn')
+                .add(stagesEnter(elem.querySelector('.stage-grid'), undefined), 'sceneIn');
+
+            return tl;
+        };
+
+        const leave = (elem: HTMLElement, done: gsap.Callback) => {
+            const tl = gsap.timeline({ onComplete: done });
+
+            tl
+                .add(transitions.stagesScoreboard.leave(elem), 'sceneOut')
+                .add(stagesLeave(elem.querySelector('.stage-grid'), undefined), 'sceneOut');
+
+            return tl;
+        };
+
+        provideTransitions('break', null, { beforeEnter, enter, leave });
+
         return {
             activeRound: computed(() => activeRoundStore.activeRound),
             games,
             styles: computed(() => stageStyles[games.value?.length.toString()] ?? stageStyles['3']),
 
-            beforeEnter: (elem: HTMLElement) => {
-                transitions.stagesScoreboard.beforeEnter(elem);
-                stagesBeforeEnter(elem.querySelector('.stage-grid'));
-            },
-            enter: (elem: HTMLElement, done: gsap.Callback) => {
-                const tl = gsap.timeline({ onComplete: done });
-
-                tl
-                    .add(transitions.stagesScoreboard.enter(elem), 'sceneIn')
-                    .add(stagesEnter(elem.querySelector('.stage-grid'), undefined), 'sceneIn');
-            },
-            leave: (elem: HTMLElement, done: gsap.Callback) => {
-                const tl = gsap.timeline({ onComplete: done });
-
-                tl
-                    .add(transitions.stagesScoreboard.leave(elem), 'sceneOut')
-                    .add(stagesLeave(elem.querySelector('.stage-grid'), undefined), 'sceneOut');
-            },
+            beforeEnter,
+            enter,
+            leave,
 
             stagesBeforeEnter,
             stagesEnter,

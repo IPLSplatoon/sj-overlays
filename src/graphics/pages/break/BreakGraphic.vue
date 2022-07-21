@@ -27,7 +27,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue';
+import { computed, defineComponent, provide, ref } from 'vue';
 import IconBackground from '../../components/IconBackground.vue';
 import BreakStages from './components/stages/BreakStages.vue';
 import BreakTeams from './components/teams/BreakTeams.vue';
@@ -36,18 +36,7 @@ import gsap from 'gsap';
 import BreakInfoBar from './components/infobar/BreakInfoBar.vue';
 import { useBreakScreenStore } from '../../store/breakScreenStore';
 import { bindEntranceToFunction } from '../../helpers/obs';
-
-interface AnimatedSceneComponent extends HTMLElement {
-    __vueParentComponent: InternalAnimatedSceneComponentInstance
-}
-
-interface InternalAnimatedSceneComponentInstance {
-    ctx: {
-        beforeEnter: (elem: HTMLElement) => void
-        enter: (elem: HTMLElement, done: gsap.Callback) => void
-        leave: (elem: HTMLElement, done: gsap.Callback) => void
-    }
-}
+import { TransitionFunctionMap, transitionFunctionsInjectionKey } from '../../helpers/transition';
 
 export default defineComponent({
     name: 'BreakGraphic',
@@ -67,6 +56,9 @@ export default defineComponent({
                 }, 2500);
             }
         });
+
+        const transitions: TransitionFunctionMap = {};
+        provide(transitionFunctionsInjectionKey, transitions);
 
         const beforeInfoBarEnter = (elem: HTMLElement) => {
             gsap.set(elem.querySelector('.info-bar'), { width: 0, opacity: 0 });
@@ -94,17 +86,18 @@ export default defineComponent({
 
         return {
             activeBreakScene: computed(() => breakScreenStore.activeBreakScene),
-            // Accesses the internal Vue instance of the components and runs the appropriate animation methods.
-            // This means that child components in this transition MUST contain 'beforeEnter', 'enter', and 'leave' methods.
-            // There's likely a better way to do this, but it works...
-            beforeEnter: (elem: AnimatedSceneComponent) => {
-                (elem.__vueParentComponent as InternalAnimatedSceneComponentInstance).ctx.beforeEnter(elem);
+            beforeEnter: (elem: HTMLElement) => {
+                transitions.break.beforeEnter(elem);
             },
-            enter: (elem: AnimatedSceneComponent, done: gsap.Callback) => {
-                (elem.__vueParentComponent as InternalAnimatedSceneComponentInstance).ctx.enter(elem, done);
+            enter: (elem: HTMLElement, done: gsap.Callback) => {
+                const tl = gsap.timeline({ onComplete: done });
+
+                tl.add(transitions.break.enter(elem));
             },
-            leave: (elem: AnimatedSceneComponent, done: gsap.Callback) => {
-                (elem.__vueParentComponent as InternalAnimatedSceneComponentInstance).ctx.leave(elem, done);
+            leave: (elem: HTMLElement, done: gsap.Callback) => {
+                const tl = gsap.timeline({ onComplete: done });
+
+                tl.add(transitions.break.leave(elem));
             },
 
             beforeInfoBarEnter,

@@ -41,6 +41,7 @@ import MainSlideGeneralInfo from './MainSlideGeneralInfo.vue';
 import MainSlideSupport from './MainSlideSupport.vue';
 import MainSlideNextMatch from './MainSlideNextMatch.vue';
 import { useNextRoundStore } from '../../../../store/nextRoundStore';
+import { provideTransitions } from '../../../../helpers/transition';
 
 export default defineComponent({
     name: 'BreakMain',
@@ -56,40 +57,52 @@ export default defineComponent({
             { component: 'MainSlideNextMatch', enabled: computed(() => nextRoundStore.nextRound.showOnStream) }
         ]);
 
+        const beforeEnter = (elem: HTMLElement) => {
+            gsap.set(elem.querySelector('.main-content-wrapper'), { height: 0 });
+            gsap.set(elem.querySelector('.logo-wrapper'), { opacity: 0 });
+        };
+
+        const enter = (elem: HTMLElement, done: gsap.Callback) => {
+            const tl = gsap.timeline({ onComplete: done });
+
+            tl.addLabel('sceneIn');
+            tl
+                .to(
+                    elem.querySelector('.main-content-wrapper'),
+                    { duration: 0.55, height: 700, ease: 'power2.out' },
+                    'sceneIn')
+                .to(
+                    elem.querySelector('.logo-wrapper'),
+                    { opacity: 1, duration: 0.5, ease: 'power2.out' },
+                    'sceneIn');
+
+            return tl;
+        };
+
+        const leave = (elem: HTMLElement, done: gsap.Callback) => {
+            const tl = gsap.timeline({ onComplete: done });
+
+            tl.addLabel('sceneOut');
+            tl
+                .to(
+                    elem.querySelectorAll('.main-content-wrapper, .main-slides'),
+                    { duration: 0.55, height: 0, ease: 'power2.in' },
+                    'sceneOut')
+                .to(
+                    elem.querySelector('.logo-wrapper'),
+                    { opacity: 0, duration: 0.5, ease: 'power2.in' },
+                    'sceneOut');
+
+            return tl;
+        };
+
+        provideTransitions('break', null, { beforeEnter, enter, leave });
+
         return {
             activeSlide: slides.activeComponent,
-            beforeEnter: (elem: HTMLElement) => {
-                gsap.set(elem.querySelector('.main-content-wrapper'), { height: 0 });
-                gsap.set(elem.querySelector('.logo-wrapper'), { opacity: 0 });
-            },
-            enter: (elem: HTMLElement, done: gsap.Callback) => {
-                const tl = gsap.timeline({ onComplete: done });
-
-                tl.addLabel('sceneIn');
-                tl
-                    .to(
-                        elem.querySelector('.main-content-wrapper'),
-                        { duration: 0.55, height: 700, ease: 'power2.out' },
-                        'sceneIn')
-                    .to(
-                        elem.querySelector('.logo-wrapper'),
-                        { opacity: 1, duration: 0.5, ease: 'power2.out' },
-                        'sceneIn');
-            },
-            leave: (elem: HTMLElement, done: gsap.Callback) => {
-                const tl = gsap.timeline({ onComplete: done });
-
-                tl.addLabel('sceneOut');
-                tl
-                    .to(
-                        elem.querySelectorAll('.main-content-wrapper, .main-slides'),
-                        { duration: 0.55, height: 0, ease: 'power2.in' },
-                        'sceneOut')
-                    .to(
-                        elem.querySelector('.logo-wrapper'),
-                        { opacity: 0, duration: 0.5, ease: 'power2.in' },
-                        'sceneOut');
-            },
+            beforeEnter,
+            enter,
+            leave,
 
             beforeSlideEnter: (elem: HTMLElement) => {
                 gsap.set(elem.children, { y: -50, opacity: 0 });
