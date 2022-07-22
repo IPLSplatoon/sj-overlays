@@ -7,19 +7,27 @@
                 class="title"
             />
             <div class="separator" />
-            <div
-                v-if="cell.subtitle"
-                class="subtitle-wrapper layout vertical c-horiz"
+            <transition
+                mode="out-in"
+                :css="false"
+                @enter="subtitleEnter"
+                @leave="subtitleLeave"
+                @before-enter="beforeSubtitleEnter"
             >
-                <fitted-content
-                    class="subtitle"
-                    :max-width="540"
-                    align="center"
+                <div
+                    v-if="cell.subtitle"
+                    class="subtitle-wrapper layout vertical c-horiz"
                 >
-                    {{ cell.subtitle }}
-                </fitted-content>
-                <div class="subtitle-separator" />
-            </div>
+                    <fitted-content
+                        class="subtitle"
+                        :max-width="540"
+                        align="center"
+                    >
+                        {{ cell.subtitle }}
+                    </fitted-content>
+                    <div class="subtitle-separator" />
+                </div>
+            </transition>
             <opacity-swap-transition>
                 <stats-list
                     v-if="cell.displayType === 'SINGLE_STAT_LIST' || cell.displayType === 'MULTI_STAT_LIST'"
@@ -42,6 +50,7 @@ import StatsList from './StatsList.vue';
 import StatsBarChart from './StatsBarChart.vue';
 import OpacitySwapTransition from '../../../components/OpacitySwapTransition.vue';
 import SplitTextTransition from '../../../components/SplitTextTransition.vue';
+import gsap from 'gsap';
 
 export default defineComponent({
     name: 'StatsCell',
@@ -53,6 +62,20 @@ export default defineComponent({
             type: Object as PropType<DataCell>,
             required: true
         }
+    },
+
+    setup() {
+        return {
+            beforeSubtitleEnter: (elem: HTMLElement) => {
+                gsap.set(elem, { height: 0 });
+            },
+            subtitleEnter: (elem: HTMLElement, done: gsap.Callback) => {
+                gsap.to(elem, { height: 54, ease: 'power2.inOut', onComplete: done });
+            },
+            subtitleLeave: (elem: HTMLElement, done: gsap.Callback) => {
+                gsap.to(elem, { height: 0, ease: 'power2.inOut', onComplete: done });
+            }
+        };
     }
 });
 </script>
@@ -88,7 +111,7 @@ export default defineComponent({
         }
 
         .subtitle-wrapper {
-            margin-bottom: 8px;
+            overflow: hidden;
 
             .subtitle {
                 padding: 0 8px;
@@ -103,6 +126,7 @@ export default defineComponent({
                 @include line-glow($orange);
                 width: 100%;
                 height: 1px;
+                margin-bottom: 8px;
             }
         }
     }
