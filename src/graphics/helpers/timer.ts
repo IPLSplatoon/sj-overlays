@@ -1,4 +1,4 @@
-import { DateTime } from 'luxon';
+import { DateTime, Duration } from 'luxon';
 import { computed, onUnmounted, ref, Ref, watch } from 'vue';
 import { useBreakScreenStore } from '../store/breakScreenStore';
 
@@ -23,4 +23,8 @@ export function useNextStageTimer(): Ref<number> {
     });
 
     return diff;
+}
+
+export function formatDuration(seconds: number): string {
+    return Duration.fromObject({ seconds }).toFormat('m:ss');
 }

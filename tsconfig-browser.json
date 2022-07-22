@@ -24,6 +24,9 @@
             ],
             "schemas": [
                 "../ipl-overlay-controls/src/types/schemas/index"
+            ],
+            "relay-nodecg-connector": [
+                "../relay-nodecg-connector/src/types/schemas/index"
             ]
         }
     }
