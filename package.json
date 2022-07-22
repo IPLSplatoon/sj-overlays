@@ -41,6 +41,11 @@
                 "file": "break.html",
                 "width": 1920,
                 "height": 1080
+            },
+            {
+                "file": "stats.html",
+                "width": 1920,
+                "height": 1080
             }
         ]
     },
@@ -61,6 +66,7 @@
         "@pixi/spritesheet": "^6.1.2",
         "@pixi/ticker": "^6.1.2",
         "@pixi/utils": "^6.1.2",
+        "@types/d3": "^7.4.0",
         "@types/lodash": "^4.14.171",
         "@types/luxon": "^1.27.1",
         "@types/node": "^15.14.9",
@@ -70,6 +76,7 @@
         "@vue/compiler-sfc": "^3.2.31",
         "cross-env": "^7.0.3",
         "css-loader": "^6.2.0",
+        "d3": "^7.6.1",
         "eslint": "^7.28.0",
         "eslint-import-resolver-typescript": "^2.4.0",
         "eslint-plugin-vue": "^7.19.1",

@@ -91,7 +91,14 @@ function initBackground(container: PIXI.Container): void {
 export default defineComponent({
     name: 'IconBackground',
 
-    setup() {
+    props: {
+        animateOnEntrance: {
+            type: Boolean,
+            default: true
+        }
+    },
+
+    setup(props) {
         const iconBackgroundCanvas = ref<HTMLCanvasElement>();
 
         onMounted(() => {
@@ -170,11 +177,13 @@ export default defineComponent({
                     animBackgroundIn();
                 });
 
-            bindEntranceToFunction((event) => {
-                if (event.detail.active || event.detail.visible) {
-                    animBackgroundIn();
-                }
-            });
+            if (props.animateOnEntrance) {
+                bindEntranceToFunction((event) => {
+                    if (event.detail.active || event.detail.visible) {
+                        animBackgroundIn();
+                    }
+                });
+            }
         });
 
         return {
