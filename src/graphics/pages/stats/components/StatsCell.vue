@@ -1,13 +1,11 @@
 <template>
     <div class="stats-cell glow-border glow-blue">
         <div class="header layout vertical c-horiz">
-            <fitted-content
-                class="title"
+            <split-text-transition
                 :max-width="540"
-                align="center"
-            >
-                {{ cell.title }}
-            </fitted-content>
+                :value="cell.title"
+                class="title"
+            />
             <div class="separator" />
             <div
                 v-if="cell.subtitle"
@@ -22,14 +20,16 @@
                 </fitted-content>
                 <div class="subtitle-separator" />
             </div>
-            <stats-list
-                v-if="cell.displayType === 'SINGLE_STAT_LIST' || cell.displayType === 'MULTI_STAT_LIST'"
-                :cell="cell"
-            />
-            <stats-bar-chart
-                v-else-if="cell.displayType === 'SINGLE_STAT_BAR_CHART'"
-                :cell="cell"
-            />
+            <opacity-swap-transition>
+                <stats-list
+                    v-if="cell.displayType === 'SINGLE_STAT_LIST' || cell.displayType === 'MULTI_STAT_LIST'"
+                    :cell="cell"
+                />
+                <stats-bar-chart
+                    v-else-if="cell.displayType === 'SINGLE_STAT_BAR_CHART'"
+                    :cell="cell"
+                />
+            </opacity-swap-transition>
         </div>
     </div>
 </template>
@@ -40,11 +40,13 @@ import { DataCell } from 'relay-nodecg-connector';
 import FittedContent from '../../../components/FittedContent.vue';
 import StatsList from './StatsList.vue';
 import StatsBarChart from './StatsBarChart.vue';
+import OpacitySwapTransition from '../../../components/OpacitySwapTransition.vue';
+import SplitTextTransition from '../../../components/SplitTextTransition.vue';
 
 export default defineComponent({
     name: 'StatsCell',
 
-    components: { StatsBarChart, StatsList, FittedContent },
+    components: { OpacitySwapTransition, StatsBarChart, StatsList, FittedContent, SplitTextTransition },
 
     props: {
         cell: {
