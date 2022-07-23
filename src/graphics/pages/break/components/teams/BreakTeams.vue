@@ -3,7 +3,7 @@
         <div
             class="team-display"
             :class="{ 'predictions-hidden': !predictionsVisible }"
-            :style="{ height: teamDisplayHeight }"
+            :style="{ height: teamDisplayHeight, transform: teamDisplayTransform }"
         >
             <break-screen-team
                 team="A"
@@ -167,6 +167,7 @@ export default defineComponent({
 
         return {
             teamDisplayHeight: computed(() => predictionsVisible.value ? '525px' : '638px'),
+            teamDisplayTransform: computed(() => predictionsVisible.value ? 'translateY(0px)' : 'translateY(25px)'),
             predictionsVisible,
 
             beforeEnter,
@@ -189,7 +190,7 @@ export default defineComponent({
         grid-template-columns: 2fr 1fr 2fr;
         align-items: end;
         position: relative;
-        transition: height 500ms;
+        transition: height 500ms, transform 500ms;
 
         &.predictions-hidden {
             transition-delay: 750ms;

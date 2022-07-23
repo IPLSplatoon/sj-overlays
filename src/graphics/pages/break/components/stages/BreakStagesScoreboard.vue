@@ -97,7 +97,7 @@ export default defineComponent({
     width: 1000px;
     position: absolute;
     overflow: hidden;
-    top: 227px;
+    top: 237px;
     @include background();
 
     .content {
