@@ -168,7 +168,7 @@ export default defineComponent({
 .stage-grid {
     height: 600px;
     position: absolute;
-    bottom: 150px;
+    bottom: 125px;
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     grid-template-rows: 1fr;
