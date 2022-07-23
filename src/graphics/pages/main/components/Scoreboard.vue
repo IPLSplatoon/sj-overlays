@@ -89,7 +89,7 @@
                 </opacity-swap-transition>
                 <img
                     class="scoreboard-icon"
-                    src="/bundles/sj-overlays/assets/SJ_eyes.png"
+                    src="/bundles/sj-overlays/assets/SJ_Eyes.png"
                 >
             </div>
         </div>
