@@ -4,7 +4,17 @@
             class="team-names"
             :max-width="1150"
         >
-            {{ teamNames }}
+            <span
+                class="color-display"
+                :class="colorsSwapped ? 'bravo' : 'alpha'"
+            />
+            <span class="team-name">{{ activeRound.teamA.name }}</span>
+            vs
+            <span
+                class="color-display"
+                :class="colorsSwapped ? 'alpha' : 'bravo'"
+            />
+            <span class="team-name">{{ activeRound.teamB.name }}</span>
         </fitted-content>
         <div class="stage-and-mode">{{ stageAndMode }}</div>
     </div>
@@ -24,10 +34,10 @@ export default defineComponent({
         const activeRoundStore = useActiveRoundStore();
 
         return {
-            teamNames: computed(() =>
-                `${activeRoundStore.activeRound.teamA.name} vs ${activeRoundStore.activeRound.teamB.name}`),
+            activeRound: computed(() => activeRoundStore.activeRound),
             stageAndMode: computed(() =>
-                `${relayDataStore.activeRelayEvent.event.rule} on ${relayDataStore.activeRelayEvent.event.stage}`)
+                `${relayDataStore.activeRelayEvent.event.rule} on ${relayDataStore.activeRelayEvent.event.stage}`),
+            colorsSwapped: computed(() => activeRoundStore.swapColorsInternally)
         };
     }
 });
@@ -35,6 +45,7 @@ export default defineComponent({
 
 <style lang="scss">
 @import '../../../styles/background';
+@import '../../../styles/constants';
 
 .stats-header {
     @include background();
@@ -48,9 +59,29 @@ export default defineComponent({
 
     .team-names {
         font-size: 40px;
-        font-weight: bold;
         line-height: 40px;
         margin-top: 8px;
+
+        .team-name {
+            font-weight: bold;
+        }
+    }
+
+    .color-display {
+        display: inline-block;
+        border-radius: 8px;
+        width: 30px;
+        height: 30px;
+        margin-right: 4px;
+        transition: background-color 500ms;
+
+        &.alpha {
+            background-color: $red;
+        }
+
+        &.bravo {
+            background-color: $green;
+        }
     }
 }
 </style>

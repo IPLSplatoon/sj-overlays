@@ -1,22 +1,31 @@
 <template>
-    <div class="stats-list-wrapper">
+    <opacity-swap-transition>
         <div
-            v-for="(item, index) in cell.values"
-            :key="`cell-list-item_${index}`"
-            class="line-item"
+            :key="cell.displayType"
+            class="stats-list-wrapper"
         >
-            <span>{{ item.label }}</span>
-            <span>{{ formatValue(item.value) }}</span>
+            <stats-list-item
+                v-for="(item, index) in cell.values"
+                :key="`cell-list-item_${item.label}_${index}`"
+                class="line-item"
+                :value="item"
+                :use-decimals="useDecimals"
+                :tween-value="cell.displayType !== 'MULTI_STAT_LIST'"
+            />
         </div>
-    </div>
+    </opacity-swap-transition>
 </template>
 
 <script lang="ts">
 import { DataCell } from 'relay-nodecg-connector';
-import { defineComponent, PropType } from 'vue';
+import { computed, defineComponent, PropType } from 'vue';
+import StatsListItem from './StatsListItem.vue';
+import OpacitySwapTransition from '../../../components/OpacitySwapTransition.vue';
 
 export default defineComponent({
     name: 'StatsList',
+
+    components: { OpacitySwapTransition, StatsListItem },
 
     props: {
         cell: {
@@ -25,15 +34,9 @@ export default defineComponent({
         }
     },
 
-    setup() {
+    setup(props) {
         return {
-            formatValue(value: unknown) {
-                if (typeof value === 'number') {
-                    return value.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
-                } else {
-                    return value;
-                }
-            }
+            useDecimals: computed(() => props.cell.values.some(value => typeof value.value === 'number' && value.value % 1 !== 0))
         };
     }
 });
@@ -43,18 +46,5 @@ export default defineComponent({
 .stats-list-wrapper {
     margin: 8px 16px 0;
     width: calc(100% - 32px);
-
-    > .line-item {
-        font-size: 35px;
-        line-height: 42px;
-        margin-top: 2px;
-        height: 47px;
-
-        > span:last-child {
-            float: right;
-            font-weight: bold;
-            font-size: 40px;
-        }
-    }
 }
 </style>

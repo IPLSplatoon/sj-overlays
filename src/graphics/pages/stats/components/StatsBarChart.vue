@@ -14,12 +14,7 @@ import { scaleBand, scaleLinear } from 'd3-scale';
 import { axisBottom, axisLeft } from 'd3-axis';
 import { create } from 'd3';
 import { colors } from '../../../helpers/constants';
-
-interface DataCellValue {
-    label: string;
-    value: number | string;
-    team?: 'alpha' | 'bravo';
-}
+import { DataCellValue } from '../../../types/relay';
 
 export default defineComponent({
     name: 'StatsBarChart',
