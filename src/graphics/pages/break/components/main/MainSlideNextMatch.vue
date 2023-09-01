@@ -23,7 +23,7 @@
                     <div class="cover glow-border glow-blue" />
                     <div
                         class="match-background"
-                        :style="{ backgroundImage: `url('${getStageImagePath(game.stage)}')` }"
+                        :style="{ backgroundImage: `url('${ getStageImagePath(game.stage)}')` }"
                     />
                     <div class="match-text layout vertical">
                         <fitted-content
@@ -46,11 +46,11 @@ import { computed, defineComponent, toRefs } from 'vue';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faMusic } from '@fortawesome/free-solid-svg-icons/faMusic';
 import { faHourglassEnd } from '@fortawesome/free-solid-svg-icons/faHourglassEnd';
-import { getStageImagePath } from '../../../../helpers/constants';
 import FittedContent from '../../../../components/FittedContent.vue';
 import SlideTransition from '../../../../components/SlideTransition.vue';
 import { useNextRoundStore } from '../../../../store/nextRoundStore';
 import { useLocaleInfoStore } from '../../../../store/localeInfoStore';
+import { useAssetPathStore } from '../../../../store/assetPathStore';
 
 library.add(faMusic, faHourglassEnd);
 
@@ -62,6 +62,7 @@ export default defineComponent({
     setup() {
         const nextRoundStore = useNextRoundStore();
         const localeInfoStore = useLocaleInfoStore();
+        const assetPathStore = useAssetPathStore();
         const { strings } = toRefs(localeInfoStore);
 
         return {
@@ -75,7 +76,7 @@ export default defineComponent({
                 const gameCount = nextRoundStore.nextRound.games.length;
                 return nextRoundStore.nextRound.round.type === 'PLAY_ALL' ? `Play all ${gameCount}` : `Best of ${gameCount}`;
             }),
-            getStageImagePath
+            getStageImagePath: assetPathStore.getStageImagePath
         };
     }
 });
