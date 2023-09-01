@@ -89,13 +89,14 @@
 
 <script lang="ts">
 import { computed, defineComponent, getCurrentInstance, onMounted, PropType, watch } from 'vue';
-import { colors, getIconFromMode, getStageImagePath } from '../../../../helpers/constants';
+import { colors, getIconFromMode } from '../../../../helpers/constants';
 import FittedContent from '../../../../components/FittedContent.vue';
 import { hexToRgb, Solver } from '../../../../helpers/color';
 import gsap from 'gsap';
 import OpacitySwapTransition from '../../../../components/OpacitySwapTransition.vue';
 import { useActiveRoundStore } from '../../../../store/activeRoundStore';
 import { useLocaleInfoStore } from '../../../../store/localeInfoStore';
+import { useAssetPathStore } from '../../../../store/assetPathStore';
 
 export default defineComponent({
     name: 'BreakStageDisplay',
@@ -116,6 +117,7 @@ export default defineComponent({
     setup(props) {
         const activeRoundStore = useActiveRoundStore();
         const localeInfoStore = useLocaleInfoStore();
+        const assetPathStore = useAssetPathStore();
 
         const color = computed(() => {
             switch (props.game.winner) {
@@ -156,7 +158,7 @@ export default defineComponent({
             colorFilter: computed(() => new Solver(hexToRgb(color.value)).solve().filter),
             colors,
             getIconFromMode,
-            getStageImagePath,
+            getStageImagePath: assetPathStore.getStageImagePath,
             stageImageFilter: computed(() => props.game.winner === 'none' ? 'blur(0px) saturate(1)' : 'blur(2px) saturate(0.5)'),
             winnerName: computed(() => {
                 switch (props.game.winner) {
