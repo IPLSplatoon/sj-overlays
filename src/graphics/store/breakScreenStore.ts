@@ -1,4 +1,3 @@
-import { NodeCGBrowser } from 'nodecg/browser';
 import { ActiveBreakScene, MainFlavorText, NextRoundStartTime } from 'schemas';
 import { defineStore } from 'pinia';
 import { DASHBOARD_BUNDLE_NAME } from '../helpers/constants';

@@ -15,10 +15,10 @@
         "sourceMap": true,
         "moduleResolution": "Node",
         "baseUrl": ".",
+        "types": [
+            "@nodecg/types/augment-window"
+        ],
         "paths": {
-            "nodecg/*": [
-                "../../types/*"
-            ],
             "types/*": [
                 "src/types/*"
             ],

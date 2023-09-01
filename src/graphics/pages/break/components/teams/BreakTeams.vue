@@ -22,7 +22,6 @@
 </template>
 
 <script lang="ts">
-import { NodeCGBrowser } from 'nodecg/browser';
 import { computed, defineComponent, provide, ref } from 'vue';
 import gsap from 'gsap';
 import BreakScreenTeam from './BreakScreenTeam.vue';
