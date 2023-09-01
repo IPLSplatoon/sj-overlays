@@ -63,7 +63,6 @@
 </template>
 
 <script lang="ts">
-import { NodeCGBrowser } from 'nodecg/browser';
 import { computed, defineComponent, ref } from 'vue';
 import gsap from 'gsap';
 import { DASHBOARD_BUNDLE_NAME } from '../../../helpers/constants';

@@ -2,7 +2,10 @@
     "name": "sj-overlays",
     "version": "3.0.0",
     "compatibleDashboardVersion": "^4.4.0",
-    "compatibleGameVersions": ["SPLATOON_2", "SPLATOON_3"],
+    "compatibleGameVersions": [
+        "SPLATOON_2",
+        "SPLATOON_3"
+    ],
     "description": "Broadcast overlays for SuperJump, a Splatoon tournament by Inkling Performance Labs.",
     "homepage": "https://github.com/iplsplatoon/sj-overlays",
     "author": {
@@ -25,7 +28,7 @@
         "fix": "eslint ./src --fix"
     },
     "nodecg": {
-        "compatibleRange": "^1.7.0",
+        "compatibleRange": "^1.7.0 || ^2.0.0",
         "mount": [
             {
                 "directory": "assets",
@@ -55,6 +58,7 @@
         "@fortawesome/free-brands-svg-icons": "^6.1.1",
         "@fortawesome/free-solid-svg-icons": "6.1.1",
         "@fortawesome/vue-fontawesome": "^3.0.0-5",
+        "@nodecg/types": "^2.1.11",
         "@pixi/app": "^6.1.2",
         "@pixi/constants": "^6.1.2",
         "@pixi/core": "^6.1.2",

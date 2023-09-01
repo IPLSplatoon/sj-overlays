@@ -1,4 +1,3 @@
-import { NodeCGBrowser } from 'nodecg/browser';
 import { DisplayData, ActiveRelayEvent } from 'relay-nodecg-connector';
 import { defineStore } from 'pinia';
 
