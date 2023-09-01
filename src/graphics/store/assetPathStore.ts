@@ -1,4 +1,4 @@
-import { AssetPaths } from "schemas";
+import { AssetPaths } from 'schemas';
 import { defineStore } from 'pinia';
 import { DASHBOARD_BUNDLE_NAME } from '../helpers/constants';
 
