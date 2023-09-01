@@ -8,7 +8,7 @@
             <div class="tournament-name layout horiz">
                 <span class="logo-font">SuperJump</span>
                 <img
-                    src="/bundles/sj-overlays/assets/SJ_2.png"
+                    src="/bundles/sj-overlays/assets/SJ_3.png"
                     class="edition"
                 >
             </div>
@@ -138,6 +138,10 @@ export default defineComponent({
 
         .logo {
             height: 675px;
+        }
+
+        .edition {
+            transform: translate(5px, 20px);
         }
 
         .tournament-name {
