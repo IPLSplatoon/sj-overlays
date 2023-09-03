@@ -34,7 +34,7 @@ import {
     transitionFunctionsInjectionKey
 } from '../../../../helpers/transition';
 import BreakStageDisplay from './BreakStageDisplay.vue';
-import { useActiveRoundStore } from '../../../../store/activeRoundStore';
+import { useActiveRoundStore } from 'client-shared/store/activeRoundStore';
 
 const stageStyles: Record<string, { width: number, gap: number, stageWidth: number }> = {
     '3': {

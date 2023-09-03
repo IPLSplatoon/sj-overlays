@@ -43,7 +43,7 @@ import FittedContent from '../../../../components/FittedContent.vue';
 import OpacitySwapTransition from '../../../../components/OpacitySwapTransition.vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faTwitter } from '@fortawesome/free-brands-svg-icons/faTwitter';
-import { useCasterStore } from '../../../../store/casterStore';
+import { useCasterStore } from 'client-shared/store/casterStore';
 
 library.add(faTwitter);
 

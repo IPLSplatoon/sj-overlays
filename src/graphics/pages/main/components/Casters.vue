@@ -65,13 +65,13 @@
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue';
 import gsap from 'gsap';
-import { DASHBOARD_BUNDLE_NAME } from '../../../helpers/constants';
+import { DASHBOARD_BUNDLE_NAME } from 'client-shared/constants';
 import FittedContent from '../../../components/FittedContent.vue';
 import Badge from '../../../components/Badge.vue';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faMicrophone } from '@fortawesome/free-solid-svg-icons/faMicrophone';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { useCasterStore } from '../../../store/casterStore';
+import { useCasterStore } from 'client-shared/store/casterStore';
 
 library.add(faMicrophone);
 

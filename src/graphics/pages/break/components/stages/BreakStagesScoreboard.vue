@@ -40,7 +40,7 @@ import FittedContent from '../../../../components/FittedContent.vue';
 import OpacitySwapTransition from '../../../../components/OpacitySwapTransition.vue';
 import gsap from 'gsap';
 import { provideTransitions } from '../../../../helpers/transition';
-import { useActiveRoundStore } from '../../../../store/activeRoundStore';
+import { useActiveRoundStore } from 'client-shared/store/activeRoundStore';
 
 export default defineComponent({
     name: 'BreakStagesScoreboard',

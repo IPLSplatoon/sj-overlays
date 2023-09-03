@@ -50,7 +50,7 @@ import FittedContent from '../../../../components/FittedContent.vue';
 import Badge from '../../../../components/Badge.vue';
 import SplitTextTransition from '../../../../components/SplitTextTransition.vue';
 import gsap from 'gsap';
-import { useActiveRoundStore } from '../../../../store/activeRoundStore';
+import { useActiveRoundStore } from 'client-shared/store/activeRoundStore';
 
 export default defineComponent({
     name: 'BreakScreenTeam',

@@ -128,5 +128,6 @@ function browserConfig(source) {
 }
 
 module.exports = [
-    browserConfig('graphics')
+    browserConfig('graphics'),
+    browserConfig('dashboard')
 ];

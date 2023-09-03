@@ -48,9 +48,9 @@ import { faMusic } from '@fortawesome/free-solid-svg-icons/faMusic';
 import { faHourglassEnd } from '@fortawesome/free-solid-svg-icons/faHourglassEnd';
 import FittedContent from '../../../../components/FittedContent.vue';
 import SlideTransition from '../../../../components/SlideTransition.vue';
-import { useNextRoundStore } from '../../../../store/nextRoundStore';
-import { useLocaleInfoStore } from '../../../../store/localeInfoStore';
-import { useAssetPathStore } from '../../../../store/assetPathStore';
+import { useNextRoundStore } from 'client-shared/store/nextRoundStore';
+import { useLocaleInfoStore } from 'client-shared/store/localeInfoStore';
+import { useAssetPathStore } from 'client-shared/store/assetPathStore';
 
 library.add(faMusic, faHourglassEnd);
 

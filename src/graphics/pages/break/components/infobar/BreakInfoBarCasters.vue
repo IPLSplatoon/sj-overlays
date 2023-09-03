@@ -44,7 +44,7 @@ import Badge from '../../../../components/Badge.vue';
 import FittedContent from '../../../../components/FittedContent.vue';
 import OpacitySwapTransition from '../../../../components/OpacitySwapTransition.vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { useCasterStore } from '../../../../store/casterStore';
+import { useCasterStore } from 'client-shared/store/casterStore';
 
 library.add(faMicrophone);
 

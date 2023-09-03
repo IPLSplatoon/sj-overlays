@@ -22,6 +22,9 @@
             "types/*": [
                 "src/types/*"
             ],
+            "client-shared/*": [
+                "src/client-shared/*"
+            ],
             "schemas": [
                 "../ipl-overlay-controls/src/types/schemas/index"
             ],

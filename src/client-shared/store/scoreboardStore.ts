@@ -1,6 +1,6 @@
 import { ScoreboardData } from 'schemas';
 import { defineStore } from 'pinia';
-import { DASHBOARD_BUNDLE_NAME } from '../helpers/constants';
+import { DASHBOARD_BUNDLE_NAME } from 'client-shared/constants';
 
 const scoreboardData = nodecg.Replicant<ScoreboardData>('scoreboardData', DASHBOARD_BUNDLE_NAME);
 
