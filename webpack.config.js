@@ -8,6 +8,7 @@ const { DefinePlugin } = require('webpack');
 const { TsconfigPathsPlugin } = require('tsconfig-paths-webpack-plugin');
 const { VueLoaderPlugin } = require('vue-loader');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const nodeExternals = require('webpack-node-externals');
 
 const isProd = process.env.NODE_ENV === 'production';
 
@@ -127,7 +128,65 @@ function browserConfig(source) {
     };
 }
 
+const extensionConfig = {
+    entry: './src/extension/index.ts',
+    resolve: {
+        extensions: ['.js', '.ts', '.json'],
+        plugins: [
+            new TsconfigPathsPlugin({
+                configFile: 'tsconfig-extension.json'
+            })
+        ]
+    },
+    output: {
+        filename: 'index.js',
+        path: path.join(__dirname, 'extension'),
+        library: {
+            type: 'commonjs2'
+        }
+    },
+    module: {
+        rules: [
+            {
+                test: /\.ts$/,
+                exclude: '/node_modules',
+                loader: 'ts-loader',
+                options: {
+                    configFile: 'tsconfig-extension.json',
+                    transpileOnly: true
+                }
+            }
+        ]
+    },
+    plugins: [
+        new ForkTsCheckerWebpackPlugin({
+            typescript: {
+                configFile: 'tsconfig-extension.json',
+                extensions: {
+                    vue: {
+                        enabled: true,
+                        compiler: '@vue/compiler-sfc'
+                    }
+                },
+                configOverwrite: {
+                    exclude: [
+                        'node_modules',
+                        '**/jest.config.ts',
+                        '**/__mocks__/**/*.ts',
+                        '**/__tests__/**/*.ts'
+                    ]
+                }
+            }
+        })
+    ],
+    mode: isProd ? 'production' : 'development',
+    devtool: isProd ? false : 'source-map',
+    externals: [nodeExternals()],
+    externalsPresets: { node: true }
+};
+
 module.exports = [
     browserConfig('graphics'),
-    browserConfig('dashboard')
+    browserConfig('dashboard'),
+    extensionConfig
 ];

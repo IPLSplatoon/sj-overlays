@@ -1,0 +1,32 @@
+{
+    "compilerOptions": {
+        "noImplicitAny": true,
+        "module": "commonjs",
+        "target": "es2015",
+        "allowJs": true,
+        "esModuleInterop": true,
+        "moduleResolution": "Node",
+        "baseUrl": ".",
+        "paths": {
+            "types/*": [
+                "src/types/*"
+            ],
+            "schemas": [
+                "../ipl-overlay-controls/src/types/schemas/index"
+            ]
+        },
+        "types": [
+            "jest"
+        ],
+        "resolveJsonModule": true
+    },
+    "exclude": [
+        "node_modules",
+        "**/jest.config.ts",
+        "**/__mocks__/**/*.ts"
+    ],
+    "include": [
+        "src/extension/**/*.ts",
+        "src/types/**/*.d.ts"
+    ]
+}
