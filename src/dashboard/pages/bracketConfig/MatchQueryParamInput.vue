@@ -55,8 +55,8 @@ const selectedOption = computed(() => {
 
 watch(selectedOption, async (newValue) => {
     params.value = [];
-    emit('loading', true);
     if (newValue.getParams) {
+        emit('loading', true);
         params.value = await newValue.getParams();
         emit('loading', false);
     }
