@@ -23,45 +23,46 @@ const renderer = new BracketRenderer({
     eliminationOpts: {
         cellHeight: 75,
         onCellCreated(selection) {
-            const node = selection.node();
-            const nodeSize = {
-                height: node.clientHeight,
-                width: node.clientWidth
-            };
-            const padding = 10;
-            const svgHeight = nodeSize.height + padding * 2;
-            const svgWidth = nodeSize.width + padding * 2;
-            const radius = 10;
+            selection.each(function() {
+                const nodeSize = {
+                    height: this.clientHeight,
+                    width: this.clientWidth
+                };
+                const padding = 10;
+                const svgHeight = nodeSize.height + padding * 2;
+                const svgWidth = nodeSize.width + padding * 2;
+                const radius = 10;
 
-            const cellBorderPath = d3.path();
-            cellBorderPath.moveTo(svgWidth - padding, padding + radius);
-            cellBorderPath.lineTo(svgWidth - padding, padding + radius);
-            cellBorderPath.arc(svgWidth - padding - radius, svgHeight - padding - radius, radius, 0, Math.PI * 0.5);
-            cellBorderPath.lineTo(padding + radius, svgHeight - padding);
-            cellBorderPath.arc(padding + radius, svgHeight - padding - radius, radius, Math.PI * 0.5, Math.PI);
-            cellBorderPath.lineTo(padding, padding + radius);
-            cellBorderPath.arc(padding + radius, padding + radius, radius, Math.PI, Math.PI * 1.5);
-            cellBorderPath.lineTo(svgWidth - padding - radius, padding);
-            cellBorderPath.arc(svgWidth - padding - radius, padding + radius, radius, Math.PI * 1.5, 0);
-            cellBorderPath.lineTo(svgWidth - padding, svgHeight - padding - radius);
+                const cellBorderPath = d3.path();
+                cellBorderPath.moveTo(svgWidth - padding, padding + radius);
+                cellBorderPath.lineTo(svgWidth - padding, padding + radius);
+                cellBorderPath.arc(svgWidth - padding - radius, svgHeight - padding - radius, radius, 0, Math.PI * 0.5);
+                cellBorderPath.lineTo(padding + radius, svgHeight - padding);
+                cellBorderPath.arc(padding + radius, svgHeight - padding - radius, radius, Math.PI * 0.5, Math.PI);
+                cellBorderPath.lineTo(padding, padding + radius);
+                cellBorderPath.arc(padding + radius, padding + radius, radius, Math.PI, Math.PI * 1.5);
+                cellBorderPath.lineTo(svgWidth - padding - radius, padding);
+                cellBorderPath.arc(svgWidth - padding - radius, padding + radius, radius, Math.PI * 1.5, 0);
+                cellBorderPath.lineTo(svgWidth - padding, svgHeight - padding - radius);
 
-            const addPath = (selection: d3.Selection<SVGSVGElement, null, null, null>, className: string) => {
-                selection.append('path')
-                    .classed(className, true)
-                    .attr('fill', 'transparent')
-                    .attr('d', cellBorderPath.toString());
-            }
+                const addPath = (selection: d3.Selection<SVGSVGElement, null, null, null>, className: string) => {
+                    selection.append('path')
+                        .classed(className, true)
+                        .attr('fill', 'transparent')
+                        .attr('d', cellBorderPath.toString());
+                }
 
-            selection
-                .append('svg')
-                .style('position', 'absolute')
-                .style('top', '-10px')
-                .style('left', '-10px')
-                .attr('width', nodeSize.width + 20)
-                .attr('height', nodeSize.height + 20)
-                .attr('viewBox', [0, 0, nodeSize.width + 20, nodeSize.height + 20])
-                .call(addPath, 'match-cell-accent-color')
-                .call(addPath, 'match-cell-accent-white');
+                d3.select(this)
+                    .append('svg')
+                    .style('position', 'absolute')
+                    .style('top', '-10px')
+                    .style('left', '-10px')
+                    .attr('width', nodeSize.width + 20)
+                    .attr('height', nodeSize.height + 20)
+                    .attr('viewBox', [0, 0, nodeSize.width + 20, nodeSize.height + 20])
+                    .call(addPath, 'match-cell-accent-color')
+                    .call(addPath, 'match-cell-accent-white');
+            });
         }
     }
 });
