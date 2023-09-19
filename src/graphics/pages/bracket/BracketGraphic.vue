@@ -119,11 +119,17 @@ $margin: 100px;
             }
         }
 
+        .match-cell__third-place-match-label {
+            box-sizing: border-box;
+            padding-top: 5px;
+            background-color: $violet-a-20;
+            font-size: 14px;
+        }
+
         .match-cell {
             @include background(10px);
 
             overflow: visible;
-            padding: 5px 0;
 
             .match-cell__score-wrapper {
                 background-color: $violet-a-20;
@@ -134,6 +140,14 @@ $margin: 100px;
             .match-cell__score {
                 font-weight: 800;
                 font-family: 'Montserrat', sans-serif;
+            }
+
+            .match-cell__top-team-name, .match-cell__top-score {
+                margin-top: 5px;
+            }
+
+            .match-cell__bottom-team-name, .match-cell__bottom-score {
+                margin-bottom: 5px;
             }
         }
 
