@@ -9,9 +9,9 @@ interface BracketDataStore {
 }
 
 export const useBracketDataStore = defineStore('bracketData', {
-   state: (): BracketDataStore => ({
-       bracketData: null
-   })
+    state: (): BracketDataStore => ({
+        bracketData: null
+    })
 });
 
 export const initBracketDataStore = createReplicantStoreInitializer([bracketData], useBracketDataStore);

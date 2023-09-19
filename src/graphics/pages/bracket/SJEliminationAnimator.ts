@@ -4,6 +4,7 @@ import type { EliminationAnimator, EliminationRenderer } from '@tourneyview/rend
 import gsap from 'gsap';
 
 export class SJEliminationAnimator implements EliminationAnimator {
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     beforeHide() {
 
     }

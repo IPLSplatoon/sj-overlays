@@ -2,9 +2,8 @@ import type { SwissAnimator } from '@tourneyview/renderer';
 import gsap from 'gsap';
 
 export class SJSwissAnimator implements SwissAnimator {
-    beforeHide(): void {
-
-    }
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    beforeHide(): void { }
 
     beforeReveal(element: HTMLElement): void {
         gsap.set(element, { opacity: 1 });
@@ -29,6 +28,6 @@ export class SJSwissAnimator implements SwissAnimator {
                 duration: 0.1,
                 stagger: 0.05
             })
-        ])
+        ]);
     }
 }

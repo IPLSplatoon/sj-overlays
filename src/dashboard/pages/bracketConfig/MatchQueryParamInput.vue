@@ -18,9 +18,9 @@
     </div>
     <template v-if="selectedOption != null">
         <match-query-param-input
-            v-for="param in params"
-            :key="param.key"
-            :param="param"
+            v-for="optionParam in params"
+            :key="optionParam.key"
+            :param="optionParam"
             :query="query"
             @change="(key, value) => emit('change', key, value)"
             @parameter-add="emit('parameterAdd', $event)"

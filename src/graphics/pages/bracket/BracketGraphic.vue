@@ -1,7 +1,8 @@
 <template>
-    <div class="bracket-wrapper" ref="wrapper">
-
-    </div>
+    <div
+        ref="wrapper"
+        class="bracket-wrapper"
+    />
     <icon-background :animate-on-entrance="false" />
 </template>
 
@@ -50,7 +51,7 @@ const renderer = new BracketRenderer({
                         .classed(className, true)
                         .attr('fill', 'transparent')
                         .attr('d', cellBorderPath.toString());
-                }
+                };
 
                 d3.select(this)
                     .append('svg')
