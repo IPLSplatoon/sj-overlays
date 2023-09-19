@@ -38,3 +38,22 @@ Broadcast overlays for SuperJump, a Splatoon tournament by Inkling Performance L
 - `watch`: Runs a build and rebuilds when changes are found.
 - `lint`: Checks for linter errors
 - `fix`: Automatically fixes some linter errors
+
+## Container Images
+We've included Docker Container image builds with this repository. To use the Docker image you can create a Docker Compose
+file like the following:
+
+```yml
+services:
+  sj-overlays:
+    image: 'ghcr.io/iplsplatoon/sj-overlays:master'
+    ports:
+      - '9090:9090'
+    volumes:
+      - '[absolute path to logs dir on host filesystem]:/opt/nodecg/logs'
+      - '[absolute path to db dir on host filesystem]:/opt/nodecg/db'
+      - '[absolute path to assets dir on host filesystem]:/opt/nodecg/assets'
+      - '[absolute path to cfg dir on host filesystem]:/opt/nodecg/cfg'
+```
+
+For more information please refer to the [NodeCG Docker Documentation](https://www.nodecg.dev/docs/docker/)
