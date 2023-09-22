@@ -1,7 +1,7 @@
 {
     "name": "sj-overlays",
     "version": "3.0.0",
-    "compatibleDashboardVersion": "^4.4.0",
+    "compatibleDashboardVersion": "^4.7.0",
     "compatibleGameVersions": [
         "SPLATOON_2",
         "SPLATOON_3"
@@ -37,10 +37,10 @@
         ],
         "dashboardPanels": [
             {
-                "name": "bracketConfig",
-                "title": "Bracket Config",
+                "name": "sjConfig",
+                "title": "SuperJump Config",
                 "width": 2,
-                "file": "bracketConfig.html",
+                "file": "sjConfig.html",
                 "workspace": "ipl",
                 "headerColor": "#3d1a4b"
             }
