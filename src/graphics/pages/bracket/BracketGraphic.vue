@@ -1,4 +1,16 @@
 <template>
+    <div class="bracket-title-wrapper layout c-horiz c-vert">
+        <div class="bracket-title-box glow-border glow-blue layout c-horiz c-vert">
+            <opacity-swap-transition>
+                <fitted-content
+                    :key="bracketTitle"
+                    :max-width="650"
+                >
+                    {{ bracketTitle }}
+                </fitted-content>
+            </opacity-swap-transition>
+        </div>
+    </div>
     <div
         ref="wrapper"
         class="bracket-wrapper"
@@ -10,11 +22,13 @@
 import { useBracketDataStore } from 'client-shared/store/bracketDataStore';
 import { BracketRenderer } from '@tourneyview/renderer';
 import { Match } from '@tourneyview/common';
-import { onMounted, ref, watch } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import IconBackground from '../../components/IconBackground.vue';
 import { SJBracketAnimator } from './SJBracketAnimator';
 import * as d3 from 'd3';
 import { BaseType, HierarchyNode } from 'd3';
+import OpacitySwapTransition from '../../components/OpacitySwapTransition.vue';
+import FittedContent from '../../components/FittedContent.vue';
 
 function createCellBorders(selection: d3.Selection<BaseType, d3.HierarchyNode<Match>, HTMLDivElement, unknown>) {
     selection.each(function() {
@@ -62,6 +76,15 @@ function createCellBorders(selection: d3.Selection<BaseType, d3.HierarchyNode<Ma
 
 const wrapper = ref<HTMLDivElement>();
 const bracketDataStore = useBracketDataStore();
+const bracketTitle = computed(() => {
+    let result = bracketDataStore.bracketData?.name;
+
+    if (bracketDataStore.bracketData?.roundNumber != null) {
+        result += ` - Round ${bracketDataStore.bracketData?.roundNumber}`;
+    }
+
+    return result;
+});
 const renderer = new BracketRenderer({
     animator: new SJBracketAnimator(),
     swissOpts: {
@@ -98,17 +121,34 @@ onMounted(async () => {
 @import '../../styles/background';
 
 $margin: 100px;
+$top-margin: 150px;
+
+.bracket-title-wrapper {
+    position: absolute;
+    width: 100%;
+    height: $top-margin;
+    left: 0;
+    top: 0;
+
+    .bracket-title-box {
+        @include background;
+        width: 700px;
+        height: 60px;
+        font-size: 40px;
+        font-weight: 600;
+    }
+}
 
 .bracket-wrapper {
     font-size: 0.6em;
     position: absolute;
-    top: $margin;
+    top: $top-margin;
     left: $margin;
 }
 
 .bracket-wrapper :deep(> div) {
     width: 1920px - $margin * 2;
-    height: 1080px - $margin * 2;
+    height: 1080px - ($margin + $top-margin);
     overflow: visible;
 
     .swiss-renderer__wrapper {
