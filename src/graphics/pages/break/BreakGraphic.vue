@@ -8,7 +8,8 @@
             @leave="leave"
             @before-enter="beforeEnter"
         >
-            <break-stages v-if="activeBreakScene === 'stages'" />
+            <break-casters v-if="activeBreakScene === 'casters'" />
+            <break-stages v-else-if="activeBreakScene === 'stages'" />
             <break-teams v-else-if="activeBreakScene === 'teams'" />
             <break-main v-else-if="activeBreakScene === 'main'" />
         </transition>
@@ -20,7 +21,7 @@
             @leave="infoBarLeave"
             @before-enter="beforeInfoBarEnter"
         >
-            <break-info-bar v-if="activeBreakScene === 'teams' || activeBreakScene === 'stages'" />
+            <break-info-bar v-if="activeBreakScene === 'teams' || activeBreakScene === 'stages' || activeBreakScene === 'casters'" />
         </transition>
     </template>
     <icon-background />
@@ -37,11 +38,12 @@ import BreakInfoBar from './components/infobar/BreakInfoBar.vue';
 import { useBreakScreenStore } from 'client-shared/store/breakScreenStore';
 import { bindEntranceToFunction } from '../../helpers/obs';
 import { TransitionFunctionMap, transitionFunctionsInjectionKey } from '../../helpers/transition';
+import BreakCasters from './components/casters/BreakCasters.vue';
 
 export default defineComponent({
     name: 'BreakGraphic',
 
-    components: { BreakInfoBar, BreakMain, BreakTeams, BreakStages, IconBackground },
+    components: { BreakCasters, BreakInfoBar, BreakMain, BreakTeams, BreakStages, IconBackground },
 
     setup() {
         const breakScreenStore = useBreakScreenStore();
@@ -85,7 +87,8 @@ export default defineComponent({
         };
 
         return {
-            activeBreakScene: computed(() => breakScreenStore.activeBreakScene),
+            activeBreakScene: computed(() =>
+                breakScreenStore.breakUseCastersScene ? 'casters' : breakScreenStore.activeBreakScene),
             beforeEnter: (elem: HTMLElement) => {
                 transitions.break.beforeEnter(elem);
             },
