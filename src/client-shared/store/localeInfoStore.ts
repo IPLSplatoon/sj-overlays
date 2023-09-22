@@ -3,7 +3,7 @@ import { defineStore } from 'pinia';
 import { DASHBOARD_BUNDLE_NAME } from 'client-shared/constants';
 
 const localeInfo = nodecg.Replicant<LocaleInfo>('localeInfo', DASHBOARD_BUNDLE_NAME);
-const runtimeConfig = nodecg.Replicant<LocaleInfo>('runtimeConfig', DASHBOARD_BUNDLE_NAME);
+const runtimeConfig = nodecg.Replicant<RuntimeConfig>('runtimeConfig', DASHBOARD_BUNDLE_NAME);
 
 export const localeInfoReps = [localeInfo, runtimeConfig];
 
@@ -28,7 +28,8 @@ interface TranslatableText {
             }
         },
         infobar: {
-            welcome: string
+            welcome: string,
+            nextUp: string
         }
     }
 }
@@ -72,7 +73,8 @@ export const useLocaleInfoStore = defineStore('localeInfo', {
                                 }
                             },
                             infobar: {
-                                welcome: 'Welcome to <span class="logo-font">SuperJump!</span>'
+                                welcome: 'Welcome to <span class="logo-font">SuperJump!</span>',
+                                nextUp: 'Next:'
                             }
                         }
                     };
@@ -107,7 +109,8 @@ export const useLocaleInfoStore = defineStore('localeInfo', {
                                 }
                             },
                             infobar: {
-                                welcome: 'Willkommen in <span class="logo-font">SuperJump!</span>'
+                                welcome: 'Willkommen in <span class="logo-font">SuperJump!</span>',
+                                nextUp: 'Nächstes Match:'
                             }
                         }
                     };

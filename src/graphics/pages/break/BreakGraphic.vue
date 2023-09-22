@@ -87,8 +87,7 @@ export default defineComponent({
         };
 
         return {
-            activeBreakScene: computed(() =>
-                breakScreenStore.breakUseCastersScene ? 'casters' : breakScreenStore.activeBreakScene),
+            activeBreakScene: computed(() => breakScreenStore.activeScene),
             beforeEnter: (elem: HTMLElement) => {
                 transitions.break.beforeEnter(elem);
             },

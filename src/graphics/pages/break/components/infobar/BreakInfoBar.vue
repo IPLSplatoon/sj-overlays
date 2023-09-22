@@ -51,6 +51,10 @@ import { useMusicStore } from 'client-shared/store/musicStore';
 import { useActiveRoundStore } from 'client-shared/store/activeRoundStore';
 import { getGlowIconFromMode } from '../../../../helpers/constants';
 import OpacitySwapTransition from '../../../../components/OpacitySwapTransition.vue';
+import { useBreakScreenStore } from 'client-shared/store/breakScreenStore';
+import BreakInfoBarActiveRound from './BreakInfoBarActiveRound.vue';
+import BreakInfoBarNextRound from './BreakInfoBarNextRound.vue';
+import { useNextRoundStore } from 'client-shared/store/nextRoundStore';
 
 export default defineComponent({
     name: 'BreakInfoBar',
@@ -60,18 +64,25 @@ export default defineComponent({
         BreakInfoBarWelcome,
         BreakInfoBarCasters,
         BreakInfoBarCasterTwitters,
-        BreakInfoBarMusic
+        BreakInfoBarMusic,
+        BreakInfoBarActiveRound,
+        BreakInfoBarNextRound
     },
 
     setup() {
         const musicStore = useMusicStore();
         const activeRoundStore = useActiveRoundStore();
+        const breakScreenStore = useBreakScreenStore();
+        const nextRoundStore = useNextRoundStore();
+        const casterSceneInactive = computed(() => !breakScreenStore.breakUseCastersScene);
 
         const slides = useSlides([
             { component: 'BreakInfoBarWelcome', duration: 10 },
-            { component: 'BreakInfoBarCasters', duration: 20 },
-            { component: 'BreakInfoBarCasterTwitters', duration: 20 },
-            { component: 'BreakInfoBarMusic', enabled: computed(() => musicStore.musicShown) }
+            { component: 'BreakInfoBarCasters', duration: 20, enabled: casterSceneInactive },
+            { component: 'BreakInfoBarCasterTwitters', duration: 20, enabled: casterSceneInactive },
+            { component: 'BreakInfoBarMusic', enabled: computed(() => musicStore.musicShown) },
+            { component: 'BreakInfoBarActiveRound', enabled: computed(() => breakScreenStore.activeScene !== 'stages' && !nextRoundStore.nextRound.showOnStream) },
+            { component: 'BreakInfoBarNextRound', enabled: computed(() => breakScreenStore.activeScene !== 'stages' && nextRoundStore.nextRound.showOnStream) }
         ]);
 
         const nextMode = computed(() => activeRoundStore.activeRound.games.find(game => game.winner === 'none')?.mode);

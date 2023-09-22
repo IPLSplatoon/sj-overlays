@@ -24,6 +24,9 @@ export const useBreakScreenStore = defineStore('breakScreen', {
         activeBreakScene: null,
         breakUseCastersScene: false
     } as BreakScreenStore),
+    getters: {
+        activeScene: state => state.breakUseCastersScene ? 'casters' : state.activeBreakScene
+    },
     actions: {
         setBreakCastersScene(shown: boolean) {
             breakUseCastersScene.value = shown;
