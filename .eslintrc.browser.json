@@ -82,6 +82,7 @@
         "quote-props": [2, "as-needed", {"numbers": true}],
         "vue/html-indent": ["error", 4],
         "vue/singleline-html-element-content-newline": "off",
-        "vue/no-v-html": "off"
+        "vue/no-v-html": "off",
+        "vue/multi-word-component-names": "off"
     }
 }

@@ -8,9 +8,9 @@ import * as PIXI from './helpers/pixi';
 import { createPinia } from 'pinia';
 import { addDots, isBlank } from './helpers/string';
 import StatsGraphic from './pages/stats/StatsGraphic.vue';
-import { setUpReplicants } from './store/storeHelper';
-import { relayDataReps, useRelayDataStore } from './store/relayDataStore';
-import { activeRoundReps, useActiveRoundStore } from './store/activeRoundStore';
+import { setUpReplicants } from 'client-shared/store/storeHelper';
+import { relayDataReps, useRelayDataStore } from 'client-shared/store/relayDataStore';
+import { activeRoundReps, useActiveRoundStore } from 'client-shared/store/activeRoundStore';
 import { formatDuration } from './helpers/timer';
 
 gsap.registerPlugin(DrawSVGPlugin);

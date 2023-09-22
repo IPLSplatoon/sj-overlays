@@ -23,7 +23,7 @@ import { faDollarSign } from '@fortawesome/free-solid-svg-icons/faDollarSign';
 import MainSlideRow from './MainSlideRow.vue';
 import { faYoutube } from '@fortawesome/free-brands-svg-icons/faYoutube';
 import { faTwitch } from '@fortawesome/free-brands-svg-icons/faTwitch';
-import { useLocaleInfoStore } from '../../../../store/localeInfoStore';
+import { useLocaleInfoStore } from 'client-shared/store/localeInfoStore';
 
 library.add(faTwitter, faPatreon, faGlobe, faDiscord, faDollarSign, faYoutube, faTwitch);
 

@@ -1,6 +1,6 @@
 import { ActiveRound, SwapColorsInternally } from 'schemas';
 import { defineStore } from 'pinia';
-import { DASHBOARD_BUNDLE_NAME } from '../helpers/constants';
+import { DASHBOARD_BUNDLE_NAME } from 'client-shared/constants';
 
 const activeRound = nodecg.Replicant<ActiveRound>('activeRound', DASHBOARD_BUNDLE_NAME);
 const swapColorsInternally = nodecg.Replicant<SwapColorsInternally>('swapColorsInternally', DASHBOARD_BUNDLE_NAME);

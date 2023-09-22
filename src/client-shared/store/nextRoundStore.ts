@@ -1,6 +1,6 @@
 import { NextRound } from 'schemas';
 import { defineStore } from 'pinia';
-import { DASHBOARD_BUNDLE_NAME } from '../helpers/constants';
+import { DASHBOARD_BUNDLE_NAME } from 'client-shared/constants';
 
 const nextRound = nodecg.Replicant<NextRound>('nextRound', DASHBOARD_BUNDLE_NAME);
 

@@ -52,8 +52,8 @@ import { useTweenedNumber } from '../../../../helpers/useTweenedNumber';
 import { colors } from '../../../../helpers/constants';
 import gsap from 'gsap';
 import { provideTransitions } from '../../../../helpers/transition';
-import { usePredictionDataStore } from '../../../../store/predictionDataStore';
-import { useActiveRoundStore } from '../../../../store/activeRoundStore';
+import { usePredictionDataStore } from 'client-shared/store/predictionDataStore';
+import { useActiveRoundStore } from 'client-shared/store/activeRoundStore';
 
 export default defineComponent({
     name: 'BreakTeamsPredictionDisplay',

@@ -35,9 +35,9 @@ import { useNextStageTimer } from '../../../../helpers/timer';
 import FittedContent from '../../../../components/FittedContent.vue';
 import MainSlideRow from './MainSlideRow.vue';
 import SlideTransition from '../../../../components/SlideTransition.vue';
-import { useBreakScreenStore } from '../../../../store/breakScreenStore';
-import { useMusicStore } from '../../../../store/musicStore';
-import { useLocaleInfoStore } from '../../../../store/localeInfoStore';
+import { useBreakScreenStore } from 'client-shared/store/breakScreenStore';
+import { useMusicStore } from 'client-shared/store/musicStore';
+import { useLocaleInfoStore } from 'client-shared/store/localeInfoStore';
 
 library.add(faMusic, faHourglassEnd);
 

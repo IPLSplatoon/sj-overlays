@@ -34,7 +34,7 @@ import BreakTeams from './components/teams/BreakTeams.vue';
 import BreakMain from './components/main/BreakMain.vue';
 import gsap from 'gsap';
 import BreakInfoBar from './components/infobar/BreakInfoBar.vue';
-import { useBreakScreenStore } from '../../store/breakScreenStore';
+import { useBreakScreenStore } from 'client-shared/store/breakScreenStore';
 import { bindEntranceToFunction } from '../../helpers/obs';
 import { TransitionFunctionMap, transitionFunctionsInjectionKey } from '../../helpers/transition';
 
