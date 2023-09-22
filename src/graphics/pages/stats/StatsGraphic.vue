@@ -20,7 +20,7 @@
 <script lang="ts">
 import { computed, defineComponent } from 'vue';
 import IconBackground from '../../components/IconBackground.vue';
-import { useRelayDataStore } from '../../store/relayDataStore';
+import { useRelayDataStore } from 'client-shared/store/relayDataStore';
 import NoRelayMessage from './components/NoRelayMessage.vue';
 import StatsHeader from './components/StatsHeader.vue';
 import ObjectiveStats from './components/ObjectiveStats.vue';

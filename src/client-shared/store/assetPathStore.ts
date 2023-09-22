@@ -1,6 +1,6 @@
 import { AssetPaths } from 'schemas';
 import { defineStore } from 'pinia';
-import { DASHBOARD_BUNDLE_NAME } from '../helpers/constants';
+import { DASHBOARD_BUNDLE_NAME } from 'client-shared/constants';
 
 const assetPaths = nodecg.Replicant<AssetPaths>('assetPaths', DASHBOARD_BUNDLE_NAME);
 

@@ -1,6 +1,6 @@
 import { DateTime, Duration } from 'luxon';
 import { computed, onUnmounted, ref, Ref, watch } from 'vue';
-import { useBreakScreenStore } from '../store/breakScreenStore';
+import { useBreakScreenStore } from 'client-shared/store/breakScreenStore';
 
 export function useNextStageTimer(): Ref<number> {
     const breakScreenStore = useBreakScreenStore();

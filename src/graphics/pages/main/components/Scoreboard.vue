@@ -103,8 +103,8 @@ import { addDots } from '../../../helpers/string';
 import FittedContent from '../../../components/FittedContent.vue';
 import OpacitySwapTransition from '../../../components/OpacitySwapTransition.vue';
 import ScoreCounter from '../../../components/ScoreCounter.vue';
-import { useActiveRoundStore } from '../../../store/activeRoundStore';
-import { useScoreboardStore } from '../../../store/scoreboardStore';
+import { useActiveRoundStore } from 'client-shared/store/activeRoundStore';
+import { useScoreboardStore } from 'client-shared/store/scoreboardStore';
 
 export default defineComponent({
     name: 'Scoreboard',

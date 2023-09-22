@@ -40,7 +40,7 @@ import { useSlides } from '../../../../helpers/useSlides';
 import MainSlideGeneralInfo from './MainSlideGeneralInfo.vue';
 import MainSlideSupport from './MainSlideSupport.vue';
 import MainSlideNextMatch from './MainSlideNextMatch.vue';
-import { useNextRoundStore } from '../../../../store/nextRoundStore';
+import { useNextRoundStore } from 'client-shared/store/nextRoundStore';
 import { provideTransitions } from '../../../../helpers/transition';
 
 export default defineComponent({

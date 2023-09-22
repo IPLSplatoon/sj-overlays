@@ -25,14 +25,14 @@
 import { computed, defineComponent, provide, ref } from 'vue';
 import gsap from 'gsap';
 import BreakScreenTeam from './BreakScreenTeam.vue';
-import { DASHBOARD_BUNDLE_NAME } from '../../../../helpers/constants';
+import { DASHBOARD_BUNDLE_NAME } from 'client-shared/constants';
 import BreakTeamsPredictionDisplay from './BreakTeamsPredictionDisplay.vue';
 import {
     provideTransitions,
     TransitionFunctionMap,
     transitionFunctionsInjectionKey
 } from '../../../../helpers/transition';
-import { usePredictionDataStore } from '../../../../store/predictionDataStore';
+import { usePredictionDataStore } from 'client-shared/store/predictionDataStore';
 
 export default defineComponent({
     name: 'BreakTeams',

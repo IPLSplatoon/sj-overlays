@@ -22,8 +22,8 @@
 
 <script lang="ts">
 import { computed, defineComponent } from 'vue';
-import { useRelayDataStore } from '../../../store/relayDataStore';
-import { useActiveRoundStore } from '../../../store/activeRoundStore';
+import { useRelayDataStore } from 'client-shared/store/relayDataStore';
+import { useActiveRoundStore } from 'client-shared/store/activeRoundStore';
 import FittedContent from '../../../components/FittedContent.vue';
 
 export default defineComponent({

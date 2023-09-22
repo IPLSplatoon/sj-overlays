@@ -94,9 +94,9 @@ import FittedContent from '../../../../components/FittedContent.vue';
 import { hexToRgb, Solver } from '../../../../helpers/color';
 import gsap from 'gsap';
 import OpacitySwapTransition from '../../../../components/OpacitySwapTransition.vue';
-import { useActiveRoundStore } from '../../../../store/activeRoundStore';
-import { useLocaleInfoStore } from '../../../../store/localeInfoStore';
-import { useAssetPathStore } from '../../../../store/assetPathStore';
+import { useActiveRoundStore } from 'client-shared/store/activeRoundStore';
+import { useLocaleInfoStore } from 'client-shared/store/localeInfoStore';
+import { useAssetPathStore } from 'client-shared/store/assetPathStore';
 
 export default defineComponent({
     name: 'BreakStageDisplay',

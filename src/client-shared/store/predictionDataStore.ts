@@ -1,6 +1,6 @@
 import { PredictionStore } from 'schemas';
 import { defineStore } from 'pinia';
-import { DASHBOARD_BUNDLE_NAME } from '../helpers/constants';
+import { DASHBOARD_BUNDLE_NAME } from 'client-shared/constants';
 
 const predictionStore = nodecg.Replicant<PredictionStore>('predictionStore', DASHBOARD_BUNDLE_NAME);
 

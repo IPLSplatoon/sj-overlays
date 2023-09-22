@@ -36,7 +36,7 @@
 
 <script lang="ts">
 import { computed, defineComponent } from 'vue';
-import { useRelayDataStore } from '../../../store/relayDataStore';
+import { useRelayDataStore } from 'client-shared/store/relayDataStore';
 import { ObjectiveSection } from 'relay-nodecg-connector';
 import { formatDuration } from '../../../helpers/timer';
 

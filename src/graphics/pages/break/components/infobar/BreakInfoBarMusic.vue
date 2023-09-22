@@ -23,7 +23,7 @@ import FittedContent from '../../../../components/FittedContent.vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import OpacitySwapTransition from '../../../../components/OpacitySwapTransition.vue';
 import { getSongNameAsString } from '../../../../helpers/string';
-import { useMusicStore } from '../../../../store/musicStore';
+import { useMusicStore } from 'client-shared/store/musicStore';
 
 export default defineComponent({
     name: 'BreakInfoBarMusic',

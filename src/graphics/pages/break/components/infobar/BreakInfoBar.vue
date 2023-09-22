@@ -47,8 +47,8 @@ import gsap from 'gsap';
 import BreakInfoBarCasters from './BreakInfoBarCasters.vue';
 import BreakInfoBarMusic from './BreakInfoBarMusic.vue';
 import BreakInfoBarCasterTwitters from './BreakInfoBarCasterTwitters.vue';
-import { useMusicStore } from '../../../../store/musicStore';
-import { useActiveRoundStore } from '../../../../store/activeRoundStore';
+import { useMusicStore } from 'client-shared/store/musicStore';
+import { useActiveRoundStore } from 'client-shared/store/activeRoundStore';
 import { getGlowIconFromMode } from '../../../../helpers/constants';
 import OpacitySwapTransition from '../../../../components/OpacitySwapTransition.vue';
 

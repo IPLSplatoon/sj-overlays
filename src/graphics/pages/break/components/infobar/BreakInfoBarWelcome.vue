@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import { defineComponent, toRefs } from 'vue';
-import { useLocaleInfoStore } from '../../../../store/localeInfoStore';
+import { useLocaleInfoStore } from 'client-shared/store/localeInfoStore';
 
 export default defineComponent({
     name: 'BreakInfoBarWelcome',
