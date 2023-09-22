@@ -31,7 +31,6 @@ const casterWidth = computed(() => {
 });
 
 const beforeEnter = (elem: HTMLElement) => {
-    gsap.set(elem, { opacity: 1 });
     gsap.set(elem.querySelectorAll('.caster-line-color, .caster-line-white'), { drawSVG: '0%' });
     gsap.set(elem.querySelectorAll('.caster-name, .caster-twitter'), { opacity: 0, x: -100 });
     gsap.set(elem.querySelectorAll('.caster-details > .background'), { opacity: 0 });
@@ -87,7 +86,44 @@ const leave = (elem: HTMLElement, done: gsap.Callback) => {
     const tl = gsap.timeline({ onComplete: done });
 
     tl.addLabel('sceneOut');
-    tl.to(elem, { opacity: 0, duration: 0.5 });
+    tl
+        .to(
+            elem.querySelectorAll('.caster-line-color, .caster-line-white'),
+            {
+                drawSVG: '0%',
+                duration: 1,
+                stagger: index => Math.floor(index / 2) * 0.5,
+                delay: 0.5,
+                ease: 'power2.inOut'
+            },
+            'sceneOut')
+        .to(
+            elem.querySelectorAll('.caster-details > .background'),
+            {
+                opacity: 0,
+                stagger: 0.5,
+                delay: 0.5
+            },
+            'sceneOut')
+        .to(
+            elem.querySelectorAll('.caster-name, .caster-twitter'),
+            {
+                opacity: 0,
+                x: 100,
+                duration: 0.65,
+                delay: (index, target) => target.classList.contains('caster-name') ? 0 : 0.2,
+                stagger: index => Math.floor(index / 2) * 0.5,
+                ease: 'power2.in'
+            },
+            'sceneOut')
+        .to(
+            elem.querySelectorAll('.caster-visual'),
+            {
+                y: '100%',
+                stagger: 0.5,
+                ease: 'power2.in'
+            },
+            'sceneOut');
 
     return tl;
 };
