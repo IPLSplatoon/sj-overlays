@@ -1,5 +1,4 @@
 <template>
-
     <ipl-message
         v-if="!isSupportedAndConfigured"
         type="warning"
@@ -47,7 +46,7 @@
 <script setup lang="ts">
 import type NodeCG from '@nodecg/types';
 import { useTournamentDataStore } from 'client-shared/store/tournamentDataStore';
-import { IplButton, IplMessage, IplSmallToggle, IplSpace } from '@iplsplatoon/vue-components';
+import { IplButton, IplMessage, IplSpace } from '@iplsplatoon/vue-components';
 import { computed, ref, Ref } from 'vue';
 import { MatchQueryParameter, BattlefyImporter, StartggImporter, MatchImporter, MatchQueryResult } from '@tourneyview/importer';
 import MatchQueryParamInput from './MatchQueryParamInput.vue';
