@@ -158,7 +158,7 @@ const extensionConfig = {
             }
         ]
     },
-    plugins: [
+    plugins: isProd ? [] : [
         new ForkTsCheckerWebpackPlugin({
             typescript: {
                 configFile: 'tsconfig-extension.json',

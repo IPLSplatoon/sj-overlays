@@ -1,4 +1,4 @@
-import { TournamentData } from '../../../../ipl-overlay-controls/src/types/schemas/tournamentData';
+import { TournamentData } from 'schemas';
 import { DASHBOARD_BUNDLE_NAME } from 'client-shared/constants';
 import { defineStore } from 'pinia';
 
