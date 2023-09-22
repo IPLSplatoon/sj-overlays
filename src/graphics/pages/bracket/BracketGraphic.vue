@@ -122,6 +122,7 @@ onMounted(async () => {
 
 $margin: 100px;
 $top-margin: 150px;
+$bottom-margin: 50px;
 
 .bracket-title-wrapper {
     position: absolute;
@@ -148,7 +149,7 @@ $top-margin: 150px;
 
 .bracket-wrapper :deep(> div) {
     width: 1920px - $margin * 2;
-    height: 1080px - ($margin + $top-margin);
+    height: 1080px - ($bottom-margin + $top-margin);
     overflow: visible;
 
     .swiss-renderer__wrapper {
