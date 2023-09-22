@@ -2,7 +2,7 @@
     <ipl-space class="bottom-margin">
         <ipl-small-toggle
             v-model="breakCastersShown"
-            label="Casters on break"
+            label="Casters on break graphic"
         />
     </ipl-space>
     <bracket-config />
