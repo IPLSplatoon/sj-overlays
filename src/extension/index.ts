@@ -2,7 +2,7 @@ import type NodeCG from '@nodecg/types';
 import { StartggImporter, MatchImporter, MatchQueryResult, BattlefyImporter } from '@tourneyview/importer';
 import { Configschema } from 'types/Configschema';
 import { DASHBOARD_BUNDLE_NAME } from '../client-shared/constants';
-import { TournamentData } from 'schemas';
+import { TournamentData, ActiveBreakScene } from 'schemas';
 
 export = (nodecg: NodeCG.ServerAPI<Configschema>): void => {
     const bracketData = nodecg.Replicant('bracketData');
@@ -31,5 +31,13 @@ export = (nodecg: NodeCG.ServerAPI<Configschema>): void => {
                 (ack as NodeCG.UnhandledAcknowledgement)(e);
             }
         }
+    });
+
+
+    const activeBreakScene = nodecg.Replicant<ActiveBreakScene>('activeBreakScene', DASHBOARD_BUNDLE_NAME);
+    const breakUseCastersScene = nodecg.Replicant<boolean>('breakUseCastersScene', { defaultValue: false });
+
+    activeBreakScene.on('change', () => {
+        breakUseCastersScene.value = false;
     });
 }
