@@ -152,6 +152,10 @@ $margin: 100px;
             .match-cell__score {
                 font-weight: 800;
                 font-family: 'Montserrat', sans-serif;
+
+                &.is-disqualified {
+                    font-size: 1em;
+                }
             }
 
             .match-cell__top-team-name, .match-cell__top-score {
@@ -200,6 +204,8 @@ $margin: 100px;
                 font-weight: 800;
                 font-size: 1.1em;
                 font-family: 'Montserrat', sans-serif;
+                width: 100px;
+                padding: 0 4px;
             }
         }
     }
