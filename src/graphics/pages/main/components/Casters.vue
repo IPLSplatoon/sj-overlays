@@ -33,7 +33,7 @@
                 <font-awesome-icon
                     icon="microphone"
                     class="icon"
-                /><span class="text">Commentators</span>
+                /><span class="text">{{ localeInfoStore.strings.main.castersTitle }}</span>
                 <div class="background title-background" />
             </div>
             <div class="content layout vertical c-vert">
@@ -72,6 +72,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { faMicrophone } from '@fortawesome/free-solid-svg-icons/faMicrophone';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { useCasterStore } from 'client-shared/store/casterStore';
+import { useLocaleInfoStore } from 'client-shared/store/localeInfoStore';
 
 library.add(faMicrophone);
 
@@ -82,6 +83,7 @@ export default defineComponent({
 
     setup() {
         const casterStore = useCasterStore();
+        const localeInfoStore = useLocaleInfoStore();
         const castersVisible = ref(false);
 
         nodecg.listenFor('mainShowCasters', DASHBOARD_BUNDLE_NAME, () => {
@@ -97,6 +99,7 @@ export default defineComponent({
         return {
             casters: computed(() => casterStore.casters),
             castersVisible,
+            localeInfoStore,
 
             castersEnter: (elem: HTMLElement, done: gsap.Callback) => {
                 const tl = gsap.timeline({ onComplete: done });

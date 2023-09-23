@@ -13,6 +13,7 @@
                 </fitted-content>
             </slide-transition>
         </div>
+        <span id="round-size">{{ strings.break.main.nextup.matchCount(numberOfGames, roundType) }}</span>
         <div>
             <div class="matches-container layout horiz c-vert">
                 <div
@@ -37,7 +38,6 @@
                 </div>
             </div>
         </div>
-        <span id="round-size">{{ strings.break.main.nextup.matchCount(numberOfGames) }}</span>
     </div>
 </template>
 
@@ -72,10 +72,7 @@ export default defineComponent({
             teamB: computed(() => nextRoundStore.nextRound.teamB),
             nextGames: computed(() => nextRoundStore.nextRound.games.slice(0, 3)),
             numberOfGames: computed(() => nextRoundStore.nextRound.games.length),
-            roundType: computed(() => {
-                const gameCount = nextRoundStore.nextRound.games.length;
-                return nextRoundStore.nextRound.round.type === 'PLAY_ALL' ? `Play all ${gameCount}` : `Best of ${gameCount}`;
-            }),
+            roundType: computed(() => nextRoundStore.nextRound.round.type),
             getStageImagePath: assetPathStore.getStageImagePath
         };
     }
@@ -89,7 +86,6 @@ export default defineComponent({
     .next-team-names {
         font-weight: 300;
         font-size: 48px;
-        margin-bottom: 15px;
 
         .team-name {
             font-weight: 600;
@@ -99,7 +95,8 @@ export default defineComponent({
     #round-size {
         font-weight: 300;
         font-size: 32px;
-        margin-top: 15px;
+        margin-bottom: 20px;
+        margin-top: -8px;
     }
 
     .match {

@@ -5,6 +5,7 @@
             class="info-row layout c-horiz c-vert"
         >
             <div class="title">{{ localeInfoStore.strings.break.infobar.nextUp }}</div>
+            &nbsp;
             <fitted-content
                 :max-width="localeInfoStore.runtimeConfig.locale === 'DE' ? 750 : 850"
                 class="team-name"
@@ -48,7 +49,6 @@ export default defineComponent({
 .title {
     font-style: normal;
     font-weight: 700;
-    margin-right: 8px;
     filter: drop-shadow(0 0 2px $orange);
 }
 </style>
