@@ -9,7 +9,7 @@
                     :max-width="900"
                     class="next-team-names"
                 >
-                    <span class="team-name">{{ teamA?.name }}</span> vs <span class="team-name">{{ teamB?.name }}</span>
+                    <span class="team-name">{{ addDots(teamA?.name) }}</span> vs <span class="team-name">{{ addDots(teamB?.name) }}</span>
                 </fitted-content>
             </slide-transition>
         </div>
@@ -51,6 +51,7 @@ import SlideTransition from '../../../../components/SlideTransition.vue';
 import { useNextRoundStore } from 'client-shared/store/nextRoundStore';
 import { useLocaleInfoStore } from 'client-shared/store/localeInfoStore';
 import { useAssetPathStore } from 'client-shared/store/assetPathStore';
+import { addDots } from '../../../../helpers/string';
 
 library.add(faMusic, faHourglassEnd);
 
@@ -73,7 +74,8 @@ export default defineComponent({
             nextGames: computed(() => nextRoundStore.nextRound.games.slice(0, 3)),
             numberOfGames: computed(() => nextRoundStore.nextRound.games.length),
             roundType: computed(() => nextRoundStore.nextRound.round.type),
-            getStageImagePath: assetPathStore.getStageImagePath
+            getStageImagePath: assetPathStore.getStageImagePath,
+            addDots
         };
     }
 });
