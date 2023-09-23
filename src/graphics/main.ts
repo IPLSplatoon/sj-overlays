@@ -9,6 +9,7 @@ import { setUpReplicants } from 'client-shared/store/storeHelper';
 import { scoreboardReps, useScoreboardStore } from 'client-shared/store/scoreboardStore';
 import { activeRoundReps, useActiveRoundStore } from 'client-shared/store/activeRoundStore';
 import { casterReps, useCasterStore } from 'client-shared/store/casterStore';
+import { localeInfoReps, useLocaleInfoStore } from 'client-shared/store/localeInfoStore';
 
 gsap.registerPlugin(DrawSVGPlugin);
 
@@ -18,5 +19,6 @@ gsap.registerPlugin(DrawSVGPlugin);
     await setUpReplicants(scoreboardReps, useScoreboardStore());
     await setUpReplicants(activeRoundReps, useActiveRoundStore());
     await setUpReplicants(casterReps, useCasterStore());
+    await setUpReplicants(localeInfoReps, useLocaleInfoStore());
     app.mount('#app');
 })();

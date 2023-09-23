@@ -3,7 +3,7 @@ import { defineStore } from 'pinia';
 import { DASHBOARD_BUNDLE_NAME } from 'client-shared/constants';
 
 const localeInfo = nodecg.Replicant<LocaleInfo>('localeInfo', DASHBOARD_BUNDLE_NAME);
-const runtimeConfig = nodecg.Replicant<LocaleInfo>('runtimeConfig', DASHBOARD_BUNDLE_NAME);
+const runtimeConfig = nodecg.Replicant<RuntimeConfig>('runtimeConfig', DASHBOARD_BUNDLE_NAME);
 
 export const localeInfoReps = [localeInfo, runtimeConfig];
 
@@ -13,6 +13,9 @@ interface LocaleInfoStore {
 }
 
 interface TranslatableText {
+    main: {
+        castersTitle: string
+    }
     break: {
         main: {
             general: {
@@ -20,7 +23,7 @@ interface TranslatableText {
             }
             nextup: {
                 title: string
-                matchCount: (count: number) => string
+                matchCount: (count: number, playType: 'PLAY_ALL' | 'BEST_OF') => string
             },
             support: {
                 title: string
@@ -28,7 +31,8 @@ interface TranslatableText {
             }
         },
         infobar: {
-            welcome: string
+            welcome: string,
+            nextUp: string
         }
     }
 }
@@ -41,43 +45,11 @@ export const useLocaleInfoStore = defineStore('localeInfo', {
     getters: {
         strings: (state): TranslatableText => {
             switch (state.runtimeConfig.locale) {
-                case 'EN':
-                    return {
-                        break: {
-                            main: {
-                                general: {
-                                    steamResumes: minutes => {
-                                        if (minutes > 1) {
-                                            return `Resuming in <span class="bold">~${minutes}</span> minutes...`;
-                                        } else if (minutes === 1) {
-                                            return `Resuming in <span class="bold">~${minutes}</span> minute...`;
-                                        } else {
-                                            return 'The stream will resume soon!';
-                                        }
-                                    }
-                                },
-                                nextup: {
-                                    title: 'Up next',
-                                    matchCount: count => `${count} games total`
-                                },
-                                support: {
-                                    title: 'Support us!',
-                                    items: [
-                                        { icon: ['fab', 'twitter'], text: '@IPLSplatoon' },
-                                        { icon: ['fab', 'discord'], text: 'iplabs.ink/discord' },
-                                        { icon: 'globe', text: 'iplabs.ink' },
-                                        { icon: 'dollar-sign', text: 'iplabs.ink/donate' },
-                                        { icon: ['fab', 'patreon'], text: 'patreon.com/IPLSplatoon' }
-                                    ]
-                                }
-                            },
-                            infobar: {
-                                welcome: 'Welcome to <span class="logo-font">SuperJump!</span>'
-                            }
-                        }
-                    };
                 case 'DE':
                     return {
+                        main: {
+                            castersTitle: 'Kommentatoren'
+                        },
                         break: {
                             main: {
                                 general: {
@@ -93,7 +65,13 @@ export const useLocaleInfoStore = defineStore('localeInfo', {
                                 },
                                 nextup: {
                                     title: 'Nächstes Match',
-                                    matchCount: count => `${count} Spiele`
+                                    matchCount: (count, playType) => {
+                                        if (playType === 'PLAY_ALL') {
+                                            return `Play all ${count}`;
+                                        }
+
+                                        return `Best of ${count}`;
+                                    }
                                 },
                                 support: {
                                     title: 'Unterstütze uns!',
@@ -107,7 +85,97 @@ export const useLocaleInfoStore = defineStore('localeInfo', {
                                 }
                             },
                             infobar: {
-                                welcome: 'Willkommen in <span class="logo-font">SuperJump!</span>'
+                                welcome: 'Willkommen in <span class="logo-font">SuperJump!</span>',
+                                nextUp: 'Nächstes Match:'
+                            }
+                        }
+                    };
+                case 'EU_FR':
+                    return {
+                        main: {
+                            castersTitle: 'Commentateurs'
+                        },
+                        break: {
+                            main: {
+                                general: {
+                                    steamResumes: minutes => {
+                                        if (minutes > 1) {
+                                            return `De retour dans <span class="bold">~${minutes}</span> minutes...`;
+                                        } else if (minutes === 1) {
+                                            return `De retour dans <span class="bold">~${minutes}</span> minute...`;
+                                        } else {
+                                            return 'On arrive très vite !';
+                                        }
+                                    }
+                                },
+                                nextup: {
+                                    title: 'A suivre',
+                                    matchCount: (count, playType) => {
+                                        if (playType === 'PLAY_ALL') {
+                                            return `Play all ${count}`;
+                                        }
+
+                                        return `Best of ${count}`;
+                                    }
+                                },
+                                support: {
+                                    title: 'Soutenez-nous',
+                                    items: [
+                                        { icon: 'icon-iplabs', text: 'iplabs.ink', isCustomIcon: true },
+                                        { icon: ['fab', 'twitter'], text: '@eSportBrosTV' },
+                                        { icon: ['fab', 'discord'], text: 'discord.gg/ebtv-splatoon' },
+                                        { icon: 'globe', text: 'esportbros.tv' }
+                                    ]
+                                }
+                            },
+                            infobar: {
+                                welcome: 'Bienvenue au <span class="logo-font">SuperJump !</span>',
+                                nextUp: 'A suivre :'
+                            }
+                        }
+                    };
+                default:
+                    return {
+                        main: {
+                            castersTitle: 'Commentators'
+                        },
+                        break: {
+                            main: {
+                                general: {
+                                    steamResumes: minutes => {
+                                        if (minutes > 1) {
+                                            return `Resuming in <span class="bold">~${minutes}</span> minutes...`;
+                                        } else if (minutes === 1) {
+                                            return `Resuming in <span class="bold">~${minutes}</span> minute...`;
+                                        } else {
+                                            return 'The stream will resume soon!';
+                                        }
+                                    }
+                                },
+                                nextup: {
+                                    title: 'Up next',
+                                    matchCount: (count, playType) => {
+                                        if (playType === 'PLAY_ALL') {
+                                            return `Play all ${count}`;
+                                        }
+
+                                        return `Best of ${count}`;
+                                    }
+                                },
+                                support: {
+                                    title: 'Support us!',
+                                    items: [
+                                        { icon: ['fab', 'twitter'], text: '@IPLSplatoon' },
+                                        { icon: ['fab', 'discord'], text: 'iplabs.ink/discord' },
+                                        { icon: 'globe', text: 'iplabs.ink' },
+                                        { icon: 'dollar-sign', text: 'iplabs.ink/donate' },
+                                        { icon: ['fab', 'patreon'], text: 'patreon.com/IPLSplatoon' }
+                                    ]
+                                }
+                            },
+                            infobar: {
+                                welcome: 'Welcome to <span class="logo-font">SuperJump!</span>',
+                                nextUp: 'Next:'
                             }
                         }
                     };
