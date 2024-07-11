@@ -8,11 +8,11 @@ Broadcast overlays for SuperJump, a Splatoon tournament by Inkling Performance L
 - To properly see blur effects in older versions of OBS (before 27.2), add `--enable-experimental-web-platform-features` to your OBS launch parameters.
   On Windows, create a new shortcut to the OBS executable and add the parameter to the "Target" field of the shortcut: [Image example](https://i.imgur.com/ZrWHMV3.png)
 - To properly see blur effects in older versions of Chrome (Particularly ones not supporting [backdrop-filter](https://caniuse.com/css-backdrop-filter)), enable "Experimental Web Platform features" in `chrome://flags/`
-- To import bracket data from start.gg, its API key must be provided. To do so, create the file `[nodecg/cfg/sj-overlays.json]` with the following contents: 
+- To get detailed team data from IPL Central, some configuration must be provided. To do so, create the file `[nodecg]/cfg/sj-overlays.json` with the following contents: 
   ```json
   {
-      "startgg": {
-    	  "apiKey": "<start.gg api key>"
+      "central": {
+    	  "basePath": "Base path to IPL Central. e.g. http://localhost:2000"
       }
   }
   ```

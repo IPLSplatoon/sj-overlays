@@ -72,7 +72,9 @@
         ]
     },
     "dependencies": {
-        "@tourneyview/common": "0.6.0"
+        "@tourneyview/common": "0.6.0",
+        "axios": "^1.7.2",
+        "jose": "^5.6.3"
     },
     "devDependencies": {
         "@fortawesome/fontawesome-svg-core": "6.1.1",
@@ -120,11 +122,11 @@
         "ts-node": "^10.7.0",
         "typescript": "^5.2.2",
         "vite": "^5.3.3",
-        "vite-plugin-checker": "^0.7.1",
+        "vite-plugin-checker": "^0.6.4",
         "vite-plugin-nodecg": "github:inkfarer/vite-plugin-nodecg#4e7eeea",
         "vite-tsconfig-paths": "^4.3.2",
         "vue": "^3.2.33",
         "vue-eslint-parser": "^9.3.1",
-        "vue-tsc": "^2.0.26"
+        "vue-tsc": "^1.8.27"
     }
 }
