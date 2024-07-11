@@ -49,7 +49,7 @@ export default defineComponent({
 
         return {
             stats,
-            formatValueDisplay(value: ObjectiveSection) {
+            formatValueDisplay(value?: ObjectiveSection) {
                 if (value == null || value.percentage == null || value.percentage <= 3) {
                     return '';
                 }
@@ -61,7 +61,7 @@ export default defineComponent({
                 }
             },
             totalDuration: computed(() => {
-                if (stats.value.displayType !== 'DURATION') {
+                if (stats.value.displayType !== 'DURATION' || stats.value.alpha.duration == null || stats.value.bravo.duration == null) {
                     return null;
                 }
 

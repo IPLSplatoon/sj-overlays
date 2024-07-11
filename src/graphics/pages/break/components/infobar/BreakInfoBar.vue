@@ -4,7 +4,7 @@
             <div class="bar-content">
                 <div class="icon-wrapper layout horiz c-vert c-horiz">
                     <img
-                        src="/bundles/sj-overlays/assets/SJ_Eyes.png"
+                        :src="resolveStaticPath('/SJ_Eyes.png')"
                         class="icon eyes-icon"
                     >
                 </div>
@@ -55,6 +55,7 @@ import { useBreakScreenStore } from 'client-shared/store/breakScreenStore';
 import BreakInfoBarActiveRound from './BreakInfoBarActiveRound.vue';
 import BreakInfoBarNextRound from './BreakInfoBarNextRound.vue';
 import { useNextRoundStore } from 'client-shared/store/nextRoundStore';
+import { resolveStaticPath } from '../../../../helpers/string';
 
 export default defineComponent({
     name: 'BreakInfoBar',
@@ -101,7 +102,8 @@ export default defineComponent({
             },
             slideLeave: (elem: HTMLElement, done: gsap.Callback) => {
                 gsap.to(elem, { opacity: 0, y: 35, ease: 'power2.in', duration: 0.35, onComplete: done });
-            }
+            },
+            resolveStaticPath
         };
     }
 });

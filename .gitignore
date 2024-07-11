@@ -5,6 +5,7 @@ bower_components
 /graphics
 /dashboard
 /extension
+/shared/dist
 
 /.idea
 

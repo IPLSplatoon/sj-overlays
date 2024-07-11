@@ -53,7 +53,7 @@ function createCellBorders(selection: d3.Selection<BaseType, d3.HierarchyNode<Ma
         cellBorderPath.arc(svgWidth - padding - radius, padding + radius, radius, Math.PI * 1.5, 0);
         cellBorderPath.lineTo(svgWidth - padding, svgHeight - padding - radius);
 
-        const addPath = (selection: d3.Selection<SVGSVGElement, null, null, null>, className: string) => {
+        const addPath = (selection: d3.Selection<SVGSVGElement, unknown, null, undefined>, className: string) => {
             selection.append('path')
                 .classed(className, true)
                 .attr('fill', 'transparent')

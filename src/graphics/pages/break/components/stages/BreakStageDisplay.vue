@@ -50,7 +50,6 @@
                         <div
                             v-if="game.winner !== 'none'"
                             class="stage-winner-wrapper layout horiz"
-                            :style="{ opacity: game.winner === 'none' ? '0' : '1' }"
                         >
                             <opacity-swap-transition>
                                 <div

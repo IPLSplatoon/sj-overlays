@@ -3,8 +3,8 @@ import { inject, InjectionKey } from 'vue';
 
 interface RawTransitionFunctions {
     beforeEnter?: (elem: HTMLElement) => void
-    enter?: (elem: HTMLElement, done: gsap.Callback, ...args: unknown[]) => gsap.core.Timeline
-    leave?: (elem: HTMLElement, done: gsap.Callback, ...args: unknown[]) => gsap.core.Timeline
+    enter?: (elem: HTMLElement, done: gsap.Callback | undefined, ...args: unknown[]) => gsap.core.Timeline
+    leave?: (elem: HTMLElement, done: gsap.Callback | undefined, ...args: unknown[]) => gsap.core.Timeline
 }
 
 interface TransitionFunctions {
@@ -34,14 +34,14 @@ export function provideTransitions(key: string, rootQuerySelector: string | null
                 elem = elem.querySelector(rootQuerySelector);
             }
 
-            return transitions.enter(elem, null, ...args);
+            return transitions.enter(elem, undefined, ...args);
         },
         leave: (elem: HTMLElement, ...args: unknown[]) => {
             if (rootQuerySelector != null) {
                 elem = elem.querySelector(rootQuerySelector);
             }
 
-            return transitions.leave(elem, null, ...args);
+            return transitions.leave(elem, undefined, ...args);
         }
     };
 }

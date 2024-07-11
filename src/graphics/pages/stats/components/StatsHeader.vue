@@ -36,7 +36,9 @@ export default defineComponent({
         return {
             activeRound: computed(() => activeRoundStore.activeRound),
             stageAndMode: computed(() =>
-                `${relayDataStore.activeRelayEvent.event.rule} on ${relayDataStore.activeRelayEvent.event.stage}`),
+                relayDataStore.activeRelayEvent.event == null
+                    ? 'Unknown'
+                    : `${relayDataStore.activeRelayEvent.event.rule} on ${relayDataStore.activeRelayEvent.event.stage}`),
             colorsSwapped: computed(() => activeRoundStore.swapColorsInternally)
         };
     }

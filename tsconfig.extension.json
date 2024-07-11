@@ -1,0 +1,26 @@
+{
+    "compilerOptions": {
+        "target": "es2016",
+        "module": "commonjs",
+        "rootDir": "src/extension",
+        "moduleResolution": "node",
+        "baseUrl": ".",
+        "paths": {
+            "types/*": [
+                "src/types/*"
+            ],
+            "schemas": [
+                "../ipl-overlay-controls/src/types/schemas/index"
+            ]
+        },
+        "outDir": "extension",
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "strict": true,
+        "skipLibCheck": true
+    },
+    "include": [
+        "src/extension/**/*.ts",
+        "src/types/**/*.ts"
+    ]
+}

@@ -2,18 +2,18 @@
     <div class="main-scene-wrapper w-max layout horiz c-vert c-horiz">
         <div class="logo-wrapper layout vertical c-horiz c-vert">
             <img
-                src="/bundles/sj-overlays/assets/SJ_Logo.png"
+                :src="resolveStaticPath('/SJ_Logo.png')"
                 class="logo"
             >
             <div class="tournament-name layout horiz">
                 <span class="logo-font">SuperJump</span>
                 <img
-                    src="/bundles/sj-overlays/assets/SJ_3.png"
+                    :src="resolveStaticPath('/SJ_3.png')"
                     class="edition"
                 >
             </div>
             <img
-                src="/bundles/sj-overlays/assets/ipl-powered-inkling.png"
+                :src="resolveStaticPath('/ipl-powered-inkling.png')"
                 class="ipl-powered"
             >
         </div>
@@ -42,6 +42,7 @@ import MainSlideSupport from './MainSlideSupport.vue';
 import MainSlideNextMatch from './MainSlideNextMatch.vue';
 import { useNextRoundStore } from 'client-shared/store/nextRoundStore';
 import { provideTransitions } from '../../../../helpers/transition';
+import { resolveStaticPath } from '../../../../helpers/string';
 
 export default defineComponent({
     name: 'BreakMain',
@@ -112,7 +113,8 @@ export default defineComponent({
             },
             slideLeave: (elem: HTMLElement, done: gsap.Callback) => {
                 gsap.to(elem.children, { y: 50, opacity: 0, duration: 0.5, stagger: -0.05, ease: 'power2.in', onComplete: done });
-            }
+            },
+            resolveStaticPath
         };
     }
 });

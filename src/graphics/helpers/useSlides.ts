@@ -11,9 +11,9 @@ function isSlideEnabled(slide: Slide): boolean {
     return slide.enabled == null || slide.enabled.value;
 }
 
-export function useSlides(slides: Array<Slide>): { activeComponent: Ref<string>, forceSetSlide: (component: string) => void } {
-    const activeIndex = ref<number>(null);
-    const activeComponent = ref<string>(null);
+export function useSlides(slides: Slide[]): { activeComponent: Ref<string | null>, forceSetSlide: (component: string) => void } {
+    const activeIndex = ref<number | null>(null);
+    const activeComponent = ref<string | null>(null);
 
     const findNextVisibleSlide = () => {
         // If all slides are disabled, show the first one
@@ -32,13 +32,15 @@ export function useSlides(slides: Array<Slide>): { activeComponent: Ref<string>,
         }
     };
 
-    let slideChangeTimeout: number = null;
+    let slideChangeTimeout: number | undefined;
     const setSlideChangeTimeout = () => {
-        const activeSlide = slides[activeIndex.value];
-        slideChangeTimeout = window.setTimeout(() => {
-            findNextVisibleSlide();
-            setSlideChangeTimeout();
-        }, (activeSlide.duration ?? 30) * 1000);
+        if (activeIndex.value != null) {
+            const activeSlide = slides[activeIndex.value];
+            slideChangeTimeout = window.setTimeout(() => {
+                findNextVisibleSlide();
+                setSlideChangeTimeout();
+            }, (activeSlide.duration ?? 30) * 1000);
+        }
     };
 
     let forceAllowSlide = false;
@@ -63,7 +65,7 @@ export function useSlides(slides: Array<Slide>): { activeComponent: Ref<string>,
         clearTimeout(slideChangeTimeout);
     });
 
-    watch(() => slides[activeIndex.value].enabled?.value, newValue => {
+    watch(() => activeIndex.value == null ? true : slides[activeIndex.value].enabled?.value, newValue => {
         // if a slide is disabled while it is visible, hide it immediately
         if (newValue === false && !forceAllowSlide) {
             clearTimeout(slideChangeTimeout);

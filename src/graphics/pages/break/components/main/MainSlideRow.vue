@@ -33,7 +33,7 @@
                 </slide-transition>
                 <slide-transition>
                     <fitted-content
-                        v-if="secondRow"
+                        v-if="secondRow != null"
                         :key="secondRow"
                         :max-width="830"
                     >
@@ -73,8 +73,8 @@ export default defineComponent({
             default: null
         },
         secondRow: {
-            type: [String, Boolean] as PropType<string | boolean>,
-            default: false
+            type: String,
+            default: null
         },
         isVisible: {
             type: Boolean,

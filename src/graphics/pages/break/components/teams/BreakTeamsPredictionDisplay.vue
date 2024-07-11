@@ -100,7 +100,9 @@ export default defineComponent({
             const tl = gsap.timeline({
                 delay,
                 onComplete: done,
-                onStart: () => gsap.set(elem.querySelector('.prediction-box'), { opacity: 1 })
+                onStart: () => {
+                    gsap.set(elem.querySelector('.prediction-box'), { opacity: 1 });
+                }
             });
 
             tl.addLabel('predictionEnter');

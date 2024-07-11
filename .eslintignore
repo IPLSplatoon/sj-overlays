@@ -5,6 +5,7 @@ webpack.config.ts
 dashboard/**/*
 extension/**/*
 graphics/**/*
+shared/dist/**/*
 node_modules/**/*
 schemas/**/*
 src/types/schemas/*

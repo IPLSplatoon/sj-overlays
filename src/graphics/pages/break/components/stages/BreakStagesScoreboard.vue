@@ -55,7 +55,7 @@ export default defineComponent({
         };
 
         const enter = (elem: HTMLElement, done: gsap.Callback) => {
-            const tl = gsap.timeline({ onComplete: done, onStart: () => gsap.set(elem, { opacity: 1 }) });
+            const tl = gsap.timeline({ onComplete: done, onStart: () => { gsap.set(elem, { opacity: 1 }); } });
 
             tl.to(elem, { duration: 0.5, width: 1000, ease: 'power2.out' });
 

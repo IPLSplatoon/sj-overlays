@@ -89,7 +89,7 @@
                 </opacity-swap-transition>
                 <img
                     class="scoreboard-icon"
-                    src="/bundles/sj-overlays/assets/SJ_Eyes.png"
+                    :src="resolveStaticPath('/SJ_Eyes.png')"
                 >
             </div>
         </div>
@@ -105,6 +105,7 @@ import OpacitySwapTransition from '../../../components/OpacitySwapTransition.vue
 import ScoreCounter from '../../../components/ScoreCounter.vue';
 import { useActiveRoundStore } from 'client-shared/store/activeRoundStore';
 import { useScoreboardStore } from 'client-shared/store/scoreboardStore';
+import { resolveStaticPath } from '../../../helpers/string';
 
 export default defineComponent({
     name: 'Scoreboard',
@@ -206,7 +207,8 @@ export default defineComponent({
                     .to(elem.querySelectorAll('.scoreboard-icon, #scoreboard-flavor-text'),
                         { x: -50, opacity: 0, duration: 0.5, stagger: 0.1, ease: 'power2.in' },
                         'textOut');
-            }
+            },
+            resolveStaticPath
         };
     }
 });

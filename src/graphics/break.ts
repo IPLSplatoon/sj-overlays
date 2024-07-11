@@ -7,7 +7,6 @@ import DrawSVGPlugin from 'gsap/DrawSVGPlugin';
 import PixiPlugin from 'gsap/PixiPlugin';
 import * as PIXI from './helpers/pixi';
 import { createPinia } from 'pinia';
-import { addDots, isBlank } from './helpers/string';
 import { setUpReplicants } from 'client-shared/store/storeHelper';
 import { activeRoundReps, useActiveRoundStore } from 'client-shared/store/activeRoundStore';
 import { casterReps, useCasterStore } from 'client-shared/store/casterStore';
@@ -17,6 +16,7 @@ import { nextRoundReps, useNextRoundStore } from 'client-shared/store/nextRoundS
 import { predictionReps, usePredictionDataStore } from 'client-shared/store/predictionDataStore';
 import { localeInfoReps, useLocaleInfoStore } from 'client-shared/store/localeInfoStore';
 import { assetPathReps, useAssetPathStore } from 'client-shared/store/assetPathStore';
+import { installCommonHelpers } from './helpers/installCommonHelpers';
 
 gsap.registerPlugin(DrawSVGPlugin);
 gsap.registerPlugin(PixiPlugin);
@@ -33,9 +33,6 @@ PixiPlugin.registerPIXI(PIXI);
     await setUpReplicants(predictionReps, usePredictionDataStore());
     await setUpReplicants(localeInfoReps, useLocaleInfoStore());
     await setUpReplicants(assetPathReps, useAssetPathStore());
-    app.config.globalProperties.$helpers = {
-        addDots,
-        isBlank
-    };
+    installCommonHelpers(app);
     app.mount('#app');
 })();
