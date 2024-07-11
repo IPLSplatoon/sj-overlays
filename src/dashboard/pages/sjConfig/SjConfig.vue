@@ -5,14 +5,12 @@
             label="Casters on break graphic"
         />
     </ipl-space>
-    <bracket-config />
 </template>
 
 <script setup lang="ts">
 import { IplSmallToggle, IplSpace } from '@iplsplatoon/vue-components';
 import { useBreakScreenStore } from 'client-shared/store/breakScreenStore';
 import { computed } from 'vue';
-import BracketConfig from './BracketConfig.vue';
 
 const breakScreenStore = useBreakScreenStore();
 const breakCastersShown = computed({
