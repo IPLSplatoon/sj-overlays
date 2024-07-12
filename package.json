@@ -42,10 +42,17 @@
             {
                 "name": "sjConfig",
                 "title": "SuperJump Config",
-                "width": 2,
+                "width": 3,
                 "file": "sjConfig.html",
                 "workspace": "ipl",
                 "headerColor": "#3d1a4b"
+            },
+            {
+                "name": "centralTeamSearchDialog",
+                "dialog": true,
+                "file": "centralTeamSearchDialog.html",
+                "title": "",
+                "width": 4
             }
         ],
         "graphics": [
@@ -81,7 +88,7 @@
         "@fortawesome/free-brands-svg-icons": "^6.1.1",
         "@fortawesome/free-solid-svg-icons": "6.1.1",
         "@fortawesome/vue-fontawesome": "^3.0.0-5",
-        "@iplsplatoon/vue-components": "^2.10.0",
+        "@iplsplatoon/vue-components": "^3.3.3",
         "@nodecg/types": "^2.1.11",
         "@pixi/app": "^6.1.2",
         "@pixi/constants": "^6.1.2",

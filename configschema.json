@@ -4,9 +4,12 @@
     "properties": {
         "central": {
             "type": "object",
-            "required": ["basePath"],
+            "required": ["basePath", "frontendPath"],
             "properties": {
                 "basePath": {
+                    "type": "string"
+                },
+                "frontendPath": {
                     "type": "string"
                 }
             }

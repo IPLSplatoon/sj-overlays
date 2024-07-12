@@ -1,3 +1,4 @@
+@import '@iplsplatoon/vue-components/style.css';
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap');
 
 body {
@@ -20,6 +21,20 @@ body {
     margin-bottom: 8px;
 }
 
+.text-center {
+    text-align: center;
+}
+
 hr {
     border-color: #737373;
+}
+
+a {
+    color: #0090FF;
+    text-decoration: none;
+    cursor: pointer;
+
+    &:hover {
+        text-decoration: underline;
+    }
 }

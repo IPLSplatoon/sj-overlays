@@ -5,7 +5,10 @@
             label="Casters on break graphic"
         />
     </ipl-space>
-    <central-login v-if="hasCentralConfig" />
+    <template v-if="hasCentralConfig">
+        <central-login />
+        <central-mapping-display class="top-margin" />
+    </template>
     <ipl-message
         v-else
         type="warning"
@@ -20,6 +23,7 @@ import { useBreakScreenStore } from 'client-shared/store/breakScreenStore';
 import { computed } from 'vue';
 import CentralLogin from './CentralLogin.vue';
 import { Configschema } from 'types/schemas';
+import CentralMappingDisplay from './CentralMappingDisplay.vue';
 
 const hasCentralConfig = (nodecg.bundleConfig as Configschema).central != null;
 

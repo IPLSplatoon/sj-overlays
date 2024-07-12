@@ -1,7 +1,7 @@
 import type NodeCG from '@nodecg/types';
-import { ActiveBreakScene } from 'schemas';
+import { ActiveBreakScene, ActiveRound } from 'schemas';
 import { DASHBOARD_BUNDLE_NAME } from './constants';
-import { CentralCredentials, Configschema } from 'types/schemas';
+import { CentralCredentials, CentralTeamMapping, Configschema } from 'types/schemas';
 import axios from 'axios';
 import { CentralSSOLoginResponse } from 'types/central';
 import { decodeJwt } from 'jose';
@@ -61,4 +61,18 @@ export = (nodecg: NodeCG.ServerAPI<Configschema>): void => {
     setInterval(checkAccessToken, 60 * 1000);
 
     nodecg.mount(`/${nodecg.bundleName}`, router);
+
+
+    const activeRound = nodecg.Replicant('activeRound', DASHBOARD_BUNDLE_NAME) as unknown as NodeCG.ServerReplicantWithSchemaDefault<ActiveRound>;
+    const centralTeamMapping = nodecg.Replicant('centralTeamMapping') as unknown as NodeCG.ServerReplicantWithSchemaDefault<CentralTeamMapping>;
+
+    activeRound.on('change', (newValue, oldValue) => {
+        if (oldValue == null) return;
+        if (newValue.teamA.id !== oldValue.teamA.id) {
+            centralTeamMapping.value.teamA = [];
+        }
+        if (newValue.teamB.id !== oldValue.teamB.id) {
+            centralTeamMapping.value.teamB = [];
+        }
+    });
 }

@@ -22,3 +22,17 @@ interface CentralJwtPayload {
         username: string
     }
 }
+
+export interface CentralSearchResponse {
+    pages: number
+    pagination_id: string
+    results: CentralSearchItem[]
+    results_count: number
+}
+
+export interface CentralSearchItem {
+    former_names: string[]
+    icon: string
+    id: string
+    name: string
+}
