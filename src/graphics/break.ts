@@ -17,6 +17,7 @@ import { predictionReps, usePredictionDataStore } from 'client-shared/store/pred
 import { localeInfoReps, useLocaleInfoStore } from 'client-shared/store/localeInfoStore';
 import { assetPathReps, useAssetPathStore } from 'client-shared/store/assetPathStore';
 import { installCommonHelpers } from './helpers/installCommonHelpers';
+import { centralDataReps, useCentralDataStore } from 'client-shared/store/centralDataStore';
 
 gsap.registerPlugin(DrawSVGPlugin);
 gsap.registerPlugin(PixiPlugin);
@@ -33,6 +34,7 @@ PixiPlugin.registerPIXI(PIXI);
     await setUpReplicants(predictionReps, usePredictionDataStore());
     await setUpReplicants(localeInfoReps, useLocaleInfoStore());
     await setUpReplicants(assetPathReps, useAssetPathStore());
+    await setUpReplicants(centralDataReps, useCentralDataStore());
     installCommonHelpers(app);
     app.mount('#app');
 })();

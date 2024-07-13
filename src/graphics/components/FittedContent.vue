@@ -1,5 +1,6 @@
 <template>
     <div
+        ref="wrapper"
         class="fitted-content-wrapper"
         :style="{ justifyContent, maxWidth: `${maxWidth}px` }"
     >
@@ -22,7 +23,7 @@ export default defineComponent({
     props: {
         maxWidth: {
             type: Number,
-            required: true
+            default: null
         },
         align: {
             type: String as PropType<'left' | 'center' | 'right'>,
@@ -32,17 +33,24 @@ export default defineComponent({
 
     setup(props) {
         const contentWidth = ref(1);
-        const scaleX = computed(() => Math.min(1, props.maxWidth / contentWidth.value));
+        const wrapperWidth = ref(1);
+        const scaleX = computed(() => Math.min(1, (props.maxWidth ?? wrapperWidth.value) / contentWidth.value));
 
-        const resizeObserver = new ResizeObserver(entries => {
+        const wrapperResizeObserver = new ResizeObserver(entries => {
+            wrapperWidth.value = entries[0].contentRect.width;
+        });
+        const contentResizeObserver = new ResizeObserver(entries => {
             contentWidth.value = entries[0].contentRect.width;
         });
-        const content = ref();
+        const content = ref<HTMLDivElement>();
+        const wrapper = ref<HTMLDivElement>();
         onMounted(() => {
-            resizeObserver.observe(content.value);
+            contentResizeObserver.observe(content.value!);
+            wrapperResizeObserver.observe(wrapper.value!);
         });
         onUnmounted(() => {
-            resizeObserver.disconnect();
+            contentResizeObserver.disconnect();
+            wrapperResizeObserver.disconnect();
         });
 
         const justifyContent = computed(() => {
@@ -68,6 +76,7 @@ export default defineComponent({
 
         return {
             content,
+            wrapper,
             justifyContent,
             transformOrigin,
             scaleX

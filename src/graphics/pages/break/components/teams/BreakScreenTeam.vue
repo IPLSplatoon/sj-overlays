@@ -1,7 +1,7 @@
 <template>
     <div
         class="team layout vertical c-horiz"
-        :class="{ 'alpha': team === 'A', 'bravo': team === 'B' }"
+        :class="`team-${team.toLowerCase()}`"
     >
         <div class="line top" />
         <div class="line mid" />
@@ -13,9 +13,9 @@
                 <split-text-transition
                     :max-width="450"
                     :value="$helpers.addDots(teamData?.name)"
-                    :transition-key="`team-${team.toLowerCase()}-name`"
-                    :transition-selector="`.team-${team.toLowerCase()}-name`"
-                    :class="`team-${team.toLowerCase()}-name`"
+                    transition-key="team-name"
+                    transition-selector=".inner-team-name"
+                    class="inner-team-name"
                 />
             </div>
             <transition
@@ -45,12 +45,17 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType } from 'vue';
+import { computed, defineComponent, PropType, provide } from 'vue';
 import FittedContent from '../../../../components/FittedContent.vue';
 import Badge from '../../../../components/Badge.vue';
 import SplitTextTransition from '../../../../components/SplitTextTransition.vue';
 import gsap from 'gsap';
 import { useActiveRoundStore } from 'client-shared/store/activeRoundStore';
+import {
+    provideTransitions,
+    TransitionFunctionMap,
+    transitionFunctionsInjectionKey
+} from '../../../../helpers/transition';
 
 export default defineComponent({
     name: 'BreakScreenTeam',
@@ -67,19 +72,85 @@ export default defineComponent({
     setup(props) {
         const activeRoundStore = useActiveRoundStore();
         const teamData = computed(() => props.team === 'A' ? activeRoundStore.activeRound.teamA : activeRoundStore.activeRound.teamB);
+        const transitions: TransitionFunctionMap = {};
+        provide(transitionFunctionsInjectionKey, transitions);
+
+        function beforePlayersEnter(elem: HTMLElement) {
+            gsap.set(elem.querySelectorAll('.player'), { opacity: 0, x: -350 });
+        }
+        function playersEnter(elem: HTMLElement, done?: gsap.Callback) {
+            return gsap.to(elem.querySelectorAll('.player'), { duration: 0.35, opacity: 1, x: 0, ease: 'power2.out', stagger: 0.1, onComplete: done });
+        }
+        function playersLeave(elem: HTMLElement, done?: gsap.Callback) {
+            return gsap.to(elem.querySelectorAll('.player'), { duration: 0.35, opacity: 0, x: -350, stagger: 0.1, ease: 'power2.in', onComplete: done });
+        }
+
+        provideTransitions(`team-${props.team.toLowerCase()}`, `.team.team-${props.team.toLowerCase()}`, {
+            beforeEnter(elem: HTMLElement) {
+                transitions['team-name'].beforeEnter(elem);
+                beforePlayersEnter(elem);
+                gsap.set(
+                    elem.querySelectorAll('.line.top, .line.mid'),
+                    { opacity: 0, width: 0 });
+                gsap.set(
+                    elem.querySelector('.content'),
+                    { height: 0 });
+            },
+            enter(elem: HTMLElement, done: gsap.Callback) {
+                const tl = gsap.timeline({ onComplete: done });
+
+                tl
+                    .addLabel('teamsLineIn', '+=0.35')
+                    .addLabel('teamsTextIn', '+=0.45');
+
+                tl
+                    .to(
+                        elem.querySelector('.content'),
+                        { duration: 0.55, height: 'calc(100% - 55px)', ease: 'power2.out' },
+                        'teamsIn')
+                    .to(
+                        elem.querySelector('.line.top'),
+                        { duration: 0.55, width: 375, opacity: 1, ease: 'power2.out' },
+                        'teamsLineIn')
+                    .to(
+                        elem.querySelector('.line.mid'),
+                        { duration: 0.55, width: 600, opacity: 1, ease: 'power2.out' },
+                        'teamsLineIn')
+                    .add(transitions['team-name'].enter(elem), 'teamsTextIn')
+                    .add(playersEnter(elem), 'teamsTextIn');
+
+                return tl;
+            },
+            leave(elem: HTMLElement, done: gsap.Callback) {
+                const tl = gsap.timeline({ onComplete: done });
+
+                tl
+                    .addLabel('teamsTextOut')
+                    .addLabel('teamsLineOut', '+=0.4')
+                    .addLabel('teamsOut', '+=0.6');
+
+                tl
+                    .add(playersLeave(elem), 'teamsTextOut')
+                    .add(transitions['team-name'].leave(elem), 'teamsTextOut')
+                    .to(
+                        elem.querySelectorAll('.line.top, .line.mid'),
+                        { duration: 0.55, width: 0, opacity: 0, ease: 'power2.in' },
+                        'teamsLineOut')
+                    .to(
+                        elem.querySelector('.content'),
+                        { duration: 0.55, height: 0, ease: 'power2.in' },
+                        'teamsOut');
+
+                return tl;
+            }
+        });
 
         return {
             teamData,
             players: computed(() => teamData.value?.players.slice(0, 5)),
-            beforePlayersEnter: (elem: HTMLElement) => {
-                gsap.set(elem.querySelectorAll('.player'), { opacity: 0, x: -350 });
-            },
-            playersEnter: (elem: HTMLElement, done: gsap.Callback) => {
-                gsap.to(elem.querySelectorAll('.player'), { duration: 0.35, opacity: 1, x: 0, ease: 'power2.out', stagger: 0.1, onComplete: done });
-            },
-            playersLeave: (elem: HTMLElement, done: gsap.Callback) => {
-                gsap.to(elem.querySelectorAll('.player'), { duration: 0.35, opacity: 0, ease: 'power2.in', onComplete: done });
-            }
+            beforePlayersEnter,
+            playersEnter,
+            playersLeave
         };
     }
 });
@@ -151,12 +222,12 @@ export default defineComponent({
         }
     }
 
-    &.alpha {
+    &.team-a {
         .line {
             @include glow.line-glow(constants.$red);
         }
     }
-    &.bravo {
+    &.team-b {
         .line {
             @include glow.line-glow(constants.$green);
         }
