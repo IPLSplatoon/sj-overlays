@@ -1,9 +1,9 @@
 import type NodeCG from '@nodecg/types';
 import { ActiveBreakScene, ActiveRound } from 'schemas';
 import { DASHBOARD_BUNDLE_NAME } from './constants';
-import { CentralCredentials, CentralTeamMapping, Configschema } from 'types/schemas';
+import { CentralCredentials, CentralTeamMapping, CentralTeamMatchups, Configschema } from 'types/schemas';
 import axios from 'axios';
-import { CentralSSOLoginResponse } from 'types/central';
+import { CentralMatchupsResponse, CentralSSOLoginResponse } from 'types/central';
 import { decodeJwt } from 'jose';
 import { DateTime } from 'luxon';
 
@@ -65,14 +65,82 @@ export = (nodecg: NodeCG.ServerAPI<Configschema>): void => {
 
     const activeRound = nodecg.Replicant('activeRound', DASHBOARD_BUNDLE_NAME) as unknown as NodeCG.ServerReplicantWithSchemaDefault<ActiveRound>;
     const centralTeamMapping = nodecg.Replicant('centralTeamMapping') as unknown as NodeCG.ServerReplicantWithSchemaDefault<CentralTeamMapping>;
+    const centralTeamMatchups = nodecg.Replicant('centralTeamMatchups') as unknown as NodeCG.ServerReplicantWithSchemaDefault<CentralTeamMatchups>;
 
     activeRound.on('change', (newValue, oldValue) => {
         if (oldValue == null) return;
+        let resetMatchupData = false;
         if (newValue.teamA.id !== oldValue.teamA.id) {
             centralTeamMapping.value.teamA = [];
+            resetMatchupData = true;
         }
         if (newValue.teamB.id !== oldValue.teamB.id) {
             centralTeamMapping.value.teamB = [];
+            resetMatchupData = true;
         }
+        if (resetMatchupData) {
+            centralTeamMatchups.value = {
+                headToHead: undefined,
+                teamA: undefined,
+                teamB: undefined
+            };
+        }
+    });
+
+    function buildMatchupSearchUrl(teamIds: string[], endpoint: 'matchups' | 'team-matches'): string {
+        if (centralPath == null) {
+            throw new Error('Central URL is not configured.');
+        }
+
+        const url = new URL(`${centralPath}/match/${endpoint}`);
+        teamIds.forEach(id => {
+            url.searchParams.append('team_id', id);
+        });
+
+        return url.toString();
+    }
+
+    async function getMatchups(teamIds: string[], type: 'headToHead' | 'team'): Promise<CentralMatchupsResponse> {
+        if (centralCredentials.value?.token == null) {
+            throw new Error('Not logged in to Central');
+        }
+        const headers = { Authorization: `JWT ${centralCredentials.value.token}` };
+
+        try {
+            const response = await axios.get<CentralMatchupsResponse>(
+                buildMatchupSearchUrl(teamIds, type === 'headToHead' ? 'matchups' : 'team-matches'),
+                { headers }
+            );
+
+            return response.data;
+        } catch (e) {
+            if (axios.isAxiosError(e) && e.response?.status === 404) {
+                return {
+                    tournaments: []
+                };
+            }
+
+            throw e;
+        }
+    }
+
+    nodecg.listenFor('loadCentralMatchups', async (data, ack) => {
+        if (ack == null || ack.handled) return;
+
+        try {
+            const headToHeadData = await getMatchups([...centralTeamMapping.value.teamA, ...centralTeamMapping.value.teamB], 'headToHead');
+            const teamAData = await getMatchups(centralTeamMapping.value.teamA, 'team');
+            const teamBData = await getMatchups(centralTeamMapping.value.teamB, 'team');
+
+            centralTeamMatchups.value = {
+                headToHead: headToHeadData,
+                teamA: teamAData,
+                teamB: teamBData
+            }
+        } catch (e) {
+            return ack(e);
+        }
+
+        ack(null);
     });
 }

@@ -5,3 +5,5 @@ export * from './configschema';
 export * from './centralCredentials';
 // @ts-ignore
 export * from './centralTeamMapping';
+// @ts-ignore
+export * from './centralTeamMatchups';

@@ -8,6 +8,7 @@
     <template v-if="hasCentralConfig">
         <central-login />
         <central-mapping-display class="top-margin" />
+        <central-matchups-display class="top-margin" />
     </template>
     <ipl-message
         v-else
@@ -24,6 +25,7 @@ import { computed } from 'vue';
 import CentralLogin from './CentralLogin.vue';
 import { Configschema } from 'types/schemas';
 import CentralMappingDisplay from './CentralMappingDisplay.vue';
+import CentralMatchupsDisplay from './CentralMatchupsDisplay.vue';
 
 const hasCentralConfig = (nodecg.bundleConfig as Configschema).central != null;
 

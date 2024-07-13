@@ -36,3 +36,24 @@ export interface CentralSearchItem {
     id: string
     name: string
 }
+
+export interface CentralMatchupsResponse {
+    tournaments: {
+        id: string
+        name: string
+        stages: {
+            id: string
+            name: string
+            matches: {
+                id: string
+                alpha_id: string
+                bravo_id: string
+                alpha_name: string
+                bravo_name: string
+                alpha_win: number
+                bravo_win: number
+                ties: number
+            }[]
+        }[]
+    }[]
+}
