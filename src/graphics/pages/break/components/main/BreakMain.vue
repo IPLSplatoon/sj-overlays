@@ -121,12 +121,12 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import '../../../../styles/constants';
-@import '../../../../styles/background';
-@import '../../../../styles/glow';
+@use '../../../../styles/glow';
+@use '../../../../styles/background';
+@use '../../../../styles/constants';
 
 @mixin shadow {
-    filter: drop-shadow(0 0 3px $background) drop-shadow(0 0 10px $background);
+    filter: drop-shadow(0 0 3px constants.$background) drop-shadow(0 0 10px constants.$background);
 }
 
 .main-scene-wrapper {
@@ -171,7 +171,7 @@ export default defineComponent({
     }
 
     .main-content-wrapper {
-        @include background();
+        @include background.background();
         position: relative;
         width: 1000px;
         height: 700px;
@@ -196,7 +196,7 @@ export default defineComponent({
                 }
 
                 .separator {
-                    @include line-glow($blue);
+                    @include glow.line-glow(constants.$blue);
                     height: 2px;
                     width: 700px;
                     margin: 10px 0 15px;

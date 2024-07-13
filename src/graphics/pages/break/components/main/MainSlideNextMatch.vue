@@ -82,7 +82,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import '../../../../styles/constants';
+@use '../../../../styles/constants';
 
 .slide.next-round {
     .next-team-names {
@@ -120,7 +120,7 @@ export default defineComponent({
             position: absolute;
             width: 100%;
             height: 100%;
-            background-color: $background-a-60;
+            background-color: constants.$background-a-60;
             z-index: 10;
         }
 

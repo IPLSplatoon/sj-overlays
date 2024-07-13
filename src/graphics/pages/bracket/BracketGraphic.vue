@@ -116,9 +116,9 @@ onMounted(async () => {
 </script>
 
 <style lang="scss" scoped>
-@import '../../styles/constants';
-@import '../../styles/glow';
-@import '../../styles/background';
+@use '../../styles/glow';
+@use '../../styles/background';
+@use '../../styles/constants';
 
 $margin: 100px;
 $top-margin: 150px;
@@ -132,7 +132,7 @@ $bottom-margin: 50px;
     top: 0;
 
     .bracket-title-box {
-        @include background;
+        @include background.background;
         width: 700px;
         height: 60px;
         font-size: 40px;
@@ -161,8 +161,8 @@ $bottom-margin: 50px;
 
         .match-cell-wrapper {
             .match-cell-accent-color {
-                filter: drop-shadow(0 0 3px $blue);
-                stroke: $blue;
+                filter: drop-shadow(0 0 3px constants.$blue);
+                stroke: constants.$blue;
                 stroke-width: 4px;
             }
 
@@ -175,17 +175,17 @@ $bottom-margin: 50px;
         .match-cell__third-place-match-label {
             box-sizing: border-box;
             padding-top: 5px;
-            background-color: $violet-a-20;
+            background-color: constants.$violet-a-20;
             font-size: 14px;
         }
 
         .match-cell {
-            @include background(10px);
+            @include background.background(10px);
 
             overflow: visible;
 
             .match-cell__score-wrapper {
-                background-color: $violet-a-20;
+                background-color: constants.$violet-a-20;
                 line-height: 1.7em;
                 height: 100%;
             }
@@ -219,8 +219,8 @@ $bottom-margin: 50px;
         justify-items: center;
 
         .match-row-wrapper {
-            @include glow-border($blue);
-            @include background(8px);
+            @include glow.glow-border(constants.$blue);
+            @include background.background(8px);
 
             margin: 8px 0;
             width: 1000px;
@@ -241,7 +241,7 @@ $bottom-margin: 50px;
             }
 
             .match-row__scores {
-                background-color: $violet-a-20;
+                background-color: constants.$violet-a-20;
                 font-weight: 800;
                 font-size: 1.1em;
                 font-family: 'Montserrat', sans-serif;

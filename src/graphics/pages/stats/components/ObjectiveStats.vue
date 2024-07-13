@@ -73,11 +73,11 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import '../../../styles/background';
-@import '../../../styles/constants';
+@use '../../../styles/background';
+@use '../../../styles/constants';
 
 .objective-stats-wrapper {
-    @include background();
+    @include background.background();
     width: 1500px;
     height: 100%;
 
@@ -105,11 +105,11 @@ export default defineComponent({
                 padding-right: 4px;
 
                 &.team-alpha {
-                    background-color: $red;
+                    background-color: constants.$red;
                 }
 
                 &.team-bravo {
-                    background-color: $green;
+                    background-color: constants.$green;
                     color: #222;
                 }
 

@@ -44,11 +44,11 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@import '../../../../styles/constants';
+@use '../../../../styles/constants';
 
 .title {
     font-style: normal;
     font-weight: 700;
-    filter: drop-shadow(0 0 2px $orange);
+    filter: drop-shadow(0 0 2px constants.$orange);
 }
 </style>

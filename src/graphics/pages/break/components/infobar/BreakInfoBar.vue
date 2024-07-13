@@ -110,17 +110,17 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import '../../../../styles/constants';
-@import '../../../../styles/background';
-@import '../../../../styles/glow';
+@use '../../../../styles/constants';
+@use '../../../../styles/background';
+@use '../../../../styles/glow';
 
 .info-bar-wrapper {
     position: absolute;
-    width: $pageWidth;
+    width: constants.$pageWidth;
     top: 100px;
 
     .info-bar {
-        @include background();
+        @include background.background();
 
         position: absolute;
         overflow: hidden;
@@ -165,7 +165,7 @@ export default defineComponent({
                 overflow: hidden;
 
                 .icon {
-                    filter: drop-shadow(0 0 4px $salmon);
+                    filter: drop-shadow(0 0 4px constants.$salmon);
 
                     &.eyes-icon {
                         transform: scale(0.6);

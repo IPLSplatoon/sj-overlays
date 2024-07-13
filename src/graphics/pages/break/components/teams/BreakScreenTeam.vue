@@ -86,9 +86,9 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import '../../../../styles/constants';
-@import '../../../../styles/background';
-@import '../../../../styles/glow';
+@use '../../../../styles/glow';
+@use '../../../../styles/constants';
+@use '../../../../styles/background';
 
 .team {
     position: relative;
@@ -101,7 +101,7 @@ export default defineComponent({
         width: 500px;
         overflow: hidden;
         z-index: 2;
-        @include background();
+        @include background.background();
 
         .team-name {
             width: 100%;
@@ -153,12 +153,12 @@ export default defineComponent({
 
     &.alpha {
         .line {
-            @include line-glow($red);
+            @include glow.line-glow(constants.$red);
         }
     }
     &.bravo {
         .line {
-            @include line-glow($green);
+            @include glow.line-glow(constants.$green);
         }
     }
 }

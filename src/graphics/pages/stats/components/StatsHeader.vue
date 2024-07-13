@@ -46,11 +46,11 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import '../../../styles/background';
-@import '../../../styles/constants';
+@use '../../../styles/background';
+@use '../../../styles/constants';
 
 .stats-header {
-    @include background();
+    @include background.background();
     width: 1200px;
     height: 100%;
 
@@ -78,11 +78,11 @@ export default defineComponent({
         transition: background-color 500ms;
 
         &.alpha {
-            background-color: $red;
+            background-color: constants.$red;
         }
 
         &.bravo {
-            background-color: $green;
+            background-color: constants.$green;
         }
     }
 }
