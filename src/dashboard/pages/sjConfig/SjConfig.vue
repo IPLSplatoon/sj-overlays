@@ -9,6 +9,7 @@
         <central-login />
         <central-mapping-display class="top-margin" />
         <central-matchups-display class="top-margin" />
+        <central-display-settings class="top-margin" />
     </template>
     <ipl-message
         v-else
@@ -26,6 +27,7 @@ import CentralLogin from './CentralLogin.vue';
 import { Configschema } from 'types/schemas';
 import CentralMappingDisplay from './CentralMappingDisplay.vue';
 import CentralMatchupsDisplay from './CentralMatchupsDisplay.vue';
+import CentralDisplaySettings from './CentralDisplaySettings.vue';
 
 const hasCentralConfig = (nodecg.bundleConfig as Configschema).central != null;
 
