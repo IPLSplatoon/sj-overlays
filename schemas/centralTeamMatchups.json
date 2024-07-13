@@ -4,14 +4,14 @@
         "matchupList": {
             "type": "object",
             "required": ["tournaments"],
-            "additionalProperties": false,
+            "additionalProperties": true,
             "properties": {
                 "tournaments": {
                     "type": "array",
                     "items": {
                         "type": "object",
-                        "required": ["id", "name", "stages"],
-                        "additionalProperties": false,
+                        "required": ["id", "name", "start_time", "stages"],
+                        "additionalProperties": true,
                         "properties": {
                             "id": {
                                 "type": "string"
@@ -19,12 +19,15 @@
                             "name": {
                                 "type": "string"
                             },
+                            "start_time": {
+                                "type": "string"
+                            },
                             "stages": {
                                 "type": "array",
                                 "items": {
                                     "type": "object",
                                     "required": ["id", "name", "matches"],
-                                    "additionalProperties": false,
+                                    "additionalProperties": true,
                                     "properties": {
                                         "id": {
                                             "type": "string"
@@ -36,7 +39,7 @@
                                             "type": "array",
                                             "items": {
                                                 "type": "object",
-                                                "additionalProperties": false,
+                                                "additionalProperties": true,
                                                 "required": [
                                                     "id",
                                                     "alpha_id",

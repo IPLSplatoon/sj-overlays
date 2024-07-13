@@ -14,6 +14,7 @@ export interface MatchupList {
 	tournaments: {
 		id: string;
 		name: string;
+		start_time: string;
 		stages: {
 			id: string;
 			name: string;
@@ -26,7 +27,11 @@ export interface MatchupList {
 				alpha_win: number;
 				bravo_win: number;
 				ties: number;
+				[k: string]: unknown;
 			}[];
+			[k: string]: unknown;
 		}[];
+		[k: string]: unknown;
 	}[];
+	[k: string]: unknown;
 }
