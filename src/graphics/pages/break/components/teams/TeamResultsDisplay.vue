@@ -124,12 +124,13 @@ provideTransitions(`team-${props.team === 'A' ? 'b' : 'a'}`, (elem) => elem.clas
 .result {
     @include background.background;
 
-    margin-top: 16px;
+    margin: 8px 0;
     padding: 8px 12px;
     box-sizing: border-box;
     overflow: hidden;
     display: flex;
     justify-content: center;
+    align-items: center;
 
     .content-wrapper {
         min-width: 686px;
@@ -139,10 +140,11 @@ provideTransitions(`team-${props.team === 'A' ? 'b' : 'a'}`, (elem) => elem.clas
 
     .tournament-name {
         font-weight: 700;
-        font-size: 38px;
+        font-size: 36px;
     }
 
     .stage-result {
+        font-size: 30px;
         margin-top: -4px;
     }
 }
