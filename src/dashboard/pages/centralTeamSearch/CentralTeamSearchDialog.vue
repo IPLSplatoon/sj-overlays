@@ -17,10 +17,16 @@
     </div>
     <template v-else>
         <div class="search-results-layout">
-            <ipl-space v-for="result in searchResults">
+            <ipl-space
+                v-for="result in searchResults"
+                :key="`search-result_${result.id}`"
+            >
                 <div>
                     <div>{{ addDots(result.name) }}</div>
-                    <a :href="`${centralFrontendPath}/teams/${result.id}`" target="_blank">Open in Central</a>
+                    <a
+                        :href="`${centralFrontendPath}/teams/${result.id}`"
+                        target="_blank"
+                    >Open in Central</a>
                 </div>
                 <ipl-checkbox
                     :model-value="selectedTeams.has(result.id)"

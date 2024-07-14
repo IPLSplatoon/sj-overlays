@@ -41,9 +41,11 @@ export interface CentralMatchupsResponse {
     tournaments: {
         id: string
         name: string
+        start_time: string
         stages: {
             id: string
             name: string
+            no_teams: number
             matches: {
                 id: string
                 alpha_id: string
@@ -53,7 +55,16 @@ export interface CentralMatchupsResponse {
                 alpha_win: number
                 bravo_win: number
                 ties: number
+                [k: string]: unknown;
+            }[]
+            team_placements: {
+                tournament_team_id: string
+                team_id: string
+                set_wins: number
+                sets_played: number
+                placement: number
             }[]
         }[]
     }[]
+    [k: string]: unknown;
 }

@@ -136,7 +136,7 @@ export = (nodecg: NodeCG.ServerAPI<Configschema>): void => {
                 headToHead: headToHeadData,
                 teamA: teamAData,
                 teamB: teamBData
-            }
+            };
         } catch (e) {
             return ack(e);
         }

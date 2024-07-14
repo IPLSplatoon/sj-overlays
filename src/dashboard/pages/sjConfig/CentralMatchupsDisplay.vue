@@ -58,7 +58,7 @@ function sumMatchups(matchups: MatchupList | undefined) {
     for (let i = 0; i < matchups.tournaments.length; i++) {
         stageCount += matchups.tournaments[i].stages.length;
         for (let j = 0; j < matchups.tournaments[i].stages.length; j++) {
-            matchCount += matchups.tournaments[i].stages[j].matches.length
+            matchCount += matchups.tournaments[i].stages[j].matches.length;
         }
     }
 
