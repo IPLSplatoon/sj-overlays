@@ -85,7 +85,7 @@ export default defineComponent({
             return gsap.to(elem.querySelectorAll('.player'), { duration: 0.35, opacity: 0, x: -350, stagger: 0.1, ease: 'power2.in', onComplete: done });
         }
 
-        provideTransitions(`team-${props.team.toLowerCase()}`, `.team.team-${props.team.toLowerCase()}`, {
+        provideTransitions(`team-${props.team.toLowerCase()}`, (elem) => elem.classList.contains('team') ? null : `.team.team-${props.team.toLowerCase()}`, {
             beforeEnter(elem: HTMLElement) {
                 transitions['team-name'].beforeEnter(elem);
                 beforePlayersEnter(elem);
@@ -146,7 +146,7 @@ export default defineComponent({
                         'teamsOut')
                     .to(
                         elem.querySelector('.content'),
-                        { duration: 0.1, opacity: 0, delay: 0.45 },
+                        { duration: 0.1, opacity: 0, delay: 0.5 },
                         'teamsOut');
 
                 return tl;

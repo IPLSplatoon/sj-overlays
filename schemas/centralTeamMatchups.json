@@ -26,7 +26,7 @@
                                 "type": "array",
                                 "items": {
                                     "type": "object",
-                                    "required": ["id", "name", "matches"],
+                                    "required": ["id", "name", "no_teams", "matches", "team_placements"],
                                     "additionalProperties": true,
                                     "properties": {
                                         "id": {
@@ -34,6 +34,9 @@
                                         },
                                         "name": {
                                             "type": "string"
+                                        },
+                                        "no_teams": {
+                                            "type": "number"
                                         },
                                         "matches": {
                                             "type": "array",
@@ -73,6 +76,37 @@
                                                         "type": "number"
                                                     },
                                                     "ties": {
+                                                        "type": "number"
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "team_placements": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "additionalProperties": true,
+                                                "required": [
+                                                    "tournament_team_id",
+                                                    "team_id",
+                                                    "set_wins",
+                                                    "sets_played",
+                                                    "placement"
+                                                ],
+                                                "properties": {
+                                                    "tournament_team_id": {
+                                                        "type": "string"
+                                                    },
+                                                    "team_id": {
+                                                        "type": "string"
+                                                    },
+                                                    "set_wins": {
+                                                        "type": "number"
+                                                    },
+                                                    "sets_played": {
+                                                        "type": "number"
+                                                    },
+                                                    "placement": {
                                                         "type": "number"
                                                     }
                                                 }
