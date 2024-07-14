@@ -94,7 +94,7 @@ export default defineComponent({
                     { opacity: 0, width: 0 });
                 gsap.set(
                     elem.querySelector('.content'),
-                    { height: 0 });
+                    { height: 0, opacity: 0 });
             },
             enter(elem: HTMLElement, done: gsap.Callback) {
                 const tl = gsap.timeline({ onComplete: done });
@@ -104,6 +104,10 @@ export default defineComponent({
                     .addLabel('teamsTextIn', '+=0.45');
 
                 tl
+                    .to(
+                        elem.querySelector('.content'),
+                        { duration: 0.1, opacity: 1 },
+                        'teamsIn')
                     .to(
                         elem.querySelector('.content'),
                         { duration: 0.55, height: 'calc(100% - 55px)', ease: 'power2.out' },
@@ -139,6 +143,10 @@ export default defineComponent({
                     .to(
                         elem.querySelector('.content'),
                         { duration: 0.55, height: 0, ease: 'power2.in' },
+                        'teamsOut')
+                    .to(
+                        elem.querySelector('.content'),
+                        { duration: 0.1, opacity: 0, delay: 0.45 },
                         'teamsOut');
 
                 return tl;
