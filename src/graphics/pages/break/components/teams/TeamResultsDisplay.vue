@@ -1,12 +1,18 @@
 <template>
-    <div
+    <transition-group
+        name="team-results-list"
+        tag="div"
         class="team-results"
         :class="`team-${props.team.toLowerCase()}`"
+        @enter="resultItemEnter"
+        @leave="resultItemLeave"
+        @before-enter="beforeResultItemEnter"
     >
         <div
-            v-for="result in results"
+            v-for="(result, i) in visibleResults"
             :key="`result_${result.id}`"
             class="result glow-border"
+            :data-result-index="i"
             :class="props.team === 'A' ? 'glow-red' : 'glow-green'"
         >
             <div class="content-wrapper">
@@ -17,11 +23,34 @@
                     </template>
                 </fitted-content>
                 <fitted-content class="stage-result">
-                    {{ formatStageResults(result.stages) }}
+                    {{ result.stageResults }}
                 </fitted-content>
+                <transition
+                    :css="false"
+                    @enter="detailedResultsEnter"
+                    @leave="detailedResultsLeave"
+                    @before-enter="beforeDetailedResultsEnter"
+                >
+                    <div
+                        v-if="visibleResults.length === 1"
+                        class="detailed-results"
+                    >
+                        <fitted-content
+                            v-for="match in result.matches"
+                            :key="`match_${match.id}`"
+                            class="result-match"
+                            :class="{
+                                'a-win': match.alpha_win > match.bravo_win,
+                                'b-win': match.bravo_win > match.alpha_win
+                            }"
+                        >
+                            <span class="team-a-score">{{ match.alpha_win }}</span><span class="score-separator">-</span><span class="team-b-score">{{ match.bravo_win }}</span> vs {{ $helpers.addDots(match.bravo_name) }}
+                        </fitted-content>
+                    </div>
+                </transition>
             </div>
         </div>
-    </div>
+    </transition-group>
 </template>
 
 <script setup lang="ts">
@@ -32,6 +61,7 @@ import { computed } from 'vue';
 import { MatchupList } from 'types/schemas';
 import FittedContent from '../../../../components/FittedContent.vue';
 import { DateTime } from 'luxon';
+import { useSlides } from '../../../../helpers/useSlides';
 
 const props = defineProps<{
     team: 'A' | 'B'
@@ -40,18 +70,44 @@ const props = defineProps<{
 const currentYear = DateTime.now().year;
 
 const centralDataStore = useCentralDataStore();
+const teamIds = computed(() =>
+    props.team === 'A'
+        ? centralDataStore.centralTeamMapping.teamA
+        : centralDataStore.centralTeamMapping.teamB);
 const results = computed(() => (
     (props.team === 'A'
         ? centralDataStore.centralTeamMatchups.teamA
         : centralDataStore.centralTeamMatchups.teamB)?.tournaments ?? [])
     .map(t => ({
         ...t,
-        year: getTournamentYear(t)
+        year: getTournamentYear(t),
+        stageResults: formatStageResults(t.stages),
+        matches: t.stages.flatMap(s => s.matches.map(m => {
+            if (teamIds.value.includes(m.alpha_id)) return m;
+
+            return {
+                ...m,
+                alpha_name: m.bravo_name,
+                alpha_id: m.bravo_id,
+                alpha_win: m.bravo_win,
+                bravo_name: m.alpha_name,
+                bravo_id: m.alpha_id,
+                bravo_win: m.alpha_win
+            };
+        })).slice(0, 10)
     })));
-const teamIds = computed(() =>
-    props.team === 'A'
-        ? centralDataStore.centralTeamMapping.teamA
-        : centralDataStore.centralTeamMapping.teamB);
+const resultSlides = useSlides(() => ([
+    { component: 'summary', duration: 20 },
+    ...(results.value.map((_, i) => ({ component: `result-${i}`, duration: 10 })))
+]));
+const visibleResults = computed(() => {
+    if (resultSlides.activeComponent.value === 'summary') {
+        return results.value;
+    } else {
+        const resultIndex = Number(resultSlides.activeComponent.value.split('-')[1]);
+        return [results.value[resultIndex]];
+    }
+});
 
 function getTournamentYear(tournament: MatchupList['tournaments'][number]): string | null {
     const tournamentYear = DateTime.fromISO(tournament.start_time).year;
@@ -100,10 +156,64 @@ provideTransitions(`team-${props.team === 'A' ? 'b' : 'a'}`, (elem) => elem.clas
         return tl;
     }
 });
+
+function resultItemLeave(elem: HTMLElement, done: gsap.Callback) {
+    const tl = gsap.timeline({ onComplete: done, delay: 0.1 * Number(elem.dataset.resultIndex) });
+
+    const hideVisibleResults = visibleResults.value.length === 1;
+    if (hideVisibleResults) {
+        tl.to(elem.querySelector('.detailed-results'), { height: 0, duration: 0.5, ease: 'power2.inOut' });
+    }
+
+    tl.addLabel('leave', hideVisibleResults ? '+=0.2' : undefined);
+
+    tl
+        .to(elem, { width: 0, duration: 0.5, ease: 'power2.in' }, 'leave')
+        .to(elem, { opacity: 0, duration: 0.1, delay: 0.45 }, 'leave')
+        .to(elem, { height: 0, margin: '0px 0', duration: 0.35, ease: 'power2.inOut' });
+}
+
+function resultItemEnter(elem: HTMLElement, done: gsap.Callback) {
+    const tl = gsap.timeline({ onComplete: done, delay: 0.1 * Number(elem.dataset.resultIndex) });
+
+    tl
+        .to(elem, { height: 'auto', margin: '8px 0', duration: 0.35, ease: 'power2.inOut' })
+        .to(elem, { opacity: 1, duration: 0.1 }, 'enter')
+        .to(elem, { width: '100%', duration: 0.5, delay: 0.05, ease: 'power2.out' }, 'enter');
+
+    const hideVisibleResults = visibleResults.value.length === 1;
+    if (hideVisibleResults) {
+        tl.to(elem.querySelector('.detailed-results'), { height: 'auto', duration: 0.5, ease: 'power2.inOut' }, 'enter+=0.7');
+    }
+}
+
+function beforeResultItemEnter(elem: HTMLElement) {
+    if (visibleResults.value.length === 1) {
+        gsap.set(elem.querySelector('.detailed-results'), { height: 0 });
+    }
+    gsap.set(elem, { opacity: 0, height: 0, width: 0, margin: '0px 0' });
+}
+
+function detailedResultsLeave(elem: HTMLElement, done: gsap.Callback) {
+    const tl = gsap.timeline({ onComplete: done });
+
+    tl.to(elem, { height: 0, duration: 0.5, ease: 'power2.inOut' });
+}
+
+function detailedResultsEnter(elem: HTMLElement, done: gsap.Callback) {
+    const tl = gsap.timeline({ onComplete: done, delay: 0.95 + results.value.length * 0.1 });
+
+    tl.to(elem, { height: 'auto', duration: 0.5, ease: 'power2.inOut' });
+}
+
+function beforeDetailedResultsEnter(elem: HTMLElement) {
+    gsap.set(elem, { height: 0 });
+}
 </script>
 
 <style scoped lang="scss">
 @use '../../../../styles/background';
+@use '../../../../styles/constants';
 
 .team-results {
     position: relative;
@@ -118,6 +228,24 @@ provideTransitions(`team-${props.team === 'A' ? 'b' : 'a'}`, (elem) => elem.clas
 
     &.team-a {
         transform: translateX(-150px);
+
+        .result-match.a-win .team-a-score {
+            color: constants.$red;
+        }
+
+        .result-match.b-win .team-b-score {
+            color: constants.$red;
+        }
+    }
+
+    &.team-b {
+        .result-match.a-win .team-a-score {
+            color: constants.$green;
+        }
+
+        .result-match.b-win .team-b-score {
+            color: constants.$green;
+        }
     }
 }
 
@@ -125,7 +253,6 @@ provideTransitions(`team-${props.team === 'A' ? 'b' : 'a'}`, (elem) => elem.clas
     @include background.background;
 
     margin: 8px 0;
-    padding: 8px 12px;
     box-sizing: border-box;
     overflow: hidden;
     display: flex;
@@ -141,11 +268,36 @@ provideTransitions(`team-${props.team === 'A' ? 'b' : 'a'}`, (elem) => elem.clas
     .tournament-name {
         font-weight: 700;
         font-size: 36px;
+        margin-top: 6px;
     }
 
     .stage-result {
         font-size: 30px;
         margin-top: -4px;
+        margin-bottom: 4px;
+    }
+
+    .detailed-results {
+        height: 0;
+    }
+
+    .result-match {
+        font-size: 30px;
+        transform: translateY(-6px);
+
+        .team-a-score, .team-b-score {
+            font-feature-settings: 'tnum';
+            font-weight: 800;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 34px;
+            transform: translateY(2px);
+            display: inline-block;
+        }
+
+        .score-separator {
+            margin: 0 6px;
+            font-weight: 700;
+        }
     }
 }
 </style>

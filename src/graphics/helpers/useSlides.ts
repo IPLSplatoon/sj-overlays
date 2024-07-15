@@ -1,4 +1,4 @@
-import { ComputedRef, onUnmounted, Ref, ref, watch } from 'vue';
+import { ComputedRef, MaybeRefOrGetter, onUnmounted, Ref, ref, toValue, watch } from 'vue';
 import { getNextIndex } from './array';
 
 interface Slide {
@@ -11,13 +11,17 @@ function isSlideEnabled(slide: Slide): boolean {
     return slide.enabled == null || slide.enabled.value;
 }
 
-export function useSlides(slides: Slide[]): { activeComponent: Ref<string | null>, forceSetSlide: (component: string) => void } {
-    const activeIndex = ref<number | null>(null);
-    const activeComponent = ref<string | null>(null);
+export function useSlides(slideRef: MaybeRefOrGetter<Array<Slide>>): { activeComponent: Ref<string>, forceSetSlide: (component: string) => void } {
+    const activeIndex = ref<number>(null);
+    const activeComponent = ref<string>(null);
 
     const findNextVisibleSlide = () => {
+        const slides = toValue(slideRef);
         // If all slides are disabled, show the first one
-        if (slides.every(slide => !isSlideEnabled(slide))) {
+        if (slides.length === 0) {
+            activeIndex.value = null;
+            activeComponent.value = null;
+        } else if (slides.every(slide => !isSlideEnabled(slide))) {
             activeIndex.value = 0;
             activeComponent.value = slides[activeIndex.value].component;
         } else {
@@ -32,22 +36,22 @@ export function useSlides(slides: Slide[]): { activeComponent: Ref<string | null
         }
     };
 
-    let slideChangeTimeout: number | undefined;
+    let slideChangeTimeout: number = null;
     const setSlideChangeTimeout = () => {
-        if (activeIndex.value != null) {
-            const activeSlide = slides[activeIndex.value];
-            slideChangeTimeout = window.setTimeout(() => {
-                findNextVisibleSlide();
-                setSlideChangeTimeout();
-            }, (activeSlide.duration ?? 30) * 1000);
-        }
+        const slides = toValue(slideRef);
+        const activeSlide = slides[activeIndex.value];
+        slideChangeTimeout = window.setTimeout(() => {
+            findNextVisibleSlide();
+            setSlideChangeTimeout();
+        }, (activeSlide?.duration ?? 30) * 1000);
     };
 
     let forceAllowSlide = false;
     const forceSetSlide = (component: string): void => {
+        const slides = toValue(slideRef);
         const newSlideIndex = slides.findIndex(slide => slide.component === component);
         if (newSlideIndex === -1) {
-            console.warn(`Could not find slide ${component}`);
+            console.error(`Could not find slide ${component}`);
             return;
         }
         const newSlide = slides[newSlideIndex];
@@ -65,7 +69,7 @@ export function useSlides(slides: Slide[]): { activeComponent: Ref<string | null
         clearTimeout(slideChangeTimeout);
     });
 
-    watch(() => activeIndex.value == null ? true : slides[activeIndex.value].enabled?.value, newValue => {
+    watch(() => toValue(slideRef)[activeIndex.value]?.enabled?.value, newValue => {
         // if a slide is disabled while it is visible, hide it immediately
         if (newValue === false && !forceAllowSlide) {
             clearTimeout(slideChangeTimeout);
