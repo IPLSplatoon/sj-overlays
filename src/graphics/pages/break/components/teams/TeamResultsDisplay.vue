@@ -1,56 +1,62 @@
 <template>
-    <transition-group
-        name="team-results-list"
-        tag="div"
-        class="team-results"
-        :class="`team-${props.team.toLowerCase()}`"
-        @enter="resultItemEnter"
-        @leave="resultItemLeave"
-        @before-enter="beforeResultItemEnter"
-    >
-        <div
-            v-for="(result, i) in visibleResults"
-            :key="`result_${result.id}`"
-            class="result glow-border"
-            :data-result-index="i"
-            :class="props.team === 'A' ? 'glow-red' : 'glow-green'"
+    <div class="team-results-wrapper">
+        <transition-group
+            name="team-results-list"
+            tag="div"
+            class="team-results"
+            :class="`team-${props.team.toLowerCase()}`"
+            @enter="resultItemEnter"
+            @leave="resultItemLeave"
+            @before-enter="beforeResultItemEnter"
         >
-            <div class="content-wrapper">
-                <fitted-content class="tournament-name">
-                    {{ result.name }}
-                    <template v-if="result.year != null">
-                        ({{ result.year }})
-                    </template>
-                </fitted-content>
-                <fitted-content class="stage-result">
-                    {{ result.stageResults }}
-                </fitted-content>
-                <transition
-                    :css="false"
-                    @enter="detailedResultsEnter"
-                    @leave="detailedResultsLeave"
-                    @before-enter="beforeDetailedResultsEnter"
+            <div
+                v-for="(result, i) in visibleResults"
+                :key="`result_${result.id}`"
+                class="result-wrapper"
+                :data-result-index="i"
+            >
+                <div
+                    class="result glow-border"
+                    :class="props.team === 'A' ? 'glow-red' : 'glow-green'"
                 >
-                    <div
-                        v-if="visibleResults.length === 1"
-                        class="detailed-results"
-                    >
-                        <fitted-content
-                            v-for="match in result.matches"
-                            :key="`match_${match.id}`"
-                            class="result-match"
-                            :class="{
-                                'a-win': match.alpha_win > match.bravo_win,
-                                'b-win': match.bravo_win > match.alpha_win
-                            }"
-                        >
-                            <span class="team-a-score">{{ match.alpha_win }}</span><span class="score-separator">-</span><span class="team-b-score">{{ match.bravo_win }}</span> vs {{ $helpers.addDots(match.bravo_name) }}
+                    <div class="content-wrapper">
+                        <fitted-content class="tournament-name">
+                            {{ result.name }}
+                            <template v-if="result.year != null">
+                                ({{ result.year }})
+                            </template>
                         </fitted-content>
+                        <fitted-content class="stage-result">
+                            {{ result.stageResults }}
+                        </fitted-content>
+                        <transition
+                            :css="false"
+                            @enter="detailedResultsEnter"
+                            @leave="detailedResultsLeave"
+                            @before-enter="beforeDetailedResultsEnter"
+                        >
+                            <div
+                                v-if="visibleResults.length === 1"
+                                class="detailed-results"
+                            >
+                                <fitted-content
+                                    v-for="match in result.matches"
+                                    :key="`match_${match.id}`"
+                                    class="result-match"
+                                    :class="{
+                                        'a-win': match.alpha_win > match.bravo_win,
+                                        'b-win': match.bravo_win > match.alpha_win
+                                    }"
+                                >
+                                    <span class="team-a-score">{{ match.alpha_win }}</span><span class="score-separator">-</span><span class="team-b-score">{{ match.bravo_win }}</span> vs {{ $helpers.addDots(match.bravo_name) }}
+                                </fitted-content>
+                            </div>
+                        </transition>
                     </div>
-                </transition>
+                </div>
             </div>
-        </div>
-    </transition-group>
+        </transition-group>
+    </div>
 </template>
 
 <script setup lang="ts">
@@ -137,7 +143,8 @@ function formatStageResults(stages: MatchupList['tournaments'][number]['stages']
 
 provideTransitions(`team-${props.team === 'A' ? 'b' : 'a'}`, (elem) => elem.classList.contains('team-results') ? null : `.team-results.team-${props.team.toLowerCase()}`, {
     beforeEnter(elem) {
-        gsap.set(elem.querySelectorAll('.result'), { width: 0, opacity: 0 });
+        gsap.set(elem.querySelectorAll('.result'), { width: '0%', opacity: 0 });
+        gsap.set(elem.querySelectorAll('.result-wrapper'), { height: '20%' });
     },
     enter(elem, done) {
         const tl = gsap.timeline({ onComplete: done });
@@ -156,7 +163,7 @@ provideTransitions(`team-${props.team === 'A' ? 'b' : 'a'}`, (elem) => elem.clas
         tl.addLabel('leave');
 
         tl
-            .to(elem.querySelectorAll('.result'), { width: 0, duration: 0.5, stagger: 0.1, ease: 'power2.in' }, 'leave')
+            .to(elem.querySelectorAll('.result'), { width: '0%', duration: 0.5, stagger: 0.1, ease: 'power2.in' }, 'leave')
             .to(elem.querySelectorAll('.result'), { opacity: 0, duration: 0.1, stagger: 0.1, delay: 0.45 }, 'leave');
 
         return tl;
@@ -168,15 +175,15 @@ function resultItemLeave(elem: HTMLElement, done: gsap.Callback) {
 
     const hideVisibleResults = visibleResults.value.length === 1;
     if (hideVisibleResults) {
-        tl.to(elem.querySelector('.detailed-results'), { height: 0, duration: 0.75, ease: 'power3.inOut' });
+        tl.to(elem.querySelector('.detailed-results'), { height: 0, duration: 0.75, ease: 'power3.inOut', delay: 0.1 });
     }
 
-    tl.addLabel('leave', hideVisibleResults ? '+=0.2' : undefined);
+    tl.addLabel('leave', hideVisibleResults ? '+=0.1' : undefined);
 
     tl
-        .to(elem, { width: 0, duration: 0.5, ease: 'power2.in' }, 'leave')
-        .to(elem, { opacity: 0, duration: 0.1, delay: 0.45 }, 'leave')
-        .to(elem, { height: 0, margin: '0px 0', duration: 0.75, ease: 'power2.inOut', delay: !hideVisibleResults ? 0 : (results.value.length - 1 - Number(elem.dataset.resultIndex)) * 0.1 });
+        .to(elem.querySelector('.result'), { width: '0%', duration: 0.5, ease: 'power2.in' }, 'leave')
+        .to(elem.querySelector('.result'), { opacity: 0, duration: 0.1, delay: 0.45 }, 'leave')
+        .to(elem, { height: '0%', duration: 0.75, ease: 'power3.inOut', delay: !hideVisibleResults ? 0 : (results.value.length - 1 - Number(elem.dataset.resultIndex)) * 0.1 });
 }
 
 function resultItemEnter(elem: HTMLElement, done: gsap.Callback) {
@@ -187,9 +194,9 @@ function resultItemEnter(elem: HTMLElement, done: gsap.Callback) {
     tl.addLabel('enter', `+=${showDetailedResults ? 0.35 : 0.75}`);
 
     tl
-        .to(elem, { height: 'auto', margin: '8px 0', duration: showDetailedResults ? 0.35 : 0.75, ease: 'power2.inOut', delay: heightChangeDelay })
-        .to(elem, { opacity: 1, duration: 0.1 }, 'enter')
-        .to(elem, { width: '100%', duration: 0.5, delay: 0.05, ease: 'power2.out' }, 'enter');
+        .to(elem, { height: '20%', duration: showDetailedResults ? 0.55 : 0.75, ease: 'power3.inOut', delay: heightChangeDelay })
+        .to(elem.querySelector('.result'), { opacity: 1, duration: 0.1 }, 'enter')
+        .to(elem.querySelector('.result'), { width: '100%', duration: 0.5, delay: 0.05, ease: 'power2.out' }, 'enter');
 
     if (showDetailedResults) {
         tl.to(elem.querySelector('.detailed-results'), { height: 'auto', duration: 0.75, ease: 'power3.inOut' }, `enter+=${0.9 + results.value.length * 0.1}`);
@@ -200,7 +207,8 @@ function beforeResultItemEnter(elem: HTMLElement) {
     if (visibleResults.value.length === 1) {
         gsap.set(elem.querySelector('.detailed-results'), { height: 0 });
     }
-    gsap.set(elem, { opacity: 0, height: 0, width: 0, margin: '0px 0' });
+    gsap.set(elem.querySelector('.result'), { opacity: 0, width: '0%' });
+    gsap.set(elem, { height: '0%' });
 }
 
 function detailedResultsLeave(elem: HTMLElement, done: gsap.Callback) {
@@ -224,11 +232,19 @@ function beforeDetailedResultsEnter(elem: HTMLElement) {
 @use '../../../../styles/background';
 @use '../../../../styles/constants';
 
-.team-results {
+.team-results-wrapper {
     position: relative;
+    width: 100%;
     height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.team-results {
+    position: absolute;
+    height: 100%;
+    min-height: 560px;
     width: calc(100% + 150px);
-    overflow: hidden;
     padding: 0 8px;
     display: flex;
     flex-direction: column;
@@ -258,15 +274,23 @@ function beforeDetailedResultsEnter(elem: HTMLElement) {
     }
 }
 
+.result-wrapper {
+    height: 20%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .result {
     @include background.background;
 
-    margin: 8px 0;
     box-sizing: border-box;
     overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100%;
 
     .content-wrapper {
         min-width: 686px;

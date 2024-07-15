@@ -172,6 +172,7 @@ export default defineComponent({
 .team {
     position: relative;
     height: 100%;
+    max-height: 100%;
 
     .content {
         position: absolute;

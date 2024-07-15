@@ -140,6 +140,7 @@ const teamBLeave = teamLeave('b');
     grid-template-rows: 1fr;
     grid-template-columns: 2fr 1fr 2fr;
     align-items: end;
+    align-content: center;
 
     .versus-wrapper {
         width: 100%;
