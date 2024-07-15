@@ -196,7 +196,7 @@ $gradient: linear-gradient(to right, constants.$red 35%, constants.$green 65%);
     @include background.background;
 
     margin: 8px 0;
-    padding: 4px 12px;
+    padding: 6px 12px;
     display: flex;
     justify-content: center;
     overflow: hidden;
@@ -206,12 +206,13 @@ $gradient: linear-gradient(to right, constants.$red 35%, constants.$green 65%);
     }
 
     .tournament-name {
-        font-size: 38px;
+        font-size: 40px;
         font-weight: 700;
     }
 
     .result {
         font-size: 38px;
+        margin-top: -4px;
 
         .team-a-score, .team-b-score {
             font-feature-settings: 'tnum';
