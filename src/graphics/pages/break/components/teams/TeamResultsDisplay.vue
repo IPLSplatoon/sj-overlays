@@ -95,11 +95,17 @@ const results = computed(() => (
                 bravo_win: m.alpha_win
             };
         })).slice(0, 10)
-    })));
-const resultSlides = useSlides(() => ([
-    { component: 'summary', duration: 20 },
-    ...(results.value.map((_, i) => ({ component: `result-${i}`, duration: 10 })))
-]));
+    })).slice(0, 5));
+const resultSlides = useSlides(() => {
+    if (results.value.length === 1) {
+        return [{ component: 'result-0' }];
+    }
+
+    return ([
+        { component: 'summary', duration: 2 },
+        ...(results.value.map((_, i) => ({ component: `result-${i}`, duration: i === 0 ? 4 : 4 })))
+    ]);
+});
 const visibleResults = computed(() => {
     if (resultSlides.activeComponent.value === 'summary') {
         return results.value;
@@ -162,7 +168,7 @@ function resultItemLeave(elem: HTMLElement, done: gsap.Callback) {
 
     const hideVisibleResults = visibleResults.value.length === 1;
     if (hideVisibleResults) {
-        tl.to(elem.querySelector('.detailed-results'), { height: 0, duration: 0.5, ease: 'power2.inOut' });
+        tl.to(elem.querySelector('.detailed-results'), { height: 0, duration: 0.75, ease: 'power3.inOut' });
     }
 
     tl.addLabel('leave', hideVisibleResults ? '+=0.2' : undefined);
@@ -170,20 +176,23 @@ function resultItemLeave(elem: HTMLElement, done: gsap.Callback) {
     tl
         .to(elem, { width: 0, duration: 0.5, ease: 'power2.in' }, 'leave')
         .to(elem, { opacity: 0, duration: 0.1, delay: 0.45 }, 'leave')
-        .to(elem, { height: 0, margin: '0px 0', duration: 0.35, ease: 'power2.inOut' });
+        .to(elem, { height: 0, margin: '0px 0', duration: 0.75, ease: 'power2.inOut', delay: !hideVisibleResults ? 0 : (results.value.length - 1 - Number(elem.dataset.resultIndex)) * 0.1 });
 }
 
 function resultItemEnter(elem: HTMLElement, done: gsap.Callback) {
-    const tl = gsap.timeline({ onComplete: done, delay: 0.1 * Number(elem.dataset.resultIndex) });
+    const showDetailedResults = visibleResults.value.length === 1;
+    const tl = gsap.timeline({ onComplete: done, delay: (showDetailedResults ? 0.2 : 0) + 0.1 * Number(elem.dataset.resultIndex) });
+    const heightChangeDelay = showDetailedResults ? 0 : (results.value.length - 1 - Number(elem.dataset.resultIndex)) * 0.1;
+
+    tl.addLabel('enter', `+=${showDetailedResults ? 0.35 : 0.75}`);
 
     tl
-        .to(elem, { height: 'auto', margin: '8px 0', duration: 0.35, ease: 'power2.inOut' })
+        .to(elem, { height: 'auto', margin: '8px 0', duration: showDetailedResults ? 0.35 : 0.75, ease: 'power2.inOut', delay: heightChangeDelay })
         .to(elem, { opacity: 1, duration: 0.1 }, 'enter')
         .to(elem, { width: '100%', duration: 0.5, delay: 0.05, ease: 'power2.out' }, 'enter');
 
-    const hideVisibleResults = visibleResults.value.length === 1;
-    if (hideVisibleResults) {
-        tl.to(elem.querySelector('.detailed-results'), { height: 'auto', duration: 0.5, ease: 'power2.inOut' }, 'enter+=0.7');
+    if (showDetailedResults) {
+        tl.to(elem.querySelector('.detailed-results'), { height: 'auto', duration: 0.75, ease: 'power3.inOut' }, `enter+=${0.9 + results.value.length * 0.1}`);
     }
 }
 
@@ -195,15 +204,15 @@ function beforeResultItemEnter(elem: HTMLElement) {
 }
 
 function detailedResultsLeave(elem: HTMLElement, done: gsap.Callback) {
-    const tl = gsap.timeline({ onComplete: done });
+    const tl = gsap.timeline({ onComplete: done, delay: Math.max(0, results.value.length - 2) * 0.1 });
 
-    tl.to(elem, { height: 0, duration: 0.5, ease: 'power2.inOut' });
+    tl.to(elem, { height: 0, duration: 0.75, ease: 'power3.inOut' });
 }
 
 function detailedResultsEnter(elem: HTMLElement, done: gsap.Callback) {
-    const tl = gsap.timeline({ onComplete: done, delay: 0.95 + results.value.length * 0.1 });
+    const tl = gsap.timeline({ onComplete: done, delay: 1.4 + results.value.length * 0.1 });
 
-    tl.to(elem, { height: 'auto', duration: 0.5, ease: 'power2.inOut' });
+    tl.to(elem, { height: 'auto', duration: 0.75, ease: 'power3.inOut' });
 }
 
 function beforeDetailedResultsEnter(elem: HTMLElement) {
@@ -275,10 +284,6 @@ function beforeDetailedResultsEnter(elem: HTMLElement) {
         font-size: 30px;
         margin-top: -4px;
         margin-bottom: 4px;
-    }
-
-    .detailed-results {
-        height: 0;
     }
 
     .result-match {
