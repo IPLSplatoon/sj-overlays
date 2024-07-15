@@ -102,8 +102,8 @@ const resultSlides = useSlides(() => {
     }
 
     return ([
-        { component: 'summary', duration: 2 },
-        ...(results.value.map((_, i) => ({ component: `result-${i}`, duration: i === 0 ? 4 : 4 })))
+        { component: 'summary', duration: 20 },
+        ...(results.value.map((_, i) => ({ component: `result-${i}`, duration: i === 0 ? 11 : 10 })))
     ]);
 });
 const visibleResults = computed(() => {
