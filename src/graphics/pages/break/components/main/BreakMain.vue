@@ -59,7 +59,7 @@ export default defineComponent({
         ]);
 
         const beforeEnter = (elem: HTMLElement) => {
-            gsap.set(elem.querySelector('.main-content-wrapper'), { height: 0 });
+            gsap.set(elem.querySelector('.main-content-wrapper'), { height: 0, opacity: 0 });
             gsap.set(elem.querySelector('.logo-wrapper'), { opacity: 0 });
         };
 
@@ -68,6 +68,10 @@ export default defineComponent({
 
             tl.addLabel('sceneIn');
             tl
+                .to(
+                    elem.querySelector('.main-content-wrapper'),
+                    { duration: 0.2, opacity: 1 },
+                    'sceneIn')
                 .to(
                     elem.querySelector('.main-content-wrapper'),
                     { duration: 0.55, height: 700, ease: 'power2.out' },
@@ -88,6 +92,10 @@ export default defineComponent({
                 .to(
                     elem.querySelectorAll('.main-content-wrapper, .main-slides'),
                     { duration: 0.55, height: 0, ease: 'power2.in' },
+                    'sceneOut')
+                .to(
+                    elem.querySelector('.main-content-wrapper'),
+                    { duration: 0.2, opacity: 1, delay: 0.35 },
                     'sceneOut')
                 .to(
                     elem.querySelector('.logo-wrapper'),
