@@ -8,7 +8,7 @@
             <div class="tournament-name layout horiz">
                 <span class="logo-font">SuperJump</span>
                 <img
-                    :src="resolveStaticPath('/SJ_3.png')"
+                    :src="resolveStaticPath('/SJ_4.png')"
                     class="edition"
                 >
             </div>
@@ -135,23 +135,20 @@ export default defineComponent({
     .logo-wrapper {
         width: 500px;
         height: 100%;
-        margin-right: 75px;
+        margin-right: 100px;
         margin-bottom: 50px;
 
         .logo {
             height: 675px;
         }
 
-        .edition {
-            transform: translate(5px, 20px);
-        }
-
         .tournament-name {
             align-items: flex-end;
-            margin-top: -65px;
+            margin-top: -40px;
 
             > img {
-                width: 100px;
+                width: 105px;
+                transform: translate(5px, 20px);
             }
         }
 
