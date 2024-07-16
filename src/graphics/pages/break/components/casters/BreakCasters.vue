@@ -128,7 +128,7 @@ const leave = (elem: HTMLElement, done: gsap.Callback) => {
     return tl;
 };
 
-provideTransitions('break', null, { beforeEnter, enter, leave });
+provideTransitions('break-casters', null, { beforeEnter, enter, leave });
 </script>
 
 <style scoped lang="scss">
