@@ -21,6 +21,14 @@ jobs:
           fetch-depth: 0
           path: ./ipl-overlay-controls
 
+      - name: Checkout relay-nodecg-connector
+        uses: actions/checkout@v2
+        with:
+          repository: 'IPLSplatoon/relay-nodecg-connector'
+          token: ${{ secrets['GITHUB_TOKEN'] }}
+          fetch-depth: 0
+          path: ./relay-nodecg-connector
+
       - name: Checkout this repository
         uses: actions/checkout@v2
         with:
