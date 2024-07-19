@@ -12,6 +12,15 @@ jobs:
   lint-deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout ipl-overlay-controls
+        uses: actions/checkout@v2
+        with:
+          repository: 'inkfarer/ipl-overlay-controls'
+          token: ${{ secrets['GITHUB_TOKEN'] }}
+          ref: 'brackets'
+          fetch-depth: 0
+          path: ./ipl-overlay-controls
+
       - name: Checkout this repository
         uses: actions/checkout@v2
         with:
