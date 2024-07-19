@@ -153,8 +153,8 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import '../../../styles/constants';
-@import '../../../styles/glow';
+@use '../../../styles/constants';
+@use '../../../styles/glow';
 
 .casters-wrapper {
     position: absolute;
@@ -164,7 +164,7 @@ export default defineComponent({
     height: 228px;
 
     > svg {
-        @include svg-glow();
+        @include glow.svg-glow();
         z-index: 10;
         position: absolute;
     }
@@ -183,7 +183,7 @@ export default defineComponent({
         }
 
         .icon {
-            filter: drop-shadow(0 0 4px $salmon);
+            filter: drop-shadow(0 0 4px constants.$salmon);
             margin: 0 5px;
             z-index: 5;
         }

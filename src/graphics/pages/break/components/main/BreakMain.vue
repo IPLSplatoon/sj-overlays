@@ -2,18 +2,18 @@
     <div class="main-scene-wrapper w-max layout horiz c-vert c-horiz">
         <div class="logo-wrapper layout vertical c-horiz c-vert">
             <img
-                src="/bundles/sj-overlays/assets/SJ_Logo.png"
+                :src="resolveStaticPath('/SJ_Logo.png')"
                 class="logo"
             >
             <div class="tournament-name layout horiz">
                 <span class="logo-font">SuperJump</span>
                 <img
-                    src="/bundles/sj-overlays/assets/SJ_3.png"
+                    :src="resolveStaticPath('/SJ_4.png')"
                     class="edition"
                 >
             </div>
             <img
-                src="/bundles/sj-overlays/assets/ipl-powered-inkling.png"
+                :src="resolveStaticPath('/ipl-powered-inkling.png')"
                 class="ipl-powered"
             >
         </div>
@@ -42,6 +42,7 @@ import MainSlideSupport from './MainSlideSupport.vue';
 import MainSlideNextMatch from './MainSlideNextMatch.vue';
 import { useNextRoundStore } from 'client-shared/store/nextRoundStore';
 import { provideTransitions } from '../../../../helpers/transition';
+import { resolveStaticPath } from '../../../../helpers/string';
 
 export default defineComponent({
     name: 'BreakMain',
@@ -58,7 +59,7 @@ export default defineComponent({
         ]);
 
         const beforeEnter = (elem: HTMLElement) => {
-            gsap.set(elem.querySelector('.main-content-wrapper'), { height: 0 });
+            gsap.set(elem.querySelector('.main-content-wrapper'), { height: 0, opacity: 0 });
             gsap.set(elem.querySelector('.logo-wrapper'), { opacity: 0 });
         };
 
@@ -67,6 +68,10 @@ export default defineComponent({
 
             tl.addLabel('sceneIn');
             tl
+                .to(
+                    elem.querySelector('.main-content-wrapper'),
+                    { duration: 0.2, opacity: 1 },
+                    'sceneIn')
                 .to(
                     elem.querySelector('.main-content-wrapper'),
                     { duration: 0.55, height: 700, ease: 'power2.out' },
@@ -87,6 +92,10 @@ export default defineComponent({
                 .to(
                     elem.querySelectorAll('.main-content-wrapper, .main-slides'),
                     { duration: 0.55, height: 0, ease: 'power2.in' },
+                    'sceneOut')
+                .to(
+                    elem.querySelector('.main-content-wrapper'),
+                    { duration: 0.2, opacity: 1, delay: 0.35 },
                     'sceneOut')
                 .to(
                     elem.querySelector('.logo-wrapper'),
@@ -112,19 +121,20 @@ export default defineComponent({
             },
             slideLeave: (elem: HTMLElement, done: gsap.Callback) => {
                 gsap.to(elem.children, { y: 50, opacity: 0, duration: 0.5, stagger: -0.05, ease: 'power2.in', onComplete: done });
-            }
+            },
+            resolveStaticPath
         };
     }
 });
 </script>
 
 <style lang="scss">
-@import '../../../../styles/constants';
-@import '../../../../styles/background';
-@import '../../../../styles/glow';
+@use '../../../../styles/glow';
+@use '../../../../styles/background';
+@use '../../../../styles/constants';
 
 @mixin shadow {
-    filter: drop-shadow(0 0 3px $background) drop-shadow(0 0 10px $background);
+    filter: drop-shadow(0 0 3px constants.$background) drop-shadow(0 0 10px constants.$background);
 }
 
 .main-scene-wrapper {
@@ -133,23 +143,20 @@ export default defineComponent({
     .logo-wrapper {
         width: 500px;
         height: 100%;
-        margin-right: 75px;
+        margin-right: 100px;
         margin-bottom: 50px;
 
         .logo {
             height: 675px;
         }
 
-        .edition {
-            transform: translate(5px, 20px);
-        }
-
         .tournament-name {
             align-items: flex-end;
-            margin-top: -65px;
+            margin-top: -40px;
 
             > img {
-                width: 100px;
+                width: 105px;
+                transform: translate(5px, 20px);
             }
         }
 
@@ -169,7 +176,7 @@ export default defineComponent({
     }
 
     .main-content-wrapper {
-        @include background();
+        @include background.background();
         position: relative;
         width: 1000px;
         height: 700px;
@@ -194,7 +201,7 @@ export default defineComponent({
                 }
 
                 .separator {
-                    @include line-glow($blue);
+                    @include glow.line-glow(constants.$blue);
                     height: 2px;
                     width: 700px;
                     margin: 10px 0 15px;

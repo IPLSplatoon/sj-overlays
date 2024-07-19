@@ -89,7 +89,7 @@
                 </opacity-swap-transition>
                 <img
                     class="scoreboard-icon"
-                    src="/bundles/sj-overlays/assets/SJ_Eyes.png"
+                    :src="resolveStaticPath('/SJ_Eyes.png')"
                 >
             </div>
         </div>
@@ -105,6 +105,7 @@ import OpacitySwapTransition from '../../../components/OpacitySwapTransition.vue
 import ScoreCounter from '../../../components/ScoreCounter.vue';
 import { useActiveRoundStore } from 'client-shared/store/activeRoundStore';
 import { useScoreboardStore } from 'client-shared/store/scoreboardStore';
+import { resolveStaticPath } from '../../../helpers/string';
 
 export default defineComponent({
     name: 'Scoreboard',
@@ -206,15 +207,16 @@ export default defineComponent({
                     .to(elem.querySelectorAll('.scoreboard-icon, #scoreboard-flavor-text'),
                         { x: -50, opacity: 0, duration: 0.5, stagger: 0.1, ease: 'power2.in' },
                         'textOut');
-            }
+            },
+            resolveStaticPath
         };
     }
 });
 </script>
 
 <style lang="scss">
-@import '../../../styles/glow';
-@import '../../../styles/constants';
+@use '../../../styles/glow';
+@use '../../../styles/constants';
 
 .scoreboard-wrapper {
     position: absolute;
@@ -222,7 +224,7 @@ export default defineComponent({
     top: 50px;
 
     > svg {
-        @include svg-glow();
+        @include glow.svg-glow();
         z-index: 10;
         position: absolute;
     }
@@ -243,7 +245,7 @@ export default defineComponent({
         }
 
         .score-separator {
-            @include line-glow($blue);
+            @include glow.line-glow(constants.$blue);
             height: 2px;
             width: 295px;
             align-self: flex-start;
@@ -302,7 +304,7 @@ export default defineComponent({
 
         img {
             height: 30px;
-            filter: drop-shadow(0 0 4px $salmon);
+            filter: drop-shadow(0 0 4px constants.$salmon);
             margin-left: 8px;
             z-index: 5;
         }

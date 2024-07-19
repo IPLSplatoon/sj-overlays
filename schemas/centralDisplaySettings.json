@@ -1,0 +1,15 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["displayMode"],
+    "properties": {
+        "displayMode": {
+            "type": "string",
+            "enum": ["teams", "headToHead", "teamAResults", "teamBResults"]
+        }
+    },
+    "default": {
+        "displayMode": "teams"
+    }
+}

@@ -58,14 +58,14 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@import '../../../../styles/constants';
+@use '../../../../styles/constants';
 
 .team-name {
     width: 400px;
 }
 
 .scores {
-    background-color: $violet-a-20;
+    background-color: constants.$violet-a-20;
     z-index: 3;
     width: 120px;
     padding: 0 8px;

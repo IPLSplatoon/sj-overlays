@@ -1,6 +1,6 @@
 import { HierarchyPointLink, HierarchyPointNode } from 'd3';
 import { Match } from '@tourneyview/common';
-import type { EliminationAnimator, EliminationRenderer } from '@tourneyview/renderer';
+import type { BracketAnimationOpts, EliminationAnimator, EliminationRenderer } from '@tourneyview/renderer';
 import gsap from 'gsap';
 
 export class SJEliminationAnimator implements EliminationAnimator {
@@ -9,8 +9,8 @@ export class SJEliminationAnimator implements EliminationAnimator {
 
     }
 
-    async hide(element: HTMLElement): Promise<unknown> {
-        return gsap.to(element, { opacity: 0, duration: 0.35 });
+    async hide(element: HTMLElement, opts: BracketAnimationOpts<EliminationRenderer>): Promise<unknown> {
+        return gsap.to(element, { opacity: 0, duration: 0.35, delay: opts.delay });
     }
 
     beforeReveal(element: HTMLElement): void {
@@ -21,9 +21,9 @@ export class SJEliminationAnimator implements EliminationAnimator {
         gsap.set(element.querySelectorAll('.round-label, .elimination-renderer__bracket-title'), { opacity: 0 });
     }
 
-    async reveal(element: HTMLElement, renderer: EliminationRenderer): Promise<unknown> {
-        const depth = renderer.getBracketDepth();
-        const tl = gsap.timeline();
+    async reveal(element: HTMLElement, opts: BracketAnimationOpts<EliminationRenderer>): Promise<unknown> {
+        const depth = opts.renderer.getBracketDepth();
+        const tl = gsap.timeline({ delay: opts.delay });
 
         tl
             .to(

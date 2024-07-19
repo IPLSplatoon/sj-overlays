@@ -9,7 +9,7 @@
                 :key="`cell-list-item_${item.label}_${index}`"
                 class="line-item"
                 :value="item"
-                :use-decimals="useDecimals"
+                :use-decimals="useDecimals ?? false"
                 :tween-value="cell.displayType !== 'MULTI_STAT_LIST'"
             />
         </div>
@@ -36,7 +36,7 @@ export default defineComponent({
 
     setup(props) {
         return {
-            useDecimals: computed(() => props.cell.values.some(value => typeof value.value === 'number' && value.value % 1 !== 0))
+            useDecimals: computed(() => props.cell.values?.some(value => typeof value.value === 'number' && value.value % 1 !== 0))
         };
     }
 });

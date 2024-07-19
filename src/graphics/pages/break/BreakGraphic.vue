@@ -1,4 +1,17 @@
 <template>
+    <!-- Casters are a weird special case because the camera feeds need to be loaded at all times -->
+    <!-- Try to keep the camera feed iframes loaded in a different element and they'll be reloaded when you move them in the DOM. -->
+    <div v-show="contentVisible">
+        <transition
+            appear
+            :css="false"
+            @enter="castersEnter"
+            @leave="castersLeave"
+            @before-enter="beforeCastersEnter"
+        >
+            <break-casters v-show="contentVisible && activeBreakScene === 'casters'" />
+        </transition>
+    </div>
     <template v-if="contentVisible">
         <transition
             appear
@@ -8,8 +21,7 @@
             @leave="leave"
             @before-enter="beforeEnter"
         >
-            <break-casters v-if="activeBreakScene === 'casters'" />
-            <break-stages v-else-if="activeBreakScene === 'stages'" />
+            <break-stages v-if="activeBreakScene === 'stages'" />
             <break-teams v-else-if="activeBreakScene === 'teams'" />
             <break-main v-else-if="activeBreakScene === 'main'" />
         </transition>
@@ -66,6 +78,8 @@ export default defineComponent({
             gsap.set(elem.querySelector('.info-bar'), { width: 0, opacity: 0 });
         };
 
+        const breakTransitionTimeline = gsap.timeline();
+
         const infoBarEnter = (elem: HTMLElement, done: gsap.Callback) => {
             const tl = gsap.timeline({
                 onComplete: done,
@@ -95,11 +109,33 @@ export default defineComponent({
                 const tl = gsap.timeline({ onComplete: done });
 
                 tl.add(transitions.break.enter(elem));
+
+                breakTransitionTimeline.add(tl);
             },
             leave: (elem: HTMLElement, done: gsap.Callback) => {
                 const tl = gsap.timeline({ onComplete: done });
 
                 tl.add(transitions.break.leave(elem));
+
+                breakTransitionTimeline.add(tl);
+            },
+
+            beforeCastersEnter: (elem: HTMLElement) => {
+                transitions['break-casters'].beforeEnter(elem);
+            },
+            castersEnter: (elem: HTMLElement, done: gsap.Callback) => {
+                const tl = gsap.timeline({ onComplete: done });
+
+                tl.add(transitions['break-casters'].enter(elem));
+
+                breakTransitionTimeline.add(tl);
+            },
+            castersLeave: (elem: HTMLElement, done: gsap.Callback) => {
+                const tl = gsap.timeline({ onComplete: done });
+
+                tl.add(transitions['break-casters'].leave(elem));
+
+                breakTransitionTimeline.add(tl);
             },
 
             beforeInfoBarEnter,

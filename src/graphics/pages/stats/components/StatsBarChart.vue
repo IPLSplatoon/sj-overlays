@@ -33,20 +33,20 @@ export default defineComponent({
         const normalizedWidth = width - margin.left - margin.right;
 
         const node = computed(() => {
-            const data = props.cell.values;
+            const data = props.cell.values ?? [];
 
             const X = map(data, (val: DataCellValue) => val.label);
             const Y = map(data, (val: DataCellValue) => Number(val.value));
 
             const xDomain = new InternSet(X);
-            const yDomain = [0, max(Y)];
+            const yDomain = [0, max(Y) ?? 0];
 
             const I = range(X.length).filter(i => xDomain.has(X[i]));
 
             const xScale = scaleBand(xDomain, [margin.left, normalizedWidth]).padding(0.1);
             const yScale = scaleLinear(yDomain, [height, margin.bottom]);
             const xAxis = axisBottom(xScale).tickSize(0);
-            const yAxis = axisLeft(yScale).ticks(Math.min(10, Math.max(2, max(Y) / 2))).tickSize(normalizedWidth);
+            const yAxis = axisLeft(yScale).ticks(Math.min(10, Math.max(2, (max(Y) ?? 0) / 2))).tickSize(normalizedWidth);
 
             const svg = create('svg');
 
@@ -63,7 +63,7 @@ export default defineComponent({
                 .data(I)
                 .join('rect')
                 .attr('fill', i => data[i].team === 'alpha' ? colors.red : colors.green)
-                .attr('x', i => xScale(X[i]))
+                .attr('x', i => xScale(X[i]) ?? 0)
                 .attr('y', i => yScale(Y[i]))
                 .attr('height', i => yScale(0) - yScale(Y[i]))
                 .attr('width', xScale.bandwidth());
@@ -80,7 +80,7 @@ export default defineComponent({
                 .attr('transform', 'rotate(-90)')
                 .attr('fill', (text, i) => data[i].team === 'alpha' ? colors.red : colors.green);
 
-            return svg.node().innerHTML;
+            return svg.node()?.innerHTML;
         });
 
         return {

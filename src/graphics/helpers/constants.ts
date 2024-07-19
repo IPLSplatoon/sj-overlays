@@ -9,8 +9,13 @@ export const colors = {
     blue: '#5FBFF9'
 };
 
-export function getGlowIconFromMode(mode: string): string {
-    return modeToGlowIcon[mode] ?? '/bundles/sj-overlays/assets/SJ_Eyes.png';
+export function getGlowIconFromMode(mode?: string): string {
+    const defaultIcon = '/bundles/sj-overlays/assets/SJ_Eyes.png';
+    if (mode == null) {
+        return defaultIcon;
+    }
+
+    return modeToGlowIcon[mode] ?? defaultIcon;
 }
 
 const modeToGlowIcon: {[key: string]: string} = {
