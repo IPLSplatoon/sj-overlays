@@ -4,7 +4,7 @@
             <span :key="value.label">{{ value.label }}</span>
         </opacity-swap-transition>
         <opacity-swap-transition>
-            <span :key="useDecimals">{{ tweenValue ? tweenedValue : formatValue(value.value) }}</span>
+            <span :key="useDecimals ? 1 : 0">{{ tweenValue ? tweenedValue : formatValue(value.value) }}</span>
         </opacity-swap-transition>
     </div>
 </template>

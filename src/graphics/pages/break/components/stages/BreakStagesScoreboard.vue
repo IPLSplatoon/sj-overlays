@@ -55,7 +55,7 @@ export default defineComponent({
         };
 
         const enter = (elem: HTMLElement, done: gsap.Callback) => {
-            const tl = gsap.timeline({ onComplete: done, onStart: () => gsap.set(elem, { opacity: 1 }) });
+            const tl = gsap.timeline({ onComplete: done, onStart: () => { gsap.set(elem, { opacity: 1 }); } });
 
             tl.to(elem, { duration: 0.5, width: 1000, ease: 'power2.out' });
 
@@ -88,9 +88,8 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import '../../../../styles/constants';
-@import '../../../../styles/background';
-@import '../../../../styles/glow';
+@use '../../../../styles/constants';
+@use '../../../../styles/background';
 
 .stages-scoreboard {
     height: 60px !important;
@@ -98,7 +97,7 @@ export default defineComponent({
     position: absolute;
     overflow: hidden;
     top: 237px;
-    @include background();
+    @include background.background();
 
     .content {
         width: 1000px;
@@ -110,7 +109,7 @@ export default defineComponent({
         position: absolute;
 
         .scores {
-            background-color: $violet-a-20;
+            background-color: constants.$violet-a-20;
             z-index: 3;
             height: 100%;
 

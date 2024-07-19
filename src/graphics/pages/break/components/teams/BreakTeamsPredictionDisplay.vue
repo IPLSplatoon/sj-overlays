@@ -100,7 +100,9 @@ export default defineComponent({
             const tl = gsap.timeline({
                 delay,
                 onComplete: done,
-                onStart: () => gsap.set(elem.querySelector('.prediction-box'), { opacity: 1 })
+                onStart: () => {
+                    gsap.set(elem.querySelector('.prediction-box'), { opacity: 1 });
+                }
             });
 
             tl.addLabel('predictionEnter');
@@ -161,9 +163,9 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import '../../../../styles/constants';
-@import '../../../../styles/background';
-@import '../../../../styles/glow';
+@use '../../../../styles/constants';
+@use '../../../../styles/background';
+@use '../../../../styles/glow';
 
 .prediction-wrapper {
     $predictionWidth: 1300px;
@@ -173,11 +175,11 @@ export default defineComponent({
         margin-bottom: 5px;
         font-size: 35px;
         font-style: italic;
-        filter: drop-shadow(0 0 5px $background) drop-shadow(0 0 10px $background);
+        filter: drop-shadow(0 0 5px constants.$background) drop-shadow(0 0 10px constants.$background);
     }
 
     .prediction-box {
-        @include background();
+        @include background.background();
 
         height: 120px;
         width: $predictionWidth;
@@ -195,11 +197,11 @@ export default defineComponent({
                 height: 100%;
 
                 &.first-outcome-background {
-                    background-color: $red-a-20;
+                    background-color: constants.$red-a-20;
                 }
 
                 &.second-outcome-background {
-                    background-color: $green-a-40;
+                    background-color: constants.$green-a-40;
                 }
             }
         }

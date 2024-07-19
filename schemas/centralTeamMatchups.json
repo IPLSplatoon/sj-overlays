@@ -1,0 +1,140 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "definitions": {
+        "matchupList": {
+            "type": "object",
+            "required": ["tournaments"],
+            "additionalProperties": true,
+            "properties": {
+                "tournaments": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "required": ["id", "name", "start_time", "stages"],
+                        "additionalProperties": true,
+                        "properties": {
+                            "id": {
+                                "type": "string"
+                            },
+                            "name": {
+                                "type": "string"
+                            },
+                            "start_time": {
+                                "type": "string"
+                            },
+                            "stages": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "required": ["id", "name", "no_teams", "matches", "team_placements"],
+                                    "additionalProperties": true,
+                                    "properties": {
+                                        "id": {
+                                            "type": "string"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "no_teams": {
+                                            "type": "number"
+                                        },
+                                        "matches": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "additionalProperties": true,
+                                                "required": [
+                                                    "id",
+                                                    "alpha_id",
+                                                    "bravo_id",
+                                                    "alpha_name",
+                                                    "bravo_name",
+                                                    "alpha_win",
+                                                    "bravo_win",
+                                                    "ties"
+                                                ],
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string"
+                                                    },
+                                                    "alpha_id": {
+                                                        "type": "string"
+                                                    },
+                                                    "bravo_id": {
+                                                        "type": "string"
+                                                    },
+                                                    "alpha_name": {
+                                                        "type": "string"
+                                                    },
+                                                    "bravo_name": {
+                                                        "type": "string"
+                                                    },
+                                                    "alpha_win": {
+                                                        "type": "number"
+                                                    },
+                                                    "bravo_win": {
+                                                        "type": "number"
+                                                    },
+                                                    "ties": {
+                                                        "type": "number"
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "team_placements": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "additionalProperties": true,
+                                                "required": [
+                                                    "tournament_team_id",
+                                                    "team_id",
+                                                    "set_wins",
+                                                    "sets_played",
+                                                    "placement"
+                                                ],
+                                                "properties": {
+                                                    "tournament_team_id": {
+                                                        "type": "string"
+                                                    },
+                                                    "team_id": {
+                                                        "type": "string"
+                                                    },
+                                                    "set_wins": {
+                                                        "type": "number"
+                                                    },
+                                                    "sets_played": {
+                                                        "type": "number"
+                                                    },
+                                                    "placement": {
+                                                        "type": "number"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+        "headToHead": {
+            "$ref": "#/definitions/matchupList"
+        },
+        "teamA": {
+            "$ref": "#/definitions/matchupList"
+        },
+        "teamB": {
+            "$ref": "#/definitions/matchupList"
+        }
+    },
+    "default": {
+
+    }
+}

@@ -1,0 +1,24 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["teamA", "teamB"],
+    "properties": {
+        "teamA": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "teamB": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        }
+    },
+    "default": {
+        "teamA": [],
+        "teamB": []
+    }
+}

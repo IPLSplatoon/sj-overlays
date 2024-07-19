@@ -25,6 +25,12 @@
             "client-shared/*": [
                 "src/client-shared/*"
             ],
+            "assets/*": [
+                "src/assets/*"
+            ],
+            "img/*": [
+                "src/assets/img/*"
+            ],
             "schemas": [
                 "../ipl-overlay-controls/src/types/schemas/index"
             ],
@@ -32,5 +38,13 @@
                 "../relay-nodecg-connector/src/types/schemas/index"
             ]
         }
-    }
+    },
+    "include": [
+        "src/dashboard/**/*.ts",
+        "src/dashboard/**/*.vue",
+        "src/graphics/**/*.ts",
+        "src/graphics/**/*.vue",
+        "src/client-shared/**/*.ts",
+        "src/types/**/*.ts"
+    ]
 }

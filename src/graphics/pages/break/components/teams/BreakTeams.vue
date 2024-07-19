@@ -1,21 +1,20 @@
 <template>
     <div class="teams-wrapper w-max layout vertical c-horiz">
         <div
-            class="team-display"
+            class="break-teams-content"
             :class="{ 'predictions-hidden': !predictionsVisible }"
             :style="{ height: teamDisplayHeight, transform: teamDisplayTransform }"
         >
-            <break-screen-team
-                team="A"
-                class="team-a-display"
-            />
-            <div class="versus-wrapper layout horiz c-vert">
-                <div class="versus">VS</div>
-            </div>
-            <break-screen-team
-                team="B"
-                class="team-b-display"
-            />
+            <transition
+                mode="out-in"
+                :css="false"
+                @enter="subsceneEnter"
+                @leave="subsceneLeave"
+                @before-enter="beforeSubsceneEnter"
+            >
+                <head-to-head-subscene v-if="centralTeamDisplayMode === 'headToHead'" />
+                <team-rosters-subscene v-else />
+            </transition>
         </div>
         <break-teams-prediction-display />
     </div>
@@ -24,7 +23,6 @@
 <script lang="ts">
 import { computed, defineComponent, provide, ref } from 'vue';
 import gsap from 'gsap';
-import BreakScreenTeam from './BreakScreenTeam.vue';
 import { DASHBOARD_BUNDLE_NAME } from 'client-shared/constants';
 import BreakTeamsPredictionDisplay from './BreakTeamsPredictionDisplay.vue';
 import {
@@ -33,13 +31,19 @@ import {
     transitionFunctionsInjectionKey
 } from '../../../../helpers/transition';
 import { usePredictionDataStore } from 'client-shared/store/predictionDataStore';
+import TeamRostersSubscene from './TeamRostersSubscene.vue';
+import { useCentralDataStore } from 'client-shared/store/centralDataStore';
+import HeadToHeadSubscene from './HeadToHeadSubscene.vue';
 
 export default defineComponent({
     name: 'BreakTeams',
 
-    components: { BreakTeamsPredictionDisplay, BreakScreenTeam },
+    components: { HeadToHeadSubscene, TeamRostersSubscene, BreakTeamsPredictionDisplay },
 
     setup() {
+        const centralDataStore = useCentralDataStore();
+        const centralTeamDisplayMode = computed(() => centralDataStore.centralDisplaySettings.displayMode);
+
         const predictionDataStore = usePredictionDataStore();
         const predictionActive = computed(() => predictionDataStore.predictionStore.currentPrediction?.status === 'ACTIVE');
         const forceShowPredictions = ref(false);
@@ -57,20 +61,7 @@ export default defineComponent({
         provide('predictionsVisible', predictionsVisible);
 
         const beforeEnter = (elem: HTMLElement) => {
-            transitions['team-a-name'].beforeEnter(elem);
-            transitions['team-b-name'].beforeEnter(elem);
-            gsap.set(
-                elem.querySelectorAll('.teams-wrapper .content .team-a-player, .teams-wrapper .content .team-b-player'),
-                { x: -350, opacity: 0 });
-            gsap.set(
-                elem.querySelectorAll('.teams-wrapper .line.top, .teams-wrapper .line.mid'),
-                { opacity: 0, width: 0 });
-            gsap.set(
-                elem.querySelector('.teams-wrapper .versus'),
-                { y: 200 });
-            gsap.set(
-                elem.querySelectorAll('.teams-wrapper .content'),
-                { height: 0 });
+            transitions['break-teams'].beforeEnter(elem);
 
             if (predictionsVisible.value) {
                 transitions.predictions.beforeEnter(elem);
@@ -82,41 +73,13 @@ export default defineComponent({
 
             tl
                 .addLabel('teamsIn')
-                .addLabel('sceneIn')
-                .addLabel('teamsLineIn', '+=0.35')
-                .add('teamsTextIn', '+=0.45');
+                .addLabel('sceneIn');
 
             if (predictionsVisible.value) {
                 tl.add(transitions.predictions.enter(elem, 0), 'teamsIn');
             }
 
-            tl
-                .to(
-                    elem.querySelector('.teams-wrapper .versus'),
-                    { duration: 0.4, y: 0, ease: 'power1.out', delay: 0.15 },
-                    'teamsIn')
-                .to(
-                    elem.querySelectorAll('.teams-wrapper .content'),
-                    { duration: 0.55, height: 'calc(100% - 55px)', ease: 'power2.out' },
-                    'teamsIn')
-                .to(
-                    elem.querySelectorAll('.teams-wrapper .line.top'),
-                    { duration: 0.55, width: 375, opacity: 1, ease: 'power2.out' },
-                    'teamsLineIn')
-                .to(
-                    elem.querySelectorAll('.teams-wrapper .line.mid'),
-                    { duration: 0.55, width: 600, opacity: 1, ease: 'power2.out' },
-                    'teamsLineIn')
-                .add(transitions['team-a-name'].enter(elem), 'teamsTextIn')
-                .add(transitions['team-b-name'].enter(elem), 'teamsTextIn')
-                .to(
-                    elem.querySelectorAll('.teams-wrapper .content .team-b-player'),
-                    { duration: 0.5, x: 0, ease: 'power2.out', stagger: 0.1, opacity: 1 },
-                    'teamsTextIn')
-                .to(
-                    elem.querySelectorAll('.teams-wrapper .content .team-a-player'),
-                    { duration: 0.5, x: 0, ease: 'power2.out', stagger: 0.1, opacity: 1 },
-                    'teamsTextIn');
+            tl.add(transitions['break-teams'].enter(elem, done));
 
             return tl;
         };
@@ -125,44 +88,21 @@ export default defineComponent({
             const tl = gsap.timeline({ onComplete: done });
 
             tl
-                .addLabel('teamsTextOut')
                 .addLabel('sceneOut')
-                .addLabel('teamsLineOut', '+=0.4')
-                .addLabel('teamsOut', '+=0.6');
+                .addLabel('transitionsOut', '+=0.5');
 
-            tl
-                // the next two tweens are identical because otherwise staggers wouldn't work
-                .to(
-                    elem.querySelectorAll('.teams-wrapper .content .team-a-player'),
-                    { duration: 0.5, x: -350, ease: 'power2.in', stagger: 0.1, opacity: 0 },
-                    'teamsTextOut')
-                .to(
-                    elem.querySelectorAll('.teams-wrapper .content .team-b-player'),
-                    { duration: 0.5, x: -350, ease: 'power2.in', stagger: 0.1, opacity: 0 },
-                    'teamsTextOut')
-                .add(transitions['team-a-name'].leave(elem), 'teamsTextOut')
-                .add(transitions['team-b-name'].leave(elem), 'teamsTextOut')
-                .to(
-                    elem.querySelectorAll('.teams-wrapper .line.top, .teams-wrapper .line.mid'),
-                    { duration: 0.55, width: 0, opacity: 0, ease: 'power2.in' },
-                    'teamsLineOut')
-                .to(
-                    elem.querySelector('.teams-wrapper .versus'),
-                    { duration: 0.40, y: 200, ease: 'power1.in', delay: 0.15 },
-                    'teamsOut')
-                .to(
-                    elem.querySelectorAll('.teams-wrapper .content'),
-                    { duration: 0.55, height: 0, ease: 'power2.in' },
-                    'teamsOut');
+            tl.add(transitions['break-teams'].leave(elem, done));
 
             if (predictionsVisible.value) {
-                tl.add(transitions.predictions.leave(elem), 'teamsOut-=0.1');
+                tl.add(transitions.predictions.leave(elem), 'transitionsOut');
             }
 
             return tl;
         };
 
         provideTransitions('break', null, { beforeEnter, enter, leave });
+
+
 
         return {
             teamDisplayHeight: computed(() => predictionsVisible.value ? '525px' : '638px'),
@@ -171,7 +111,23 @@ export default defineComponent({
 
             beforeEnter,
             enter,
-            leave
+            leave,
+
+            beforeSubsceneEnter: (elem: HTMLElement) => {
+                transitions['break-teams'].beforeEnter(elem);
+            },
+            subsceneEnter: (elem: HTMLElement, done: gsap.Callback) => {
+                const tl = gsap.timeline({ onComplete: done });
+
+                tl.add(transitions['break-teams'].enter(elem));
+            },
+            subsceneLeave: (elem: HTMLElement, done: gsap.Callback) => {
+                const tl = gsap.timeline({ onComplete: done });
+
+                tl.add(transitions['break-teams'].leave(elem));
+            },
+
+            centralTeamDisplayMode
         };
     }
 });
@@ -182,32 +138,13 @@ export default defineComponent({
     position: absolute;
     top: 250px;
 
-    .team-display {
+    .break-teams-content {
         width: 1400px;
-        display: grid;
-        grid-template-rows: 1fr;
-        grid-template-columns: 2fr 1fr 2fr;
-        align-items: end;
         position: relative;
         transition: height 500ms, transform 500ms;
 
         &.predictions-hidden {
             transition-delay: 750ms;
-        }
-
-        .versus-wrapper {
-            width: 100%;
-            height: 120px;
-            align-self: center;
-            overflow: hidden;
-
-            .versus {
-                width: 100%;
-                font-weight: 800;
-                font-size: 110px;
-                text-align: center;
-                filter: drop-shadow(0 0 3px white);
-            }
         }
     }
 }

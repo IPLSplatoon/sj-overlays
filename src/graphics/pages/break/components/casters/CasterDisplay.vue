@@ -105,8 +105,8 @@ const casterLinePath = computed(() => {
 
 <style scoped lang="scss">
 @use 'sass:color';
-@import '../../../../styles/constants';
-@import '../../../../styles/background';
+@use '../../../../styles/constants';
+@use '../../../../styles/background';
 
 .caster-display-wrapper {
     padding: 16px;
@@ -128,7 +128,7 @@ const casterLinePath = computed(() => {
         z-index: -1;
         width: 100%;
         height: 100%;
-        background: radial-gradient(ellipse 100% 120% at 25px 25px, color.change($background, $alpha: 0.8) 50%, transparent 100%);
+        background: radial-gradient(ellipse 100% 120% at 25px 25px, color.change(constants.$background, $alpha: 0.8) 50%, transparent 100%);
     }
 }
 
@@ -150,8 +150,8 @@ const casterLinePath = computed(() => {
     z-index: 2;
 
     .caster-line-color {
-        filter: drop-shadow(0 0 3px $blue) drop-shadow(0 0 5px $blue);
-        stroke: $blue;
+        filter: drop-shadow(0 0 3px constants.$blue) drop-shadow(0 0 5px constants.$blue);
+        stroke: constants.$blue;
         stroke-width: 5px;
         stroke-linecap: round;
     }
@@ -168,7 +168,7 @@ const casterLinePath = computed(() => {
 }
 
 .caster-visual {
-    @include background(0px);
+    @include background.background(0px);
 
     height: 100%;
     width: 100%;
@@ -178,7 +178,7 @@ const casterLinePath = computed(() => {
         height: 175px;
         border-radius: 9999px;
         overflow: hidden;
-        filter: drop-shadow(0 0 5px $blue);
+        filter: drop-shadow(0 0 5px constants.$blue);
     }
 
     .caster-video {

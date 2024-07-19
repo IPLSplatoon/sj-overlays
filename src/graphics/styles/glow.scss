@@ -1,4 +1,4 @@
-@import './constants';
+@use './constants';
 
 @mixin glow-border($color, $radius: 15px) {
     border-radius: $radius;
@@ -18,19 +18,19 @@
 }
 
 @mixin svg-glow() {
-    filter: drop-shadow(0 0 3px $blue) drop-shadow(0 0 5px $blue);
+    filter: drop-shadow(0 0 3px constants.$blue) drop-shadow(0 0 5px constants.$blue);
 }
 
 .glow-border {
     &.glow-blue {
-        @include glow-border($blue);
+        @include glow-border(constants.$blue);
     }
 
     &.glow-red {
-        @include glow-border($red);
+        @include glow-border(constants.$red);
     }
 
     &.glow-green {
-        @include glow-border($green);
+        @include glow-border(constants.$green);
     }
 }

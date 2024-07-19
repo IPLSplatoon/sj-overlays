@@ -72,7 +72,7 @@ export default defineComponent({
             gsap.set(elem.querySelectorAll('.stage-border'), { drawSVG: '50% 50%' });
         };
 
-        const stagesEnter = (elem: HTMLElement, done: gsap.Callback) => {
+        const stagesEnter = (elem: HTMLElement, done: gsap.Callback | undefined) => {
             const tl = gsap.timeline({ onComplete: done });
 
             tl
@@ -96,7 +96,7 @@ export default defineComponent({
             return tl;
         };
 
-        const stagesLeave = (elem: HTMLElement, done: gsap.Callback) => {
+        const stagesLeave = (elem: HTMLElement, done: gsap.Callback | undefined) => {
             const tl = gsap.timeline({ onComplete: done });
 
             tl
@@ -130,12 +130,12 @@ export default defineComponent({
 
             tl
                 .add(transitions.stagesScoreboard.enter(elem), 'sceneIn')
-                .add(stagesEnter(elem.querySelector('.stage-grid'), undefined), 'sceneIn');
+                .add(stagesEnter(elem.querySelector('.stage-grid')!, undefined), 'sceneIn');
 
             return tl;
         };
 
-        const leave = (elem: HTMLElement, done: gsap.Callback) => {
+        const leave = (elem: HTMLElement, done: gsap.Callback | undefined) => {
             const tl = gsap.timeline({ onComplete: done });
 
             tl

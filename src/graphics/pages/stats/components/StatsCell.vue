@@ -81,12 +81,12 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import '../../../styles/background';
-@import '../../../styles/constants';
-@import '../../../styles/glow';
+@use '../../../styles/background';
+@use '../../../styles/constants';
+@use '../../../styles/glow';
 
 .stats-cell {
-    @include background();
+    @include background.background();
 
     $padding: 10px;
     width: calc(100% - $padding * 2);
@@ -104,7 +104,7 @@ export default defineComponent({
         }
 
         .separator {
-            @include line-glow($blue);
+            @include glow.line-glow(constants.$blue);
             width: 90%;
             height: 2px;
             margin-bottom: 8px;
@@ -123,7 +123,7 @@ export default defineComponent({
             }
 
             .subtitle-separator {
-                @include line-glow($orange);
+                @include glow.line-glow(constants.$orange);
                 width: 100%;
                 height: 1px;
                 margin-bottom: 8px;

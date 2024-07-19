@@ -50,7 +50,6 @@
                         <div
                             v-if="game.winner !== 'none'"
                             class="stage-winner-wrapper layout horiz"
-                            :style="{ opacity: game.winner === 'none' ? '0' : '1' }"
                         >
                             <opacity-swap-transition>
                                 <div
@@ -189,9 +188,9 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import '../../../../styles/constants';
-@import '../../../../styles/background';
-@import '../../../../styles/glow';
+@use '../../../../styles/glow';
+@use '../../../../styles/constants';
+@use '../../../../styles/background';
 
 .stage {
     height: 100%;
@@ -224,7 +223,7 @@ export default defineComponent({
         top: 0; left: 0;
         height: 450px;
         width: 100%;
-        background-color: $background-a-60;
+        background-color: constants.$background-a-60;
 
         .winner-name {
             align-self: flex-end;
@@ -235,11 +234,11 @@ export default defineComponent({
     }
 
     .stage-info-wrapper {
-        @include background(18px);
+        @include background.background(18px);
     }
 
     .stage-line {
-        @include line-glow($blue);
+        @include glow.line-glow(constants.$blue);
         width: calc(100% - 5px);
         height: 2px;
         z-index: 5;

@@ -1,6 +1,10 @@
 import { NowPlaying } from 'schemas';
 
-export function addDots(value: string, maxLength = 48): string {
+export function addDots(value: unknown, maxLength = 48): string {
+    if (typeof value !== 'string') {
+        return '';
+    }
+
     const rolloff = '...';
 
     if (!value) return value;
@@ -11,12 +15,16 @@ export function addDots(value: string, maxLength = 48): string {
     return value;
 }
 
-export function isBlank(value?: string | null): boolean {
-    return value === null || value === undefined || value.trim() === '';
+export function isBlank(value: unknown): boolean {
+    return value === null || value === undefined || (typeof value === 'string' && value.trim() === '');
 }
 
 export function getSongNameAsString(nowPlaying: NowPlaying): string {
     return [ nowPlaying?.artist, nowPlaying?.song ]
         .filter(value => !isBlank(value))
         .join(' - ');
+}
+
+export function resolveStaticPath(path: string): string {
+    return `/bundles/sj-overlays/assets${path}`;
 }

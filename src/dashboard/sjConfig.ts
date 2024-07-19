@@ -6,12 +6,16 @@ import { tournamentDataReps, useTournamentDataStore } from 'client-shared/store/
 import { initBracketDataStore } from 'client-shared/store/bracketDataStore';
 import SjConfig from './pages/sjConfig/SjConfig.vue';
 import { breakScreenReps, useBreakScreenStore } from 'client-shared/store/breakScreenStore';
+import { centralDataReps, useCentralDataStore } from 'client-shared/store/centralDataStore';
+import { activeRoundReps, useActiveRoundStore } from 'client-shared/store/activeRoundStore';
 
 (async () => {
     const app = createApp(SjConfig);
     app.use(createPinia());
     await setUpReplicants(breakScreenReps, useBreakScreenStore());
     await setUpReplicants(tournamentDataReps, useTournamentDataStore());
+    await setUpReplicants(centralDataReps, useCentralDataStore());
+    await setUpReplicants(activeRoundReps, useActiveRoundStore());
     await initBracketDataStore();
     app.mount('#app');
 })();
