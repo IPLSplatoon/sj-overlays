@@ -100,6 +100,11 @@ module.exports = (nodecg) => {
             if (((_a = centralCredentials.value) === null || _a === void 0 ? void 0 : _a.token) == null) {
                 throw new Error('Not logged in to Central');
             }
+            if (teamIds.length === 0) {
+                return {
+                    tournaments: []
+                };
+            }
             const headers = { Authorization: `JWT ${centralCredentials.value.token}` };
             try {
                 const response = yield axios_1.default.get(buildMatchupSearchUrl(teamIds, type === 'headToHead' ? 'matchups' : 'team-matches'), { headers });
