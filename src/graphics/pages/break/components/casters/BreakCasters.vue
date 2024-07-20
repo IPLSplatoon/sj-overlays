@@ -34,7 +34,7 @@ const beforeEnter = (elem: HTMLElement) => {
     gsap.set(elem.querySelectorAll('.caster-line-color, .caster-line-white'), { drawSVG: '0%' });
     gsap.set(elem.querySelectorAll('.caster-name, .caster-twitter'), { opacity: 0, x: -100 });
     gsap.set(elem.querySelectorAll('.caster-details > .background'), { opacity: 0 });
-    gsap.set(elem.querySelectorAll('.caster-visual'), { y: '-100%' });
+    gsap.set(elem.querySelectorAll('.caster-visual'), { y: '-101%' });
 };
 
 const enter = (elem: HTMLElement, done: gsap.Callback) => {
@@ -119,7 +119,7 @@ const leave = (elem: HTMLElement, done: gsap.Callback) => {
         .to(
             elem.querySelectorAll('.caster-visual'),
             {
-                y: '100%',
+                y: '101%',
                 stagger: 0.5,
                 ease: 'power2.in'
             },
