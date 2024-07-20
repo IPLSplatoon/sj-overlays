@@ -1,0 +1,1 @@
+import{D as n,m as o}from"./_plugin-vue_export-helper-Dg3X6I8a.js";const e=nodecg.Replicant("activeRound",n),t=nodecg.Replicant("swapColorsInternally",n),s=[e,t],l=o("activeRound",{state:()=>({activeRound:null,swapColorsInternally:null})});export{s as a,l as u};

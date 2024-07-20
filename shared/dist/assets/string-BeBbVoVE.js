@@ -1,0 +1,1 @@
+function e(t,r=48){if(typeof t!="string")return"";const s="...";return t&&(t.length>r?t.substring(0,r-s.length)+s:t)}function f(t){return t==null||typeof t=="string"&&t.trim()===""}function i(t){return[t==null?void 0:t.artist,t==null?void 0:t.song].filter(r=>!f(r)).join(" - ")}function n(t){return`/bundles/sj-overlays/assets${t}`}export{e as a,i as g,f as i,n as r};
