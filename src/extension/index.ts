@@ -104,6 +104,12 @@ export = (nodecg: NodeCG.ServerAPI<Configschema>): void => {
         if (centralCredentials.value?.token == null) {
             throw new Error('Not logged in to Central');
         }
+        if (teamIds.length === 0) {
+            return {
+                tournaments: []
+            };
+        }
+
         const headers = { Authorization: `JWT ${centralCredentials.value.token}` };
 
         try {
