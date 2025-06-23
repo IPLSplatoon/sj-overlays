@@ -46,7 +46,7 @@ import FittedContent from 'src/graphics/components/FittedContent.vue';
 import { useCentralDataStore } from 'client-shared/store/centralDataStore';
 import { computed } from 'vue';
 import { DateTime } from 'luxon';
-import { MatchupList } from 'types/schemas';
+import type { MatchupList } from 'types/schemas';
 
 const activeRoundStore = useActiveRoundStore();
 const centralDataStore = useCentralDataStore();

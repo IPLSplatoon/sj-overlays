@@ -24,7 +24,7 @@ import { IplMessage, IplSmallToggle, IplSpace } from '@iplsplatoon/vue-component
 import { useBreakScreenStore } from 'client-shared/store/breakScreenStore';
 import { computed } from 'vue';
 import CentralLogin from './CentralLogin.vue';
-import { Configschema } from 'types/schemas';
+import type { Configschema } from 'types/schemas';
 import CentralMappingDisplay from './CentralMappingDisplay.vue';
 import CentralMatchupsDisplay from './CentralMatchupsDisplay.vue';
 import CentralDisplaySettings from './CentralDisplaySettings.vue';

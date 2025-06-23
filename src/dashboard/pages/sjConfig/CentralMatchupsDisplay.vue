@@ -34,7 +34,7 @@
 
 <script setup lang="ts">
 import { IplButton, IplSpace } from '@iplsplatoon/vue-components';
-import { MatchupList } from 'types/schemas';
+import type { MatchupList } from 'types/schemas';
 import { computed } from 'vue';
 import { useCentralDataStore } from 'client-shared/store/centralDataStore';
 import { useActiveRoundStore } from 'client-shared/store/activeRoundStore';
