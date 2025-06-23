@@ -4,7 +4,7 @@ RUN git clone https://github.com/IPLSplatoon/sj-overlays/
 RUN git clone https://github.com/inkfarer/ipl-overlay-controls
 WORKDIR /opt/nodecg/bundles/sj-overlays
 RUN git checkout build --force
-RUN npm i
+RUN npm i --omit=dev
 WORKDIR /opt/nodecg/bundles/ipl-overlay-controls
 RUN npm install
 RUN npm run build
