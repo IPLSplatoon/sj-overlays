@@ -2,7 +2,7 @@
     <div class="casters-wrapper w-max layout horiz c-horiz">
         <div class="casters-layout">
             <caster-display
-                v-for="(caster, id) in casterStore.casters"
+                v-for="(caster, id) in props.casters"
                 :key="id"
                 :caster="caster"
                 :width="casterWidth"
@@ -14,13 +14,16 @@
 <script setup lang="ts">
 import gsap from 'gsap';
 import { provideTransitions } from '../../../../helpers/transition';
-import { useCasterStore } from 'client-shared/store/casterStore';
 import CasterDisplay from './CasterDisplay.vue';
 import { computed } from 'vue';
+import type { Casters } from 'schemas';
 
-const casterStore = useCasterStore();
+const props = defineProps<{
+    casters: Casters
+}>();
+
 const casterWidth = computed(() => {
-    switch (Object.keys(casterStore.casters).length) {
+    switch (Object.keys(props.casters).length) {
         case 1:
             return 1000;
         case 2:

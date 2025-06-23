@@ -118,7 +118,6 @@ const casterLinePath = computed(() => {
 }
 
 .caster-details {
-    padding: 10px 16px 0 20px;
     box-sizing: border-box;
     position: relative;
     overflow: hidden;
@@ -136,11 +135,14 @@ const casterLinePath = computed(() => {
     font-weight: 700;
     font-style: italic;
     font-size: 40px;
+    margin-top: 10px;
+    margin-left: 20px;
 }
 
 .caster-twitter {
     font-weight: 300;
     margin-top: -6px;
+    margin-left: 20px;
 }
 
 .caster-line {

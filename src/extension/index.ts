@@ -150,8 +150,8 @@ export = (nodecg: NodeCG.ServerAPI<Configschema>): void => {
         ack(null);
     });
 
-    // this type sucks but i don't want to deal with it
-    (nodecg.extensions['ipl-overlay-controls'] as { bundleConfigDeclarationService: { declareCustomScenes: (...args: unknown[]) => void } }).bundleConfigDeclarationService.declareCustomScenes(nodecg.bundleName, [
+    // @ts-ignore: i don't want to deal with it
+    nodecg.extensions['ipl-overlay-controls'].bundleConfigDeclarationService.declareCustomScenes(nodecg.bundleName, [
         {
             value: 'casters',
             names: {
@@ -160,6 +160,17 @@ export = (nodecg: NodeCG.ServerAPI<Configschema>): void => {
         },
         {
             value: 'analysts',
+            names: {
+                EN: 'Analysts'
+            }
+        }
+    ]);
+
+    // @ts-ignore: i don't want to deal with it
+    nodecg.extensions['ipl-overlay-controls'].bundleConfigDeclarationService.declareCasterSets(nodecg.bundleName, [
+        {
+            key: 'analysts',
+            maxItems: 4,
             names: {
                 EN: 'Analysts'
             }
