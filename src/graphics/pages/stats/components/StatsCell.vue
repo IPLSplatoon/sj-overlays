@@ -44,7 +44,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { DataCell } from 'relay-nodecg-connector';
+import type { DataCell } from 'relay-nodecg-connector';
 import FittedContent from '../../../components/FittedContent.vue';
 import StatsList from './StatsList.vue';
 import StatsBarChart from './StatsBarChart.vue';

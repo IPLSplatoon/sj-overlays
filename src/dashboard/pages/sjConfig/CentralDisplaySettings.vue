@@ -13,7 +13,7 @@
 import { IplSpace, IplRadio } from '@iplsplatoon/vue-components';
 import { computed } from 'vue';
 import { useCentralDataStore } from 'client-shared/store/centralDataStore';
-import { CentralDisplaySettings } from 'types/schemas';
+import type { CentralDisplaySettings } from 'types/schemas';
 
 const centralDataStore = useCentralDataStore();
 

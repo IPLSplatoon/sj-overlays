@@ -7,14 +7,14 @@
 </template>
 
 <script lang="ts">
-import { DataCell } from 'relay-nodecg-connector';
+import type { DataCell } from 'relay-nodecg-connector';
 import { computed, defineComponent, PropType } from 'vue';
 import { map, max, InternSet, range } from 'd3-array';
 import { scaleBand, scaleLinear } from 'd3-scale';
 import { axisBottom, axisLeft } from 'd3-axis';
 import { create } from 'd3';
 import { colors } from '../../../helpers/constants';
-import { DataCellValue } from '../../../types/relay';
+import type { DataCellValue } from '../../../types/relay';
 
 export default defineComponent({
     name: 'StatsBarChart',

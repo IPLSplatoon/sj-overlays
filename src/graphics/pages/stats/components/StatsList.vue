@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts">
-import { DataCell } from 'relay-nodecg-connector';
+import type { DataCell } from 'relay-nodecg-connector';
 import { computed, defineComponent, PropType } from 'vue';
 import StatsListItem from './StatsListItem.vue';
 import OpacitySwapTransition from '../../../components/OpacitySwapTransition.vue';

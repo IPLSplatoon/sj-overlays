@@ -66,7 +66,7 @@
 </template>
 
 <script setup lang="ts">
-import { Caster } from 'schemas';
+import type { Caster } from 'schemas';
 import { computed } from 'vue';
 import { useCasterStore } from 'client-shared/store/casterStore';
 import { isBlank } from '../../../../helpers/string';

@@ -30,8 +30,8 @@
 
 <script setup lang="ts">
 import { IplButton, IplMessage, IplSpace } from '@iplsplatoon/vue-components';
-import { Configschema } from 'types/schemas';
-import { CentralJwtPayload, CentralSSOLinkResponse } from 'types/central';
+import type { Configschema } from 'types/schemas';
+import type { CentralJwtPayload, CentralSSOLinkResponse } from 'types/central';
 import axios from 'axios';
 import { useCentralDataStore } from 'client-shared/store/centralDataStore';
 import { computed, onMounted, onUnmounted, ref } from 'vue';

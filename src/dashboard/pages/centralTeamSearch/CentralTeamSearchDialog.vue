@@ -65,9 +65,9 @@ import { IplSpace, IplInput, isBlank, IplButton, IplCheckbox } from '@iplsplatoo
 import { ref, watch } from 'vue';
 import { useCentralDataStore } from 'client-shared/store/centralDataStore';
 import debounce from 'lodash/debounce';
-import { Configschema } from 'types/schemas';
+import type { Configschema } from 'types/schemas';
 import axios from 'axios';
-import { CentralSearchItem, CentralSearchResponse } from 'types/central';
+import type { CentralSearchItem, CentralSearchResponse } from 'types/central';
 import { addDots } from '../../../graphics/helpers/string';
 import { useActiveRoundStore } from 'client-shared/store/activeRoundStore';
 
