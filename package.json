@@ -81,7 +81,10 @@
                 "width": 1920,
                 "height": 1080
             }
-        ]
+        ],
+        "bundleDependencies": {
+            "ipl-overlay-controls": "^4.18.0"
+        }
     },
     "dependencies": {
         "@tourneyview/common": "0.6.0",

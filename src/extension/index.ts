@@ -149,4 +149,20 @@ export = (nodecg: NodeCG.ServerAPI<Configschema>): void => {
 
         ack(null);
     });
+
+    // this type sucks but i don't want to deal with it
+    (nodecg.extensions['ipl-overlay-controls'] as { bundleConfigDeclarationService: { declareCustomScenes: (...args: unknown[]) => void } }).bundleConfigDeclarationService.declareCustomScenes(nodecg.bundleName, [
+        {
+            value: 'casters',
+            names: {
+                EN: 'Casters'
+            }
+        },
+        {
+            value: 'analysts',
+            names: {
+                EN: 'Analysts'
+            }
+        }
+    ]);
 }

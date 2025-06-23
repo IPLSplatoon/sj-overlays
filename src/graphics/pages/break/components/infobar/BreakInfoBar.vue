@@ -75,15 +75,15 @@ export default defineComponent({
         const activeRoundStore = useActiveRoundStore();
         const breakScreenStore = useBreakScreenStore();
         const nextRoundStore = useNextRoundStore();
-        const casterSceneInactive = computed(() => !breakScreenStore.breakUseCastersScene);
+        const showInfoBarCasters = computed(() => breakScreenStore.activeBreakScene !== 'casters' && breakScreenStore.activeBreakScene !== 'analysts');
 
         const slides = useSlides([
             { component: 'BreakInfoBarWelcome', duration: 10 },
-            { component: 'BreakInfoBarCasters', duration: 20, enabled: casterSceneInactive },
-            { component: 'BreakInfoBarCasterTwitters', duration: 20, enabled: casterSceneInactive },
+            { component: 'BreakInfoBarCasters', duration: 20, enabled: showInfoBarCasters },
+            { component: 'BreakInfoBarCasterTwitters', duration: 20, enabled: showInfoBarCasters },
             { component: 'BreakInfoBarMusic', enabled: computed(() => musicStore.musicShown) },
-            { component: 'BreakInfoBarActiveRound', enabled: computed(() => breakScreenStore.activeScene !== 'stages' && !nextRoundStore.nextRound.showOnStream) },
-            { component: 'BreakInfoBarNextRound', enabled: computed(() => breakScreenStore.activeScene !== 'stages' && nextRoundStore.nextRound.showOnStream) }
+            { component: 'BreakInfoBarActiveRound', enabled: computed(() => breakScreenStore.activeBreakScene !== 'stages' && !nextRoundStore.nextRound.showOnStream) },
+            { component: 'BreakInfoBarNextRound', enabled: computed(() => breakScreenStore.activeBreakScene !== 'stages' && nextRoundStore.nextRound.showOnStream) }
         ]);
 
         const nextMode = computed(() => activeRoundStore.activeRound.games.find(game => game.winner === 'none')?.mode);

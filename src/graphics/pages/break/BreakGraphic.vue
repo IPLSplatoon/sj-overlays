@@ -101,7 +101,7 @@ export default defineComponent({
         };
 
         return {
-            activeBreakScene: computed(() => breakScreenStore.activeScene),
+            activeBreakScene: computed(() => breakScreenStore.activeBreakScene),
             beforeEnter: (elem: HTMLElement) => {
                 transitions.break.beforeEnter(elem);
             },
