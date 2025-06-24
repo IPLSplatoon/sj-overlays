@@ -193,7 +193,7 @@ const enter = (elem: HTMLElement, done: gsap.Callback) => {
             {
                 drawSVG: '100%',
                 duration: 1,
-                stagger: index => Math.floor(index / 2) * 0.5,
+                stagger: (index, _, list) => Math.floor(index / 2) / (list.length / 2 - 1),
                 ease: 'power2.inOut'
             },
             'sceneIn')
@@ -201,7 +201,7 @@ const enter = (elem: HTMLElement, done: gsap.Callback) => {
             elem.querySelectorAll('.caster-details > .background'),
             {
                 opacity: 1,
-                stagger: 0.5
+                stagger: { amount: 1 }
             },
             'sceneIn')
         .to(
@@ -210,8 +210,8 @@ const enter = (elem: HTMLElement, done: gsap.Callback) => {
                 opacity: 1,
                 x: 0,
                 duration: 0.65,
-                delay: (index, target) => target.classList.contains('caster-name') ? 0.9 : 1.1,
-                stagger: props.largeVideoVisible ? 0.5 : index => Math.floor(index / 2) * 0.5,
+                delay: (_, target) => target.classList.contains('caster-name') ? 0.9 : 1.1,
+                stagger: props.largeVideoVisible ? { amount: 1 } : (index, _, list) => Math.floor(index / 2) / (list.length / 2 - 1),
                 ease: 'power2.out'
             },
             'sceneIn')
@@ -220,7 +220,7 @@ const enter = (elem: HTMLElement, done: gsap.Callback) => {
             {
                 y: 0,
                 delay: 0.5,
-                stagger: 0.5,
+                stagger: { amount: 1 },
                 ease: 'power2.out'
             },
             'sceneIn');
@@ -252,7 +252,7 @@ const leave = (elem: HTMLElement, done: gsap.Callback) => {
             {
                 drawSVG: '0%',
                 duration: 1,
-                stagger: index => Math.floor(index / 2) * 0.5 * staggerMultiplier,
+                stagger: (index, _, list) => Math.floor(index / 2) / (list.length / 2 - 1) * staggerMultiplier,
                 delay: 0.5,
                 ease: 'power2.inOut'
             },
@@ -261,7 +261,7 @@ const leave = (elem: HTMLElement, done: gsap.Callback) => {
             elem.querySelectorAll('.caster-details > .background'),
             {
                 opacity: 0,
-                stagger: 0.5 * staggerMultiplier,
+                stagger: { amount: 1 * staggerMultiplier },
                 delay: 0.5
             },
             'sceneOut')
@@ -272,7 +272,7 @@ const leave = (elem: HTMLElement, done: gsap.Callback) => {
                 x: 100,
                 duration: 0.65,
                 delay: (index, target) => target.classList.contains('caster-name') ? 0 : 0.2,
-                stagger: index => Math.floor(index / 2) * 0.5 * staggerMultiplier,
+                stagger: props.largeVideoVisible ? { amount: 1 * staggerMultiplier } : (index, _, list) => Math.floor(index / 2) / (list.length / 2 - 1) * staggerMultiplier,
                 ease: 'power2.in'
             },
             'sceneOut')
@@ -280,7 +280,7 @@ const leave = (elem: HTMLElement, done: gsap.Callback) => {
             elem.querySelectorAll('.caster-visual'),
             {
                 y: '101%',
-                stagger: 0.5 * staggerMultiplier,
+                stagger: { amount: 1 * staggerMultiplier },
                 ease: 'power2.in'
             },
             'sceneOut');
