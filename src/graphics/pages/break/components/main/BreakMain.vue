@@ -8,7 +8,7 @@
             <div class="tournament-name layout horiz">
                 <span class="logo-font">SuperJump</span>
                 <img
-                    :src="resolveStaticPath('/SJ_4.png')"
+                    :src="resolveStaticPath('/SJ_5.png')"
                     class="edition"
                 >
             </div>
