@@ -89,7 +89,8 @@
     "dependencies": {
         "@tourneyview/common": "0.6.0",
         "axios": "^1.7.2",
-        "jose": "^5.6.3"
+        "jose": "^5.6.3",
+        "luxon": "^2.5.2"
     },
     "devDependencies": {
         "@fortawesome/fontawesome-svg-core": "6.1.1",
@@ -127,9 +128,8 @@
         "eslint-plugin-import": "^2.28.1",
         "eslint-plugin-vue": "^9.17.0",
         "globby": "^11.0.3",
-        "gsap": "npm:@gsap/shockingly@^3.10.2",
+        "gsap": "^3.13.0",
         "lodash": "^4.17.21",
-        "luxon": "^2.5.2",
         "npm-run-all": "^4.1.5",
         "pinia": "^2.0.16",
         "pixi-filters": "^4.1.4",
