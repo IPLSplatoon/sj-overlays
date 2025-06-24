@@ -12,6 +12,7 @@
             <break-casters
                 v-show="contentVisible && activeBreakScene === 'casters'"
                 :casters="casterStore.casters"
+                :large-video-visible="null"
             />
         </transition>
         <transition
@@ -23,6 +24,8 @@
         >
             <break-casters
                 v-show="contentVisible && activeBreakScene === 'analysts'"
+                :large-video-visible="casterStore.analystScreenVideoVisible"
+                :large-video-url="casterStore.analystScreenVideoUrl"
                 :casters="casterStore.bundleCasterSets['sj-overlays']['analysts']"
             />
         </transition>
@@ -139,13 +142,13 @@ export default defineComponent({
 
             casterStore,
             beforeCastersEnter: (elem: HTMLElement) => {
-                transitions['break-casters'].beforeEnter(elem);
+                transitions[breakScreenStore.activeBreakScene === 'analysts' ? 'break-analysts' : 'break-casters'].beforeEnter(elem);
             },
             castersEnter: (elem: HTMLElement, done: gsap.Callback) => {
                 const cb = () => {
                     const tl = gsap.timeline({ onComplete: done });
 
-                    tl.add(transitions['break-casters'].enter(elem));
+                    tl.add(transitions[breakScreenStore.activeBreakScene === 'analysts' ? 'break-analysts' : 'break-casters'].enter(elem));
 
                     breakTransitionTimeline.add(tl);
                 };
@@ -166,7 +169,7 @@ export default defineComponent({
 
                 tl.timeScale(contentVisible.value ? 1 : 100);
 
-                tl.add(transitions['break-casters'].leave(elem));
+                tl.add(transitions[breakScreenStore.activeBreakScene === 'analysts' ? 'break-casters' : 'break-analysts'].leave(elem));
 
                 breakTransitionTimeline.add(tl);
             },
