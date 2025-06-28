@@ -293,6 +293,7 @@ provideTransitions(props.largeVideoVisible != null ? 'break-analysts' : 'break-c
 
 <style scoped lang="scss">
 @use '../../../../styles/background';
+@use 'sass:math';
 
 .casters-wrapper {
     position: absolute;
@@ -323,7 +324,7 @@ provideTransitions(props.largeVideoVisible != null ? 'break-analysts' : 'break-c
 
     > * {
         width: 1280px;
-        aspect-ratio: 16 / 9;
+        height: math.div(1280px, math.div(16, 9));
     }
 }
 
