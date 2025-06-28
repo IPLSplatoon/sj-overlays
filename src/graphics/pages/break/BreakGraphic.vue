@@ -142,7 +142,7 @@ export default defineComponent({
 
             casterStore,
             beforeCastersEnter: (elem: HTMLElement) => {
-                transitions[breakScreenStore.activeBreakScene === 'analysts' ? 'break-analysts' : 'break-casters'].beforeEnter(elem);
+                transitions[breakScreenStore.activeBreakScene === 'analysts' ? 'break-analysts' : 'break-casters']?.beforeEnter(elem);
             },
             castersEnter: (elem: HTMLElement, done: gsap.Callback) => {
                 const cb = () => {
