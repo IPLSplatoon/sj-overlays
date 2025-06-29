@@ -83,11 +83,18 @@ export default defineComponent({
 
         bindEntranceToFunction(e => {
             if (e.detail.active || e.detail.visible) {
-                contentVisible.value = false;
+                const transitioningFromGameplay
+                    = breakScreenStore.activeObsConfig == null
+                    || breakScreenStore.activeObsConfig.gameplayScene == null
+                    || breakScreenStore.activeObsConfig.gameplayScene === breakScreenStore.obsState.currentScene;
 
-                setTimeout(() => {
-                    contentVisible.value = true;
-                }, 2500);
+                if (transitioningFromGameplay) {
+                    contentVisible.value = false;
+
+                    setTimeout(() => {
+                        contentVisible.value = true;
+                    }, 2500);
+                }
             }
         });
 
