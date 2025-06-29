@@ -24,8 +24,9 @@ import MainSlideRow from './MainSlideRow.vue';
 import { faYoutube } from '@fortawesome/free-brands-svg-icons/faYoutube';
 import { faTwitch } from '@fortawesome/free-brands-svg-icons/faTwitch';
 import { useLocaleInfoStore } from 'client-shared/store/localeInfoStore';
+import { faBluesky } from '@fortawesome/free-brands-svg-icons/faBluesky';
 
-library.add(faTwitter, faPatreon, faGlobe, faDiscord, faDollarSign, faYoutube, faTwitch);
+library.add(faTwitter, faPatreon, faGlobe, faDiscord, faDollarSign, faYoutube, faTwitch, faBluesky, faTwitter);
 
 export default defineComponent({
     name: 'MainSlideSupport',
