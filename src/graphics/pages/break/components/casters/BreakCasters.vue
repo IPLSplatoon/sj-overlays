@@ -151,6 +151,8 @@ onMounted(() => {
         } else {
             markCastersSmall.value = newValue;
             gsap.set(castersLayout.value!, { x: newValue ? -700 : 0 });
+            gsap.set(castersLayout.value!.querySelectorAll('.caster-name'), { scale: newValue ? 1.6 : 1 });
+            gsap.set(castersLayout.value!.querySelectorAll('.caster-display'), { scale: newValue ? 0.5 : 1 });
             if (newValue) {
                 castersLayout.value!.classList.add('alt-layout');
             } else {
@@ -232,7 +234,8 @@ const leave = (elem: HTMLElement, done: gsap.Callback) => {
     const tl = gsap.timeline({ onComplete: done });
 
     tl.addLabel('sceneOut');
-    if (props.largeVideoVisible) {
+    const largeVideoVisible = props.largeVideoVisible === true;
+    if (largeVideoVisible) {
         tl.to(elem.querySelector('.large-caster-video'), {
             opacity: 0,
             duration: 0.05,
@@ -245,14 +248,20 @@ const leave = (elem: HTMLElement, done: gsap.Callback) => {
             ease: 'power2.in'
         }, 'sceneOut');
     }
-    const staggerMultiplier = props.largeVideoVisible === true ? -1 : 1;
+    const staggerMultiplier = largeVideoVisible ? -1 : 1;
     tl
         .to(
             elem.querySelectorAll('.caster-line-color, .caster-line-white'),
             {
                 drawSVG: '0%',
                 duration: 1,
-                stagger: (index, _, list) => Math.floor(index / 2) / (list.length / 2 - 1) * staggerMultiplier,
+                stagger: (index, _, list) => {
+                    if (largeVideoVisible) {
+                        return ((list.length / 2 - 1) - Math.floor(index / 2)) * (1 / (list.length / 2 - 1));
+                    } else {
+                        return Math.floor(index / 2) * (1 / (list.length / 2 - 1));
+                    }
+                },
                 delay: 0.5,
                 ease: 'power2.inOut'
             },
@@ -261,7 +270,7 @@ const leave = (elem: HTMLElement, done: gsap.Callback) => {
             elem.querySelectorAll('.caster-details > .background'),
             {
                 opacity: 0,
-                stagger: { amount: 1 * staggerMultiplier },
+                stagger: { amount: staggerMultiplier },
                 delay: 0.5
             },
             'sceneOut')
@@ -272,7 +281,7 @@ const leave = (elem: HTMLElement, done: gsap.Callback) => {
                 x: 100,
                 duration: 0.65,
                 delay: (index, target) => target.classList.contains('caster-name') ? 0 : 0.2,
-                stagger: props.largeVideoVisible ? { amount: 1 * staggerMultiplier } : (index, _, list) => Math.floor(index / 2) / (list.length / 2 - 1) * staggerMultiplier,
+                stagger: largeVideoVisible ? { amount: staggerMultiplier } : (index, _, list) => Math.floor(index / 2) / (list.length / 2 - 1) * staggerMultiplier,
                 ease: 'power2.in'
             },
             'sceneOut')
