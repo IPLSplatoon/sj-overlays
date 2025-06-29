@@ -88,10 +88,10 @@
         "luxon": "^2.5.2"
     },
     "devDependencies": {
-        "@fortawesome/fontawesome-svg-core": "6.1.1",
-        "@fortawesome/free-brands-svg-icons": "^6.1.1",
-        "@fortawesome/free-solid-svg-icons": "6.1.1",
-        "@fortawesome/vue-fontawesome": "^3.0.0-5",
+        "@fortawesome/fontawesome-svg-core": "6.7.2",
+        "@fortawesome/free-brands-svg-icons": "6.7.2",
+        "@fortawesome/free-solid-svg-icons": "6.7.2",
+        "@fortawesome/vue-fontawesome": "3.0.8",
         "@iplsplatoon/vue-components": "^3.3.3",
         "@nodecg/types": "^2.1.11",
         "@pixi/app": "^6.1.2",

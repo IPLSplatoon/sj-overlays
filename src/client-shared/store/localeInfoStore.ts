@@ -165,7 +165,7 @@ export const useLocaleInfoStore = defineStore('localeInfo', {
                                 support: {
                                     title: 'Support us!',
                                     items: [
-                                        { icon: ['fab', 'twitter'], text: '@IPLSplatoon' },
+                                        { icon: ['fab', 'bluesky'], text: '@iplabs.ink' },
                                         { icon: ['fab', 'discord'], text: 'iplabs.ink/discord' },
                                         { icon: 'globe', text: 'iplabs.ink' },
                                         { icon: 'dollar-sign', text: 'iplabs.ink/donate' },

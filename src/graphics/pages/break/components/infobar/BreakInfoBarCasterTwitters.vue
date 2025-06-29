@@ -5,7 +5,7 @@
             class="info-row layout c-horiz c-vert"
         >
             <font-awesome-icon
-                :icon="['fab', 'twitter']"
+                icon="microphone"
                 class="icon"
             />
             <fitted-content
@@ -42,10 +42,10 @@ import Badge from '../../../../components/Badge.vue';
 import FittedContent from '../../../../components/FittedContent.vue';
 import OpacitySwapTransition from '../../../../components/OpacitySwapTransition.vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faTwitter } from '@fortawesome/free-brands-svg-icons/faTwitter';
 import { useCasterStore } from 'client-shared/store/casterStore';
+import { faMicrophone } from '@fortawesome/free-solid-svg-icons/faMicrophone';
 
-library.add(faTwitter);
+library.add(faMicrophone);
 
 export default defineComponent({
     name: 'BreakInfoBarCasters',
