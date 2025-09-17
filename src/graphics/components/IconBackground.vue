@@ -17,6 +17,7 @@ import maxBy from 'lodash/maxBy';
 import sample from 'lodash/sample';
 import { addToObjectOfArrays } from '../helpers/object';
 import { bindEntranceToFunction } from '../helpers/obs';
+import { useBreakScreenStore } from 'client-shared/store/breakScreenStore';
 
 function createApplication(canvas: HTMLCanvasElement): PIXI.Application {
     const app = new PIXI.Application({
@@ -178,9 +179,18 @@ export default defineComponent({
                 });
 
             if (props.animateOnEntrance) {
+                const breakScreenStore = useBreakScreenStore();
+
                 bindEntranceToFunction((event) => {
                     if (event.detail.active || event.detail.visible) {
-                        animBackgroundIn();
+                        const transitioningFromGameplay
+                            = breakScreenStore.activeObsConfig == null
+                            || breakScreenStore.activeObsConfig.gameplayScene == null
+                            || breakScreenStore.activeObsConfig.gameplayScene === breakScreenStore.obsState.currentScene;
+
+                        if (transitioningFromGameplay) {
+                            animBackgroundIn();
+                        }
                     }
                 });
             }

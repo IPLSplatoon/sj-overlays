@@ -64,7 +64,7 @@ import { provideTransitions } from '../../../../helpers/transition';
 import gsap from 'gsap';
 import { useCentralDataStore } from 'client-shared/store/centralDataStore';
 import { computed } from 'vue';
-import { MatchupList } from 'types/schemas';
+import type { MatchupList } from 'types/schemas';
 import FittedContent from '../../../../components/FittedContent.vue';
 import { DateTime } from 'luxon';
 import { useSlides } from '../../../../helpers/useSlides';
