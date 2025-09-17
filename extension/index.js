@@ -95,8 +95,8 @@ module.exports = (nodecg) => {
         return url.toString();
     }
     function getMatchups(teamIds, type) {
-        var _a, _b;
         return __awaiter(this, void 0, void 0, function* () {
+            var _a, _b;
             if (((_a = centralCredentials.value) === null || _a === void 0 ? void 0 : _a.token) == null) {
                 throw new Error('Not logged in to Central');
             }

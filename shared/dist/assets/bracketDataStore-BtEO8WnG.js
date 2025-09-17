@@ -1,0 +1,1 @@
+import{D as t,n as a}from"./_plugin-vue_export-helper-DpvYN2e9.js";import{v as e}from"./storeHelper-Dip-Ut0B.js";const r=nodecg.Replicant("bracketData",t),c=a("bracketData",{state:()=>({bracketData:null})}),n=e([r],c);export{n as i,c as u};
