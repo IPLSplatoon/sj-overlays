@@ -149,4 +149,31 @@ export = (nodecg: NodeCG.ServerAPI<Configschema>): void => {
 
         ack(null);
     });
+
+    // @ts-ignore: i don't want to deal with it
+    nodecg.extensions['ipl-overlay-controls'].bundleConfigDeclarationService.declareCustomScenes(nodecg.bundleName, [
+        {
+            value: 'casters',
+            names: {
+                EN: 'Casters'
+            }
+        },
+        {
+            value: 'analysts',
+            names: {
+                EN: 'Analysts'
+            }
+        }
+    ]);
+
+    // @ts-ignore: i don't want to deal with it
+    nodecg.extensions['ipl-overlay-controls'].bundleConfigDeclarationService.declareCasterSets(nodecg.bundleName, [
+        {
+            key: 'analysts',
+            maxItems: 4,
+            names: {
+                EN: 'Analysts'
+            }
+        }
+    ]);
 }

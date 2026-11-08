@@ -5,6 +5,7 @@ import BreakGraphic from './pages/break/BreakGraphic.vue';
 import { gsap } from 'gsap';
 import DrawSVGPlugin from 'gsap/DrawSVGPlugin';
 import PixiPlugin from 'gsap/PixiPlugin';
+import { Flip } from 'gsap/Flip';
 import * as PIXI from './helpers/pixi';
 import { createPinia } from 'pinia';
 import { setUpReplicants } from 'client-shared/store/storeHelper';
@@ -19,6 +20,7 @@ import { assetPathReps, useAssetPathStore } from 'client-shared/store/assetPathS
 import { installCommonHelpers } from './helpers/installCommonHelpers';
 import { centralDataReps, useCentralDataStore } from 'client-shared/store/centralDataStore';
 
+gsap.registerPlugin(Flip);
 gsap.registerPlugin(DrawSVGPlugin);
 gsap.registerPlugin(PixiPlugin);
 PixiPlugin.registerPIXI(PIXI);
