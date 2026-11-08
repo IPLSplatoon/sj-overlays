@@ -1,4 +1,4 @@
-import{D as we,n as sn,d as ln,c as W,w as fn,O as cn}from"./_plugin-vue_export-helper-DpvYN2e9.js";const un=nodecg.Replicant("activeRound",we),dn=nodecg.Replicant("swapColorsInternally",we),Pr=[un,dn],Er=sn("activeRound",{state:()=>({activeRound:null,swapColorsInternally:null})});/*!
+import{D as we,n as sn,d as ln,c as W,w as fn,S as cn}from"./_plugin-vue_export-helper-BMuf7MiW.js";const un=nodecg.Replicant("activeRound",we),dn=nodecg.Replicant("swapColorsInternally",we),Pr=[un,dn],Er=sn("activeRound",{state:()=>({activeRound:null,swapColorsInternally:null})});/*!
  * Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com
  * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
  * Copyright 2024 Fonticons, Inc.
