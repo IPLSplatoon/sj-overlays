@@ -6,6 +6,9 @@
             "type": "object",
             "required": ["basePath", "frontendPath"],
             "properties": {
+                "enabled": {
+                    "type": "boolean"
+                },
                 "basePath": {
                     "type": "string"
                 },

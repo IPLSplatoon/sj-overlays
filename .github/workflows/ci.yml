@@ -17,7 +17,7 @@ jobs:
         with:
           repository: 'inkfarer/ipl-overlay-controls'
           token: ${{ secrets['GITHUB_TOKEN'] }}
-          ref: 'brackets'
+          ref: '4.21.1'
           fetch-depth: 0
           path: ./ipl-overlay-controls
 

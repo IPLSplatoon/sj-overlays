@@ -42,7 +42,7 @@ export default defineComponent({
                 window.removeEventListener('message', messageListener);
                 iframe.value.removeEventListener('load', iframeLoadListener);
 
-                if (newValue.includes('vdo.ninja')) {
+                if (newValue?.includes('vdo.ninja')) {
                     window.addEventListener('message', messageListener);
                 } else {
                     iframe.value.addEventListener('load', iframeLoadListener);

@@ -9,7 +9,25 @@
             @leave="castersLeave"
             @before-enter="beforeCastersEnter"
         >
-            <break-casters v-show="contentVisible && activeBreakScene === 'casters'" />
+            <break-casters
+                v-show="contentVisible && activeBreakScene === 'casters'"
+                :casters="casterStore.casters"
+                :large-video-visible="null"
+            />
+        </transition>
+        <transition
+            appear
+            :css="false"
+            @enter="castersEnter"
+            @leave="castersLeave"
+            @before-enter="beforeCastersEnter"
+        >
+            <break-casters
+                v-show="contentVisible && activeBreakScene === 'analysts'"
+                :large-video-visible="casterStore.analystScreenVideoVisible"
+                :large-video-url="casterStore.analystScreenVideoUrl"
+                :casters="casterStore.bundleCasterSets['sj-overlays']['analysts']"
+            />
         </transition>
     </div>
     <template v-if="contentVisible">
@@ -33,14 +51,14 @@
             @leave="infoBarLeave"
             @before-enter="beforeInfoBarEnter"
         >
-            <break-info-bar v-if="activeBreakScene === 'teams' || activeBreakScene === 'stages' || activeBreakScene === 'casters'" />
+            <break-info-bar v-if="activeBreakScene === 'teams' || activeBreakScene === 'stages' || activeBreakScene === 'casters' || activeBreakScene === 'analysts'" />
         </transition>
     </template>
     <icon-background />
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, provide, ref } from 'vue';
+import { computed, defineComponent, nextTick, provide, ref } from 'vue';
 import IconBackground from '../../components/IconBackground.vue';
 import BreakStages from './components/stages/BreakStages.vue';
 import BreakTeams from './components/teams/BreakTeams.vue';
@@ -51,6 +69,7 @@ import { useBreakScreenStore } from 'client-shared/store/breakScreenStore';
 import { bindEntranceToFunction } from '../../helpers/obs';
 import { TransitionFunctionMap, transitionFunctionsInjectionKey } from '../../helpers/transition';
 import BreakCasters from './components/casters/BreakCasters.vue';
+import { useCasterStore } from 'client-shared/store/casterStore';
 
 export default defineComponent({
     name: 'BreakGraphic',
@@ -58,6 +77,7 @@ export default defineComponent({
     components: { BreakCasters, BreakInfoBar, BreakMain, BreakTeams, BreakStages, IconBackground },
 
     setup() {
+        const casterStore = useCasterStore();
         const breakScreenStore = useBreakScreenStore();
         const contentVisible = ref(true);
 
@@ -108,7 +128,7 @@ export default defineComponent({
         };
 
         return {
-            activeBreakScene: computed(() => breakScreenStore.activeScene),
+            activeBreakScene: computed(() => breakScreenStore.activeBreakScene),
             beforeEnter: (elem: HTMLElement) => {
                 transitions.break.beforeEnter(elem);
             },
@@ -127,20 +147,36 @@ export default defineComponent({
                 breakTransitionTimeline.add(tl);
             },
 
+            casterStore,
             beforeCastersEnter: (elem: HTMLElement) => {
-                transitions['break-casters'].beforeEnter(elem);
+                transitions[breakScreenStore.activeBreakScene === 'analysts' ? 'break-analysts' : 'break-casters']?.beforeEnter(elem);
             },
             castersEnter: (elem: HTMLElement, done: gsap.Callback) => {
-                const tl = gsap.timeline({ onComplete: done });
+                const cb = () => {
+                    const tl = gsap.timeline({ onComplete: done });
 
-                tl.add(transitions['break-casters'].enter(elem));
+                    tl.add(transitions[breakScreenStore.activeBreakScene === 'analysts' ? 'break-analysts' : 'break-casters'].enter(elem));
 
-                breakTransitionTimeline.add(tl);
+                    breakTransitionTimeline.add(tl);
+                };
+
+                /*
+                goofy workaround: since the display for casters is ordered before the display for analysts in the DOM,
+                switching from analysts to casters will call this function before castersLeave.
+                this makes sure that order is correct
+                 */
+                if (breakScreenStore.activeBreakScene === 'casters') {
+                    nextTick(cb);
+                } else {
+                    cb();
+                }
             },
             castersLeave: (elem: HTMLElement, done: gsap.Callback) => {
                 const tl = gsap.timeline({ onComplete: done });
 
-                tl.add(transitions['break-casters'].leave(elem));
+                tl.timeScale(contentVisible.value ? 1 : 100);
+
+                tl.add(transitions[breakScreenStore.activeBreakScene === 'analysts' ? 'break-casters' : 'break-analysts'].leave(elem));
 
                 breakTransitionTimeline.add(tl);
             },

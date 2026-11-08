@@ -8,7 +8,7 @@
             @before-enter="beforeTeamAEnter"
         >
             <team-results-display
-                v-if="centralDataStore.centralDisplaySettings.displayMode === 'teamBResults'"
+                v-if="CENTRAL_ENABLED && centralDataStore.centralDisplaySettings.displayMode === 'teamBResults'"
                 team="B"
             />
             <break-screen-team
@@ -25,7 +25,7 @@
                 @before-enter="beforeVersusEnter"
             >
                 <div
-                    v-if="centralDataStore.centralDisplaySettings.displayMode === 'teams'"
+                    v-if="!CENTRAL_ENABLED || centralDataStore.centralDisplaySettings.displayMode === 'teams'"
                     class="versus"
                 >
                     VS
@@ -40,7 +40,7 @@
             @before-enter="beforeTeamBEnter"
         >
             <team-results-display
-                v-if="centralDataStore.centralDisplaySettings.displayMode === 'teamAResults'"
+                v-if="CENTRAL_ENABLED && centralDataStore.centralDisplaySettings.displayMode === 'teamAResults'"
                 team="A"
             />
             <break-screen-team
@@ -63,6 +63,7 @@ import { provide } from 'vue';
 import gsap from 'gsap';
 import TeamResultsDisplay from './TeamResultsDisplay.vue';
 import { useCentralDataStore } from 'client-shared/store/centralDataStore';
+import { CENTRAL_ENABLED } from 'client-shared/constants';
 
 const centralDataStore = useCentralDataStore();
 

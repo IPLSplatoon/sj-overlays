@@ -1,8 +1,5 @@
 <template>
-    <div
-        class="caster-display-wrapper layout vertical c-horiz"
-        :class="`caster-count-${casterCount}`"
-    >
+    <div class="caster-display-wrapper layout vertical c-horiz">
         <div
             class="caster-display"
             :style="{ width: `${width}px` }"
@@ -68,16 +65,12 @@
 <script setup lang="ts">
 import type { Caster } from 'schemas';
 import { computed } from 'vue';
-import { useCasterStore } from 'client-shared/store/casterStore';
 import { isBlank } from '../../../../helpers/string';
 import ImageLoader from '../../../../components/ImageLoader.vue';
 import VideoLoader from '../../../../components/VideoLoader.vue';
 import Badge from '../../../../components/Badge.vue';
 import OpacitySwapTransition from '../../../../components/OpacitySwapTransition.vue';
 import * as d3 from 'd3';
-
-const casterStore = useCasterStore();
-const casterCount = computed(() => Object.keys(casterStore.casters).length);
 
 const props = defineProps<{
     caster: Caster
@@ -118,15 +111,17 @@ const casterLinePath = computed(() => {
 }
 
 .caster-details {
-    padding: 10px 16px 0 20px;
     box-sizing: border-box;
     position: relative;
     overflow: hidden;
+    min-height: 100px;
+    min-width: 1000px;
+    //width: 1000px;
 
     > .background {
         position: absolute;
         z-index: -1;
-        width: 100%;
+        width: 50%;
         height: 100%;
         background: radial-gradient(ellipse 100% 120% at 25px 25px, color.change(constants.$background, $alpha: 0.8) 50%, transparent 100%);
     }
@@ -136,11 +131,15 @@ const casterLinePath = computed(() => {
     font-weight: 700;
     font-style: italic;
     font-size: 40px;
+    margin-top: 10px;
+    margin-left: 20px;
+    transform-origin: top left;
 }
 
 .caster-twitter {
     font-weight: 300;
     margin-top: -6px;
+    margin-left: 20px;
 }
 
 .caster-line {
