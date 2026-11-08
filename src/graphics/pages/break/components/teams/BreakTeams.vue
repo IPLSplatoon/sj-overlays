@@ -12,7 +12,7 @@
                 @leave="subsceneLeave"
                 @before-enter="beforeSubsceneEnter"
             >
-                <head-to-head-subscene v-if="centralTeamDisplayMode === 'headToHead'" />
+                <head-to-head-subscene v-if="CENTRAL_ENABLED && centralTeamDisplayMode === 'headToHead'" />
                 <team-rosters-subscene v-else />
             </transition>
         </div>
@@ -34,6 +34,7 @@ import { usePredictionDataStore } from 'client-shared/store/predictionDataStore'
 import TeamRostersSubscene from './TeamRostersSubscene.vue';
 import { useCentralDataStore } from 'client-shared/store/centralDataStore';
 import HeadToHeadSubscene from './HeadToHeadSubscene.vue';
+import { CENTRAL_ENABLED } from 'client-shared/constants';
 
 export default defineComponent({
     name: 'BreakTeams',
@@ -127,7 +128,8 @@ export default defineComponent({
                 tl.add(transitions['break-teams'].leave(elem));
             },
 
-            centralTeamDisplayMode
+            centralTeamDisplayMode,
+            CENTRAL_ENABLED
         };
     }
 });

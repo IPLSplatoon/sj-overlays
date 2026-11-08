@@ -17,31 +17,23 @@
             @click="updateAnalystVideoUrl"
         />
     </ipl-space>
-    <template v-if="hasCentralConfig">
+    <template v-if="CENTRAL_ENABLED">
         <central-login />
         <central-mapping-display class="top-margin" />
         <central-matchups-display class="top-margin" />
         <central-display-settings class="top-margin" />
     </template>
-    <ipl-message
-        v-else
-        type="warning"
-    >
-        Central bundle configuration is missing.
-    </ipl-message>
 </template>
 
 <script setup lang="ts">
-import { IplButton, IplInput, IplMessage, IplSpace, IplToggle } from '@iplsplatoon/vue-components';
+import { IplButton, IplInput, IplSpace, IplToggle } from '@iplsplatoon/vue-components';
 import CentralLogin from './CentralLogin.vue';
-import type { Configschema } from 'types/schemas';
 import CentralMappingDisplay from './CentralMappingDisplay.vue';
 import CentralMatchupsDisplay from './CentralMatchupsDisplay.vue';
 import CentralDisplaySettings from './CentralDisplaySettings.vue';
 import { computed, ref, watch } from 'vue';
 import { useCasterStore } from 'client-shared/store/casterStore';
-
-const hasCentralConfig = (nodecg.bundleConfig as Configschema).central != null;
+import { CENTRAL_ENABLED } from 'client-shared/constants';
 
 const casterStore = useCasterStore();
 const analystScreenVideoUrl = ref('');

@@ -8,6 +8,7 @@
 
 export interface Configschema {
 	central?: {
+		enabled?: boolean;
 		basePath: string;
 		frontendPath: string;
 		[k: string]: unknown;

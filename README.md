@@ -12,8 +12,9 @@ Broadcast overlays for SuperJump, a Splatoon tournament by Inkling Performance L
   ```json
   {
       "central": {
+        "enabled": true,
     	  "basePath": "Base path to IPL Central. e.g. http://localhost:2000",
-          "frontendPath": "Path to IPL Central's frontend. e.g. http://localhost:3000"
+        "frontendPath": "Path to IPL Central's frontend. e.g. http://localhost:3000"
       }
   }
   ```
